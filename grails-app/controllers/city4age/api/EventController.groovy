@@ -8,17 +8,19 @@ class EventController {
 
     def save() {
         def json = request.JSON
-        def careReceiver = CareReceiver.findByToken(json.token)
+        def careReceiver = CareReceiver.findByToken(json.token.toString())
         if (careReceiver) {
             // Note that we have heard from the device
-            def device = Device.findByUniqueID(json.uuid)
-            device.lastContact = new Date(Long.valueOf(json.timestamp))
-            device.save()
+            def device = Device.findByUniqueID(json.uuid.toString())
+            if (device) {
+                device.lastContact = new Date(Long.valueOf(json.timestamp.toString()))
+                device.save(flush: true)
+            }
 
-            def beacon = Beacon.findByBeaconId(json.beaconId)
+            def beacon = Beacon.findByBeaconId(json.beaconId.toString())
             def event = new Event(
                     eventType: json.eventType,
-                    timestamp: new Date(Long.valueOf(json.timestamp)),
+                    timestamp: new Date(Long.valueOf(json.timestamp.toString())),
                     rssi: json.rssi,
                     parameter: (json.eventType == "found") ? json.txPower : json.rssiMax,
                     beacon: beacon,
