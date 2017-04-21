@@ -1,0 +1,7 @@
+import city4age.api.Device
+
+model {
+    Iterable<Device> deviceList
+}
+
+json tmpl.device(deviceList ?: [])

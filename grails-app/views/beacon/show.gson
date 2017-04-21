@@ -1,0 +1,7 @@
+import city4age.api.Beacon
+
+model {
+	Beacon beacon
+}
+
+json tmpl.beacon(beacon)

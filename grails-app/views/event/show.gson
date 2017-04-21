@@ -1,0 +1,7 @@
+import city4age.api.Event
+
+model {
+	Event event
+}
+
+json tmpl.event(event)

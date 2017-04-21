@@ -1,0 +1,17 @@
+import city4age.api.Event
+
+model {
+	Event event
+}
+
+//json g.render(event)
+json {
+	id event.id
+	eventType event.eventType
+	timestamp event.timestamp
+	rssi event.rssi
+	parameter event.parameter
+	beacon event.beacon.beaconId
+	careReceiver event.careReceiver.id
+	device event.device.id
+}

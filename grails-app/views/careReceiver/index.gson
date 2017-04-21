@@ -1,0 +1,8 @@
+import city4age.api.CareReceiver
+
+model {
+	Iterable<CareReceiver> careReceiverList
+}
+
+json tmpl.careReceiver(careReceiverList ?: [])
+

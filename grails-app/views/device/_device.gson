@@ -1,0 +1,16 @@
+import city4age.api.Device
+
+model {
+    Device device
+}
+
+//json g.render(careReceiver)
+json {
+    id device.id
+    os device.operatingSystem
+    osVersion device.osVersion
+    model device.model
+    uuid device.uniqueID
+    careReceiver device.careReceiver.id
+}
+

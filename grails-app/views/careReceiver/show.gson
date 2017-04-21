@@ -1,0 +1,7 @@
+import city4age.api.CareReceiver
+
+model {
+	CareReceiver careReceiver
+}
+
+json tmpl.careReceiver(careReceiver)

@@ -1,0 +1,7 @@
+import city4age.api.Device
+
+model {
+    Device device
+}
+
+json tmpl.device(device)

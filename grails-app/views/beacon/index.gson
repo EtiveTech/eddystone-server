@@ -1,0 +1,8 @@
+import city4age.api.Beacon
+
+model {
+	Iterable<Beacon> beaconList
+}
+
+json tmpl.beacon(beaconList ?: [])
+

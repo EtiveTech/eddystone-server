@@ -1,0 +1,7 @@
+import city4age.api.Location
+
+model {
+	Location location
+}
+
+json tmpl.location(location)

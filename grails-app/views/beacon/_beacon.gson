@@ -1,0 +1,12 @@
+import city4age.api.Beacon
+
+model {
+	Beacon beacon
+}
+
+//json g.render(beacon)
+json {
+    id beacon.id
+	beaconId beacon.beaconId
+	location beacon.location.name
+}
