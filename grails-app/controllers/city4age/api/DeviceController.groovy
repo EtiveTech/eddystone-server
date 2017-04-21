@@ -1,8 +1,5 @@
 package city4age.api
 
-import grails.rest.*
-import grails.converters.*
-
 class DeviceController {
 	
     def index() {
@@ -45,13 +42,14 @@ class DeviceController {
             if (device) {
                 device.lastContact = new Date(Long.valueOf(json.timestamp.toString()))
                 device.save()
+                respond(device, status: 201)
             }
             else {
-                response.sendError(403, "")
+                response.sendError(404, "")
             }
         }
         else {
-            response.sendError(404, "")
+            response.sendError(403, "")
         }
     }
 }
