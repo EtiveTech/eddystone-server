@@ -6,6 +6,8 @@ class Event {
     Date timestamp
     Integer rssi
     Integer parameter
+    Date dateCreated
+    Date lastUpdated
 
     static belongsTo = [beacon: Beacon, careReceiver: CareReceiver, device: Device]
 

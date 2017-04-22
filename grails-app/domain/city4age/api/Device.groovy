@@ -6,6 +6,8 @@ class Device {
     String model
     String uniqueId
     Date lastContact
+    Date dateCreated
+    Date lastUpdated
 
     static belongsTo = [careReceiver: CareReceiver]
 
