@@ -10,7 +10,7 @@ class DeviceController {
         def json = request.JSON
         def careReceiver = CareReceiver.findByToken(json.token.toString())
         if (careReceiver) {
-            def device = Device.findByUniqueID(json.uuid.toString())
+            def device = Device.findByUniqueId(json.uuid.toString())
             if (device) {
                 device.careReceiver = careReceiver
                 device.osVersion = json.osVersion.toString()
@@ -21,7 +21,7 @@ class DeviceController {
                         operatingSystem: json.os,
                         osVersion: json.osVersion,
                         model: json.model,
-                        uniqueID: json.uuid,
+                        uniqueId: json.uuid,
                         careReceiver: careReceiver,
                         lastContact: new Date(Long.valueOf(json.timestamp.toString()))
                 )
@@ -38,7 +38,7 @@ class DeviceController {
         def json = request.JSON
         def careReceiver = CareReceiver.findByToken(json.token.toString())
         if (careReceiver) {
-            def device = Device.findByUuid(params.uuid.toString())
+            def device = Device.findByUniqueId(params.uuid.toString())
             if (device) {
                 device.lastContact = new Date(Long.valueOf(json.timestamp.toString()))
                 device.save()

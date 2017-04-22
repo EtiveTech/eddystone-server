@@ -10,7 +10,8 @@ json {
     os device.operatingSystem
     osVersion device.osVersion
     model device.model
-    uuid device.uniqueID
+    uuid device.uniqueId
     careReceiver device.careReceiver.id
+    lastContact device.lastContact
 }
 

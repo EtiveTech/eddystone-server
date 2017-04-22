@@ -4,7 +4,7 @@ class Device {
     String operatingSystem
     String osVersion
     String model
-    String uniqueID
+    String uniqueId
     Date lastContact
 
     static belongsTo = [careReceiver: CareReceiver]
@@ -13,7 +13,7 @@ class Device {
         operatingSystem blank: false, nullable: false
         osVersion blank: false, nullable: false
         model blank: false, nullable: false
-        uniqueID blank: false, nullable: false
+        uniqueId blank: false, nullable: false
         careReceiver nullable: false
         lastContact nullable: false
     }
