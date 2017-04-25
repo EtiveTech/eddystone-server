@@ -1,4 +1,4 @@
-package city4age.api
+package org.etive.city4age.repository
 
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration

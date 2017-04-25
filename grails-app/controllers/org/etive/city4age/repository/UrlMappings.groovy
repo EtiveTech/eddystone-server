@@ -1,4 +1,4 @@
-package city4age.api
+package org.etive.city4age.repository
 
 class UrlMappings {
 
@@ -6,6 +6,7 @@ class UrlMappings {
         group("/api") {
             get "/beacon" (controller: 'beacon', action: 'index')
             get "/receiver" (controller: 'receiver', action: 'index')
+            post "/receiver" (controller: 'receiver', action: 'save')
             get "/receiver/$email" (controller: 'receiver', action: 'show')
             get "/event" (controller: 'event', action: 'index')
             post "/event" (controller: 'event', action: 'save')

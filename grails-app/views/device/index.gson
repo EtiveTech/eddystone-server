@@ -1,4 +1,4 @@
-import city4age.api.Device
+import org.etive.city4age.repository.Device
 
 model {
     Iterable<Device> deviceList

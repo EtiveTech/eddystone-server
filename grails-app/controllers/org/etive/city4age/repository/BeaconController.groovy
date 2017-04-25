@@ -1,6 +1,4 @@
-package city4age.api
-
-import grails.converters.*
+package org.etive.city4age.repository
 
 class BeaconController {
 

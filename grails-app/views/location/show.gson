@@ -1,4 +1,4 @@
-import city4age.api.Location
+import org.etive.city4age.repository.Location
 
 model {
 	Location location

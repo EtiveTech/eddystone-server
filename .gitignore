@@ -9,4 +9,4 @@ build/
 .project
 .settings
 .classpath
-keys.groovy
+secrets.groovy

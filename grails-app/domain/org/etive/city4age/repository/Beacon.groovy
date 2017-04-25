@@ -1,4 +1,4 @@
-package city4age.api
+package org.etive.city4age.repository
 
 class Beacon {
 

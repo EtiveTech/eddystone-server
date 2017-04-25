@@ -1,4 +1,4 @@
-package city4age.api
+package org.etive.city4age.repository
 
 class DeviceController {
 	
@@ -23,7 +23,7 @@ class DeviceController {
                         model: json.model,
                         uniqueId: json.uuid,
                         careReceiver: careReceiver,
-                        lastContact: new Date(Long.valueOf(json.timestamp.toString()))
+                        lastContact: new Date(Long.valueOf(json.timestamp.toString())),
                 )
             }
             device.save()

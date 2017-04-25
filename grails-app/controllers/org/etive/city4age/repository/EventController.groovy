@@ -1,4 +1,4 @@
-package city4age.api
+package org.etive.city4age.repository
 
 class EventController {
 
@@ -11,7 +11,7 @@ class EventController {
         def careReceiver = CareReceiver.findByToken(json.token.toString())
         if (careReceiver) {
             // Note that we have heard from the device
-            def device = Device.findByUniqueID(json.uuid.toString())
+            def device = Device.findByUniqueId(json.uuid.toString())
             if (device) {
                 device.lastContact = new Date(Long.valueOf(json.timestamp.toString()))
                 device.save(flush: true)
@@ -26,7 +26,8 @@ class EventController {
                     beacon: beacon,
                     careReceiver: careReceiver,
                     device: device
-            ).save()
+            )
+            event.save()
             respond(event, status: 201)
         }
         else {

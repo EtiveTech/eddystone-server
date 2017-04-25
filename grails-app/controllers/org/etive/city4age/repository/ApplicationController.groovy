@@ -1,4 +1,5 @@
-//package city4age.api
+package org.etive.city4age.repository
+//package org.etive.city4age
 //
 //import grails.core.GrailsApplication
 ////import grails.util.Environment
@@ -9,7 +10,7 @@
 //    GrailsApplication grailsApplication
 //    GrailsPluginManager pluginManager
 //
-//    def index() {
-//        [grailsApplication: grailsApplication, pluginManager: pluginManager]
-//    }
+////    def index() {
+////        [grailsApplication: grailsApplication, pluginManager: pluginManager]
+////    }
 //}
