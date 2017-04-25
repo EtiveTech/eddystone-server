@@ -9,6 +9,8 @@ class CareReceiver {
     Long withingsId
     String accessKey
     String accessSecret
+    Date dateCreated
+    Date lastUpdated
 
     static hasMany = [events: Event]
 

@@ -18,17 +18,23 @@ class EventController {
             }
 
             def beacon = Beacon.findByBeaconId(json.beaconId.toString())
-            def event = new Event(
-                    eventType: json.eventType,
-                    timestamp: new Date(Long.valueOf(json.timestamp.toString())),
-                    rssi: json.rssi,
-                    parameter: (json.eventType == "found") ? json.txPower : json.rssiMax,
-                    beacon: beacon,
-                    careReceiver: careReceiver,
-                    device: device
-            )
-            event.save()
-            respond(event, status: 201)
+            if (beacon) {
+                def event = new Event(
+                        eventType: json.eventType,
+                        timestamp: new Date(Long.valueOf(json.timestamp.toString())),
+                        rssi: json.rssi,
+                        parameter: (json.eventType == "found") ? json.txPower : json.rssiMax,
+                        beacon: beacon,
+                        careReceiver: careReceiver,
+                        device: device
+                )
+                event.save()
+                respond(event, status: 201)
+            }
+            else {
+                // The beacon looks like a City4Age beacon but it isn't in the database
+                response.sendError(409, "")
+            }
         }
         else {
             response.sendError(403, "")

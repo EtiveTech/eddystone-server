@@ -1,6 +1,14 @@
 package org.etive.city4age.repository
 
+//import org.springframework.beans.factory.annotation.Value
+
 class ReceiverController {
+
+//    @Value('${dlb.server}')
+    private final String dlbServer = System.getenv("DLB_SERVER")
+
+//    @Value('${repository.key}')
+    private final String localRepository = System.getenv("REPOSITORY_KEY")
 
     def index() {
         // Remove for production
@@ -8,7 +16,7 @@ class ReceiverController {
     }
 
     def show() {
-        if (params.key == Keys.localRepository) {
+        if (params.key == localRepository) {
             def receiver = CareReceiver.findByEmailAddress(params.email.toString())
             if (receiver) {
                 if (!receiver.token) {
@@ -32,7 +40,7 @@ class ReceiverController {
     }
 
     def save() {
-        if (request.getRemoteAddr() == Addresses.dlbServer) {
+        if (request.getRemoteAddr() == dlbServer) {
             def json = request.JSON
             def logbookId = Long.valueOf(json.logbookId.toString())
             def receiver = CareReceiver.findByLogbookId(logbookId)
