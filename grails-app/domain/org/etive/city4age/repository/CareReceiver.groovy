@@ -16,7 +16,7 @@ class CareReceiver {
 
     static constraints = {
         emailAddress blank: false, nullable: false
-        token nullable: true
+        token blank: false, nullable: false
         events nullable: true
         logbookId nullable: false
         city4ageId blank: false, nullable: true

@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.etive.city4age.withings.model.*;
 import org.json.simple.JSONArray;
@@ -27,8 +26,6 @@ import org.json.simple.parser.ParseException;
  */
 public class ActivityDataParser {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
-
     /**
      * Parse the response data into a {@code Map}.
      * @param content The respnse body text to parse.
@@ -40,13 +37,13 @@ public class ActivityDataParser {
      *   <li>key: steps; value: {@code List<WithingsData>}. A list of {@code Steps} instances.</li>
      * </ul>
      */
-    public Map<String, List<WithingsData>> parseActivityResponseBody(final String content) {
-        Map<String, List<WithingsData>> theData = new HashMap<>();
+    public static Map<String, List<WithingsData>> parseActivityResponseBody(final String content) {
         JSONParser parser = new JSONParser();
         List<WithingsData> calories = new ArrayList<>();
         List<WithingsData> distance = new ArrayList<>();
         List<WithingsData> pace = new ArrayList<>();
         List<WithingsData> steps = new ArrayList<>();
+        Map<String, List<WithingsData>> theData = new HashMap<>();
         try {
             JSONObject obj = (JSONObject) ((JSONObject) parser.parse(content)).get("body");
             JSONArray activities = (JSONArray) obj.get("activities");
@@ -60,22 +57,24 @@ public class ActivityDataParser {
                 pace.add(getPace(date, activity.get("soft").toString(), activity.get("moderate").toString(), activity.get("intense").toString()));
                 steps.add(getSteps(date, activity.get("steps").toString()));
             }
-            TreeSet<WithingsData> calTree = new TreeSet<>();
+
             Collections.sort(calories);
             Collections.sort(distance);
             Collections.sort(pace);
             Collections.sort(steps);
+
             theData.put("calories", calories);
             theData.put("distance", distance);
             theData.put("pace", pace);
             theData.put("steps", steps);
         } catch (ParseException e) {
-            logger.error("cannot parse JSON: " + e.getMessage());
+            theData = null;
         }
+
         return theData;
     }
 
-    private Calories getCalories(String date, String calories, String totalCalories) {
+    private static Calories getCalories(String date, String calories, String totalCalories) {
         Calories cal = new Calories();
         cal.setDate(date);
         cal.setCalories(Double.parseDouble(calories));
@@ -83,14 +82,14 @@ public class ActivityDataParser {
         return cal;
     }
 
-    private Distance getDistance(String date, String distance) {
+    private static Distance getDistance(String date, String distance) {
         Distance dis = new Distance();
         dis.setDate(date);
         dis.setDistance(Float.parseFloat(distance));
         return dis;
     }
 
-    private Pace getPace(String date, String soft, String moderate, String intense) {
+    private static Pace getPace(String date, String soft, String moderate, String intense) {
         Pace pace = new Pace();
         pace.setDate(date);
         pace.setIntense(Integer.parseInt(intense));
@@ -99,7 +98,7 @@ public class ActivityDataParser {
         return pace;
     }
 
-    private Steps getSteps(String date, String distance) {
+    private static Steps getSteps(String date, String distance) {
         Steps steps = new Steps();
         steps.setDate(date);
         steps.setSteps(Integer.parseInt(distance));

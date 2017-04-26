@@ -25,9 +25,7 @@ import org.json.simple.parser.ParseException;
  */
 public class SleepDataParser {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
-
-    public List<Sleep> parseSleepResponseData(final String content) {
+    public static List<Sleep> parseSleepResponseData(final String content) {
         List<Sleep> sleeps = new ArrayList<>();
         List<SleepPoint> sleepPoints = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -37,12 +35,12 @@ public class SleepDataParser {
             populateSleepPoints(sleepItems, sleepPoints);
             populateSleepFromPoints(sleeps, sleepPoints);
         } catch (ParseException e) {
-            logger.error("cannot parse JSON: " + e.getMessage());
+            sleeps = null;
         }
         return sleeps;
     }
 
-    private void populateSleepFromPoints(List<Sleep> sleeps, List<SleepPoint> sleepPoints) {
+    private static void populateSleepFromPoints(List<Sleep> sleeps, List<SleepPoint> sleepPoints) {
         int processed = 0;
         Sleep sleep = new Sleep();
         SleepPoint previous = null;
@@ -70,7 +68,7 @@ public class SleepDataParser {
      * @param sleepItems  The returned sleep data array from Withings.
      * @param sleepPoints The {@code List} into which new instances are to be added.
      */
-    private void populateSleepPoints(JSONArray sleepItems, List<SleepPoint> sleepPoints) {
+    private static void populateSleepPoints(JSONArray sleepItems, List<SleepPoint> sleepPoints) {
         JSONObject sleepItem;
         String endDate;
         String startDate;
@@ -84,7 +82,7 @@ public class SleepDataParser {
         }
     }
 
-    private SleepPoint getSleepPoint(String aState, String startDate, String endDate) {
+    private static SleepPoint getSleepPoint(String aState, String startDate, String endDate) {
         SleepPoint point = new SleepPoint(aState,
                 City4AgeDateUtils.convertEpochStringToCalendar(startDate),
                 City4AgeDateUtils.convertEpochStringToCalendar(endDate));
@@ -94,7 +92,7 @@ public class SleepDataParser {
         return point;
     }
 
-    private String getSleepState(final int stateCode) {
+    private static String getSleepState(final int stateCode) {
         String description;
         switch (stateCode) {
             case 0:
