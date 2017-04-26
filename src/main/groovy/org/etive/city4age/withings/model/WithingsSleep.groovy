@@ -6,7 +6,7 @@
  * Enquiries: please send any enquiries to hello at etive dot org
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-package org.etive.city4age.withings.model;
+package org.etive.city4age.withings.model
 
 class WithingsSleep {
     private String date
@@ -42,5 +42,16 @@ class WithingsSleep {
 
     def setDurationToSleep(durationToSleep) {
         this.durationToSleep = durationToSleep
+    }
+
+    def toMap() {
+        return [
+                date: this.date,
+                wakeupDuration: this.wakeupDuration,
+                wakeupCount: this.wakeupCount,
+                lightSleepDuration: this.lightSleepDuration,
+                deepSleepDuration: this.deepSleepDuration,
+                durationToSleep: this.durationToSleep
+        ]
     }
 }

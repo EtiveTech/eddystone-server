@@ -46,4 +46,17 @@ class WithingsActivity {
     def setSteps(Integer steps) {
         this.steps = steps
     }
+
+    def toMap() {
+        return [
+                date: this.date,
+                calories: this.calories,
+                totalCalories: this.totalCalories,
+                distance: this.distance,
+                soft: this.soft,
+                moderate: this.moderate,
+                intense: this.intense,
+                steps: this.steps
+        ]
+    }
 }
