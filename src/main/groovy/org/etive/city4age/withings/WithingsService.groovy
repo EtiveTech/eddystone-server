@@ -1,4 +1,4 @@
-package org.etive.city4age.repository
+package org.etive.city4age.withings
 
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.model.OAuth1AccessToken
@@ -7,15 +7,11 @@ import com.github.scribejava.core.model.Response
 import com.github.scribejava.core.model.SignatureType
 import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth10aService
-import org.etive.city4age.withings.WithingsApi
-import org.etive.city4age.withings.ActivityDataParser
-import org.etive.city4age.withings.SleepDataParser
 import org.etive.city4age.withings.model.City4AgeDateUtils
-import org.etive.city4age.withings.model.WithingsData
-import org.etive.city4age.withings.model.Sleep
-import grails.transaction.Transactional
+import org.etive.city4age.withings.model.WithingsActivity
+import org.etive.city4age.repository.CareReceiver
+import org.etive.city4age.withings.model.WithingsSleep
 
-@Transactional
 class WithingsService {
 
     private OAuth10aService service
@@ -25,15 +21,14 @@ class WithingsService {
                 .apiKey(WithingsApi.CONS_KEY)
                 .apiSecret(WithingsApi.CONS_SECRET)
                 .signatureType(SignatureType.QueryString)
-                .callback(WithingsApi.CALLBACK)
                 .build(WithingsApi.instance())
     }
 
-    Map<String, List<WithingsData>> getWithingsData(CareReceiver careReceiver) {
+    List<WithingsActivity> getActivityData(CareReceiver careReceiver) {
         final String startDate = City4AgeDateUtils.getSixMonthsAgo(false)
         final String yesterday = City4AgeDateUtils.getYesterday(false)
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
-        Map<String, List<WithingsData>> userData = new HashMap<>()
+        def activityData = []
         def apiMeasuresUrl = "https://wbsapi.withings.net/v2/measure?action=getactivity&userid="
         apiMeasuresUrl += careReceiver.withingsId
         apiMeasuresUrl += "&startdateymd=" + startDate
@@ -42,23 +37,21 @@ class WithingsService {
         service.signRequest(accToken, request)
         Response response = request.send()
         try {
-            String body = response.getBody()
-            if (!body.isEmpty()) {
-                final ActivityDataParser adp = new ActivityDataParser()
-                userData = adp.parseActivityResponseBody(body)
-            }
+            def body = response.getBody()
+            if (body) activityData = WithingsActivityParser.parse(body)
         } catch (Exception e) {
-            log.info("cannot get activity data: " + e.getMessage())
+            def msg = e.getMessage()
+//            log.info("cannot get activity data: " + msg)
         }
-        return Collections.unmodifiableMap(userData)
+        return activityData
     }
 
-    List<Sleep> getSleepData(CareReceiver careReceiver) {
+    List<WithingsSleep> getSleepData(CareReceiver careReceiver) {
         final String startDate = City4AgeDateUtils.getAWeekAgo(true)
         final String yesterday = City4AgeDateUtils.getYesterday(true)
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
-        List<Sleep> sleepData = new ArrayList<>()
-        def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleep?action=get&userid="
+        def sleepData = []
+        def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleep?action=getsummary&userid="
         apiMeasuresUrl += careReceiver.withingsId
         apiMeasuresUrl += "&startdate=" + startDate
         apiMeasuresUrl += "&enddate=" + yesterday
@@ -66,14 +59,12 @@ class WithingsService {
         service.signRequest(accToken, request)
         Response response = request.send()
         try {
-            String body = response.getBody()
-            if (!body.isEmpty()) {
-                final SleepDataParser sdp = new SleepDataParser()
-                sleepData = sdp.parseSleepResponseData(body)
-            }
+            def body = response.getBody()
+            if (body) sleepData = WithingsSleepParser.parse(body)
         } catch (Exception e) {
-            log.info("cannot get sleep data: " + e.getMessage())
+            def msg = e.getMessage()
+            // log.info("cannot get sleep data: " + msg)
         }
-        return Collections.unmodifiableList(sleepData)
+        return sleepData
     }
 }
