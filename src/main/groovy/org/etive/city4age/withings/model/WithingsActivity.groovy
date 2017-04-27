@@ -1,5 +1,7 @@
 package org.etive.city4age.withings.model
 
+import org.etive.city4age.repository.CareReceiver
+
 class WithingsActivity {
 
     private String date
@@ -10,6 +12,7 @@ class WithingsActivity {
     private Integer moderate
     private Integer intense
     private Integer steps
+    private CareReceiver careReceiver
 
     def setDate(String date) {
         this.date = date
@@ -47,6 +50,10 @@ class WithingsActivity {
         this.steps = steps
     }
 
+    def setCareReceiver(CareReceiver careReceiver) {
+        this.careReceiver = careReceiver
+    }
+
     def toMap() {
         return [
                 date: this.date,
@@ -56,7 +63,8 @@ class WithingsActivity {
                 soft: this.soft,
                 moderate: this.moderate,
                 intense: this.intense,
-                steps: this.steps
+                steps: this.steps,
+                careReceiver: this.careReceiver
         ]
     }
 }

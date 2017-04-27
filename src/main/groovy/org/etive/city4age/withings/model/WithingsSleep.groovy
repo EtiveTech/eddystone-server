@@ -8,6 +8,8 @@
  */
 package org.etive.city4age.withings.model
 
+import org.etive.city4age.repository.CareReceiver
+
 class WithingsSleep {
     private String date
     private Integer wakeupDuration
@@ -15,6 +17,7 @@ class WithingsSleep {
     private Integer lightSleepDuration
     private Integer deepSleepDuration
     private Integer durationToSleep
+    private CareReceiver careReceiver
 
     def setDate(String date) {
         this.date = date
@@ -44,6 +47,10 @@ class WithingsSleep {
         this.durationToSleep = durationToSleep
     }
 
+    def setCareReceiver(CareReceiver careReceiver) {
+        this.careReceiver = careReceiver
+    }
+
     def toMap() {
         return [
                 date: this.date,
@@ -51,7 +58,8 @@ class WithingsSleep {
                 wakeupCount: this.wakeupCount,
                 lightSleepDuration: this.lightSleepDuration,
                 deepSleepDuration: this.deepSleepDuration,
-                durationToSleep: this.durationToSleep
+                durationToSleep: this.durationToSleep,
+                careReceiver: this.careReceiver
         ]
     }
 }
