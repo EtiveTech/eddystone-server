@@ -8,7 +8,6 @@ import com.github.scribejava.core.model.SignatureType
 import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth10aService
 import grails.converters.JSON
-import org.etive.city4age.withings.model.City4AgeDateUtils
 import org.etive.city4age.withings.model.WithingsActivity
 import org.etive.city4age.repository.CareReceiver
 import org.etive.city4age.withings.model.WithingsSleep
@@ -25,15 +24,18 @@ class WithingsService {
                 .build(WithingsApi.instance())
     }
 
-    List<WithingsActivity> getActivityData(CareReceiver careReceiver) {
-        final String startDate = City4AgeDateUtils.getSixMonthsAgo(false)
-        final String yesterday = City4AgeDateUtils.getYesterday(false)
+    List<WithingsActivity> getActivityData(CareReceiver careReceiver, Date startDate, Date endDate = null) {
 
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
         def apiMeasuresUrl = "https://wbsapi.withings.net/v2/measure?action=getactivity&userid="
         apiMeasuresUrl += careReceiver.withingsId
-        apiMeasuresUrl += "&startdateymd=" + startDate
-        apiMeasuresUrl +="&enddateymd=" + yesterday
+        if (endDate) {
+            apiMeasuresUrl += "&startdateymd=" + startDate.format("yyyy-MM-dd")
+            apiMeasuresUrl +="&enddateymd=" + endDate.format("yyyy-MM-dd")
+        }
+        else {
+            apiMeasuresUrl += "&date=" + startDate.format("yyyy-MM-dd")
+        }
         OAuthRequest request = new OAuthRequest(Verb.GET, apiMeasuresUrl, service)
         service.signRequest(accToken, request)
         Response response = request.send()
@@ -42,7 +44,16 @@ class WithingsService {
         try {
             def json = response.getBody()
             if (json) {
-                def activities = JSON.parse(json).body.activities
+                def body = JSON.parse(json).body
+                def activities = []
+                if (body.activities) {
+                    activities = body.activities
+                }
+                else {
+                    // The Withings API has not returned an array so create one
+                    if (containsActivity(body)) activities << body
+                }
+
                 for (activity in activities) {
                     def withingsActivity = new WithingsActivity()
                     withingsActivity.with {
@@ -57,7 +68,11 @@ class WithingsService {
                     }
                     withingsActivities << withingsActivity
                 }
-                withingsActivities.sort {a, b -> a.getDate() <=> b.getDate()}
+                if (withingsActivities.size() > 1) {
+                    // Only need to sort if there are two or more items in the list
+                    // Sorting a list of zero length will throw an exception
+                    withingsActivities.sort {a, b -> a.getDate() <=> b.getDate()}
+                }
             }
         } catch (Exception e) {
             def msg = e.getMessage()
@@ -66,15 +81,13 @@ class WithingsService {
         return withingsActivities
     }
 
-    List<WithingsSleep> getSleepData(CareReceiver careReceiver) {
-        final String startDate = City4AgeDateUtils.getAWeekAgo(true)
-        final String yesterday = City4AgeDateUtils.getYesterday(true)
+    List<WithingsSleep> getSleepData(CareReceiver careReceiver, Date startDate, Date endDate) {
 
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
         def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleep?action=getsummary&userid="
         apiMeasuresUrl += careReceiver.withingsId
-        apiMeasuresUrl += "&startdate=" + startDate
-        apiMeasuresUrl += "&enddate=" + yesterday
+        apiMeasuresUrl += "&startdate=" + toEpoch(startDate)
+        apiMeasuresUrl += "&enddate=" + toEpoch(endDate)
         OAuthRequest request = new OAuthRequest(Verb.GET, apiMeasuresUrl, service)
         service.signRequest(accToken, request)
         Response response = request.send()
@@ -104,4 +117,15 @@ class WithingsService {
         }
         return withingsSleeps
     }
+
+    private static String toEpoch(Date date) {
+        return ((int)(date.getTime() / 1000)).toString()
+    }
+
+    private static Boolean containsActivity(item) {
+        return item.containsKey('date') && item.containsKey('calories') && item.containsKey('totalcalories') &&
+                item.containsKey('distance') && item.containsKey('soft') && item.containsKey('moderate') &&
+                item.containsKey('intense') && item.containsKey('steps')
+    }
+
 }
