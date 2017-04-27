@@ -9,8 +9,8 @@ import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth10aService
 import grails.converters.JSON
 import org.etive.city4age.withings.model.WithingsActivity
-import org.etive.city4age.repository.CareReceiver
 import org.etive.city4age.withings.model.WithingsSleep
+import org.etive.city4age.repository.CareReceiver
 
 class WithingsService {
 
@@ -31,7 +31,7 @@ class WithingsService {
         apiMeasuresUrl += careReceiver.withingsId
         if (endDate) {
             apiMeasuresUrl += "&startdateymd=" + startDate.format("yyyy-MM-dd")
-            apiMeasuresUrl +="&enddateymd=" + endDate.format("yyyy-MM-dd")
+            apiMeasuresUrl += "&enddateymd=" + endDate.format("yyyy-MM-dd")
         }
         else {
             apiMeasuresUrl += "&date=" + startDate.format("yyyy-MM-dd")
@@ -65,18 +65,15 @@ class WithingsService {
                         setModerate(activity.moderate as Integer)
                         setIntense(activity.intense as Integer)
                         setSteps(activity.steps as Integer)
+                        setCareReceiver(careReceiver)
                     }
                     withingsActivities << withingsActivity
                 }
-                if (withingsActivities.size() > 1) {
-                    // Only need to sort if there are two or more items in the list
-                    // Sorting a list of zero length will throw an exception
-                    withingsActivities.sort {a, b -> a.getDate() <=> b.getDate()}
-                }
+                withingsActivities.sort {a, b -> a.getDate() <=> b.getDate()}
             }
         } catch (Exception e) {
             def msg = e.getMessage()
-//            log.info("cannot get activity data: " + msg)
+//            log.info("cannot get activityRecord data: " + msg)
         }
         return withingsActivities
     }
@@ -84,10 +81,10 @@ class WithingsService {
     List<WithingsSleep> getSleepData(CareReceiver careReceiver, Date startDate, Date endDate) {
 
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
-        def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleep?action=getsummary&userid="
-        apiMeasuresUrl += careReceiver.withingsId
-        apiMeasuresUrl += "&startdate=" + toEpoch(startDate)
-        apiMeasuresUrl += "&enddate=" + toEpoch(endDate)
+        def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleepRecord?action=getsummary"
+//        apiMeasuresUrl += "&userid=" + careReceiver.withingsId
+        apiMeasuresUrl += "&startdate=" + startDate.format("yyyy-MM-dd")
+        apiMeasuresUrl += "&enddate=" + endDate.format("yyyy-MM-dd")
         OAuthRequest request = new OAuthRequest(Verb.GET, apiMeasuresUrl, service)
         service.signRequest(accToken, request)
         Response response = request.send()
@@ -106,6 +103,7 @@ class WithingsService {
                         setLightSleepDuration(item.data.lightsleepduration as Integer)
                         setDeepSleepDuration(item.data.deepsleepduration as Integer)
                         setDurationToSleep(item.data.durationtosleep as Integer)
+                        setCareReceiver(careReceiver)
                     }
                     withingsSleeps << withingsSleep
                 }
@@ -113,7 +111,7 @@ class WithingsService {
             }
         } catch (Exception e) {
             def msg = e.getMessage()
-            // log.info("cannot get sleep data: " + msg)
+            // log.info("cannot get sleepRecord data: " + msg)
         }
         return withingsSleeps
     }
