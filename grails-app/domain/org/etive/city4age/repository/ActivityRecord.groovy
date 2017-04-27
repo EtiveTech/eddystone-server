@@ -1,7 +1,7 @@
 package org.etive.city4age.repository
 
 class ActivityRecord {
-    String date
+    Date date
     Float calories
     Float totalCalories
     Float distance
@@ -13,7 +13,7 @@ class ActivityRecord {
     static belongsTo = [careReceiver: CareReceiver]
 
     static constraints = {
-        date blank: false, nullable: false
+        date nullable: false
         calories nullable: false
         totalCalories nullable: false
         distance nullable: false

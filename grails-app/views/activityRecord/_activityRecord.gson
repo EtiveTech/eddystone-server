@@ -1,0 +1,20 @@
+import org.etive.city4age.repository.ActivityRecord
+
+model {
+    ActivityRecord activityRecord
+}
+
+json {
+    id activityRecord.id
+    date activityRecord.date.format("yyyy-MM-dd")
+    calories activityRecord.calories
+    totalCalories activityRecord.totalCalories
+    distance activityRecord.distance
+    soft activityRecord.soft
+    moderate activityRecord.moderate
+    intense activityRecord.intense
+    steps activityRecord.steps
+    careReceiver activityRecord.careReceiver.id
+}
+
+

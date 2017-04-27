@@ -1,0 +1,7 @@
+import org.etive.city4age.repository.ActivityRecord
+
+model {
+    Iterable<ActivityRecord> activityRecordList
+}
+
+json tmpl.activityRecord(activityRecordList ?: [])

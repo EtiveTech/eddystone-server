@@ -1,7 +1,7 @@
 package org.etive.city4age.repository
 
 class SleepRecord {
-    String date
+    Date date
     Integer wakeupDuration
     Integer wakeupCount
     Integer lightSleepDuration
@@ -11,7 +11,7 @@ class SleepRecord {
     static belongsTo = [careReceiver: CareReceiver]
 
     static constraints = {
-        date blank: false, nullable: false
+        date nullable: false
         wakeupDuration nullable: false
         wakeupCount nullable: false
         lightSleepDuration nullable: false
