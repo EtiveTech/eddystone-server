@@ -1,0 +1,16 @@
+import org.etive.city4age.repository.SleepRecord
+
+model {
+    SleepRecord sleepRecord
+}
+
+json {
+    id sleepRecord.id
+    date sleepRecord.date
+    wakeupDuration sleepRecord.wakeupDuration
+    wakeupCount sleepRecord.wakeupCount
+    lightSleepDuration sleepRecord.lightSleepDuration
+    deepSleepDuration sleepRecord.lightSleepDuration
+    durationToSleep sleepRecord.durationToSleep
+    careReceiver sleepRecord.careReceiver.id
+}

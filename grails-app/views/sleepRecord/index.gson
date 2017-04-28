@@ -1,0 +1,7 @@
+import org.etive.city4age.repository.SleepRecord
+
+model {
+    Iterable<SleepRecord> sleepRecordList
+}
+
+json tmpl.sleepRecord(sleepRecordList ?: [])
