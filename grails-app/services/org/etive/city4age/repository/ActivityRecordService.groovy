@@ -10,4 +10,13 @@ class ActivityRecordService {
         activityRecord.save()
         return activityRecord
     }
+
+    def bulkCreate(items) {
+        // persist a large number of ActivityRecords
+        def activityRecords = []
+        for (item in items) {
+            activityRecords << createActivityRecord(item)
+        }
+        return activityRecords
+    }
 }

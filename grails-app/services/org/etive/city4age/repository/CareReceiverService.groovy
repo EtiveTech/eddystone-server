@@ -7,7 +7,7 @@ class CareReceiverService {
 
     def createCareReceiver(json) {
 
-        def logbookId = Long.valueOf(json.logbookId.toString())
+        def logbookId = json.logbookId as Long
         def receiver = CareReceiver.findByLogbookId(logbookId)
         if (receiver) return null
 
@@ -21,10 +21,10 @@ class CareReceiverService {
 
         receiver = new CareReceiver(
                 logbookId: logbookId,
-                withingsId: Long.valueOf(json.withingsId.toString()),
-                emailAddress: json.emailAddress.toString(),
-                accessKey: json.accessKey.toString(),
-                accessSecret: json.accessSecret.toString(),
+                withingsId: json.withingsId as Long,
+                emailAddress: json.emailAddress as String,
+                accessKey: json.accessKey as String,
+                accessSecret: json.accessSecret as String,
                 token: token
         )
         receiver.save()

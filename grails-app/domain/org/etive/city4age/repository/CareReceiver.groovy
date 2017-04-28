@@ -1,5 +1,7 @@
 package org.etive.city4age.repository
 
+import org.etive.city4age.withings.WithingsService
+
 class CareReceiver {
 
     String emailAddress
@@ -23,5 +25,17 @@ class CareReceiver {
         withingsId nullable: false
         accessKey blank: false, nullable: false
         accessSecret blank: false, nullable: false
+    }
+
+    private fetchActivityData(Date startDate, Date endDate = null) {
+        return WithingsService.instance.fetchActivityData(this, startDate, endDate)
+    }
+
+    private fetchSleepData(Date startDate, Date endDate = null) {
+        return WithingsService.instance.fetchSleepData(this, startDate, endDate)
+    }
+
+    def fetchWithingsData(Date startDate, Date endDate = null) {
+        return [ activity: fetchActivityData(startDate, endDate), sleep: fetchSleepData(startDate, endDate) ]
     }
 }

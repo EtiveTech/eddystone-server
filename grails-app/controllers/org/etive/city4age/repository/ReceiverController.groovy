@@ -7,12 +7,14 @@ import org.etive.city4age.withings.WithingsService
 class ReceiverController {
     def careReceiverService
     def activityRecordService
+    def sleepRecordService
 
-//    @Value('${dlb.server}')
     private final String dlbServer = System.getenv("DLB_SERVER")
+//    private final String dlbServer = "192.168.1.130"
 
-//    @Value('${repository.key}')
     private final String localRepository = System.getenv("REPOSITORY_KEY")
+
+    private final String projectStart = "01-01-2017"
 
     def index() {
         // Remove for production
@@ -36,13 +38,10 @@ class ReceiverController {
         if (request.getRemoteAddr() == dlbServer) {
             def receiver = careReceiverService.createCareReceiver(request.JSON)
             if (receiver) {
+                def data = receiver.fetchWithingsData(Date.parse("dd-MM-yyyy", projectStart), new Date() - 1)
+                activityRecordService.bulkCreate(data.activity)
+                sleepRecordService.bulkCreate(data.sleep)
                 respond(receiver, status: 201)
-                def ws = new WithingsService()
-                def data = ws.getActivityData(receiver, (new Date()) - 90, new Date())
-                for (datum in data) {
-                    activityRecordService.createActivityRecord(datum)
-                }
-                def sleep = ws.getSleepData(receiver, (new Date()) - 90, (new Date()) - 1)
             }
             else
                 response.sendError(409, "")

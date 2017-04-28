@@ -10,4 +10,13 @@ class SleepRecordService {
         sleepRecord.save()
         return sleepRecord
     }
+
+    def bulkCreate(items) {
+        // persist a large number of ActivityRecords
+        def sleepRecords = []
+        for (item in items) {
+            sleepRecords << createSleepRecord(item)
+        }
+        return sleepRecords
+    }
 }
