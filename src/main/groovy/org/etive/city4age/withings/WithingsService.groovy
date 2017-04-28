@@ -12,6 +12,7 @@ import org.etive.city4age.withings.model.WithingsActivity
 import org.etive.city4age.withings.model.WithingsSleep
 import org.etive.city4age.repository.CareReceiver
 
+@Singleton(strict=false)
 class WithingsService {
 
     private OAuth10aService service
@@ -24,7 +25,7 @@ class WithingsService {
                 .build(WithingsApi.instance())
     }
 
-    List<WithingsActivity> getActivityData(CareReceiver careReceiver, Date startDate, Date endDate = null) {
+    List<WithingsActivity> fetchActivityData(CareReceiver careReceiver, Date startDate, Date endDate = null) {
 
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
         def apiMeasuresUrl = "https://wbsapi.withings.net/v2/measure?action=getactivity&userid="
@@ -78,13 +79,15 @@ class WithingsService {
         return withingsActivities
     }
 
-    List<WithingsSleep> getSleepData(CareReceiver careReceiver, Date startDate, Date endDate) {
+    List<WithingsSleep> fetchSleepData(CareReceiver careReceiver, Date startDate, Date endDate) {
 
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
-        def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleepRecord?action=getsummary"
-//        apiMeasuresUrl += "&userid=" + careReceiver.withingsId
-        apiMeasuresUrl += "&startdate=" + startDate.format("yyyy-MM-dd")
-        apiMeasuresUrl += "&enddate=" + endDate.format("yyyy-MM-dd")
+        def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleep?action=getsummary"
+        apiMeasuresUrl += "&userid=" + careReceiver.withingsId
+//        apiMeasuresUrl += "&startdate=" + startDate.format("yyyy-MM-dd")
+//        apiMeasuresUrl += "&enddate=" + endDate.format("yyyy-MM-dd")
+        apiMeasuresUrl += "&startdate=" + toEpoch(startDate)
+        apiMeasuresUrl += "&enddate=" + toEpoch(endDate)
         OAuthRequest request = new OAuthRequest(Verb.GET, apiMeasuresUrl, service)
         service.signRequest(accToken, request)
         Response response = request.send()
