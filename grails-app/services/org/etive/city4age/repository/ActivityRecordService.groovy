@@ -6,9 +6,7 @@ import grails.transaction.Transactional
 class ActivityRecordService {
 
     def createActivityRecord(item) {
-        def dataMap = item.toMap()
-        dataMap.date = Date.parse("yyyy-MM-dd", dataMap.date)
-        def activityRecord = new ActivityRecord(dataMap)
+        def activityRecord = new ActivityRecord(item.toMap())
         activityRecord.save()
         return activityRecord
     }

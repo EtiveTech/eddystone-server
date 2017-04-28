@@ -6,7 +6,7 @@ model {
 
 json {
     id activityRecord.id
-    date activityRecord.date.format("yyyy-MM-dd")
+    date activityRecord.date
     calories activityRecord.calories
     totalCalories activityRecord.totalCalories
     distance activityRecord.distance

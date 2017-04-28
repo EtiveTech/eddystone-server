@@ -6,9 +6,7 @@ import grails.transaction.Transactional
 class SleepRecordService {
 
     def createSleepRecord(item) {
-        def dataMap = item.toMap()
-        dataMap.date = Date.parse("yyyy-MM-dd", dataMap.date)
-        def sleepRecord = new SleepRecord(dataMap)
+        def sleepRecord = new SleepRecord(item.toMap())
         sleepRecord.save()
         return sleepRecord
     }
