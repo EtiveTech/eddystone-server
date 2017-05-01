@@ -4,6 +4,8 @@ import org.etive.city4age.withings.WithingsService
 
 class CareReceiver {
 
+    static private final String startDate = "2017-01-01" // The first date used to retrieve Withings data
+
     String emailAddress
     String token
     Long logbookId
@@ -11,8 +13,8 @@ class CareReceiver {
     Long withingsId
     String accessKey
     String accessSecret
-    private String activityDownloadDate = null
-    private String sleepDownloadDate = null
+    String activityDownloadDate = (getStartDate() - 1).format("yyyy-MM-dd") // The day before startDate
+    String sleepDownloadDate = (getStartDate() - 1).format("yyyy-MM-dd")
     Date dateCreated
     Date lastUpdated
 
@@ -29,8 +31,8 @@ class CareReceiver {
         withingsId nullable: false
         accessKey blank: false, nullable: false
         accessSecret blank: false, nullable: false
-        activityDownloadDate nullable: true
-        sleepDownloadDate nullable: true
+        activityDownloadDate nullable: false, blank: false
+        sleepDownloadDate nullable: false, blank: false
     }
 
     private fetchActivityData(Date startDate, Date endDate = null) {
@@ -47,27 +49,12 @@ class CareReceiver {
 
     def updateWithingsData(Date endDate) {
         return [
-                activity: fetchActivityData(Date.parse("dd-MM-yyyy", this.activityDownloadDate), endDate),
-                sleep: fetchSleepData(Date.parse("dd-MM-yyyy", this.sleepDownloadDate), endDate)
+                activity: fetchActivityData(Date.parse("dd-MM-yyyy", this.activityDownloadDate) + 1, endDate),
+                sleep: fetchSleepData(Date.parse("dd-MM-yyyy", this.sleepDownloadDate) + 1, endDate)
         ]
     }
 
-    def setActivityDownloadDate(String date) {
-        this.activityDownloadDate = date
-        return this.save(failOnError: true)
+    static Date getStartDate() {
+        return Date.parse("yyyy-MM-dd", startDate)
     }
-
-    String getActivityDownloadDate() {
-        return this.activityDownloadDate
-    }
-
-    def setSleepDownloadDate(String date) {
-        this.sleepDownloadDate = date
-        return this.save(failOnError: true)
-    }
-
-    String getSleepDownloadDate() {
-        return this.sleepDownloadDate
-    }
-
 }

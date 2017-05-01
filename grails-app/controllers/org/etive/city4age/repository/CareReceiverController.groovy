@@ -11,8 +11,6 @@ class CareReceiverController {
 
     private final String localRepository = System.getenv("REPOSITORY_KEY")
 
-    private final String projectStart = "01-01-2017"
-
     def index() {
         // Remove for production
         respond careReceiverService.listCareReceivers()
@@ -35,11 +33,14 @@ class CareReceiverController {
         if (request.getRemoteAddr() == dlbServer) {
             def receiver = careReceiverService.createCareReceiver(request.JSON)
             if (receiver) {
-                def data = receiver.fetchWithingsData(Date.parse("dd-MM-yyyy", projectStart), new Date() - 1)
+                def data = receiver.fetchWithingsData(CareReceiver.getStartDate(), new Date() - 1)
+
                 def activities = activityRecordService.bulkCreate(data.activity)
-                if (activities) receiver.setActivityDownloadDate(activities.last().date)
+                if (activities) receiver.activityDownloadDate = activities.last().date
+
                 def sleeps = sleepRecordService.bulkCreate(data.sleep)
-                if (sleeps) receiver.setSleepDownloadDate(sleeps.last().date)
+                if (sleeps) receiver.sleepDownloadDate = sleeps.last().date
+
                 receiver = careReceiverService.updateCareReceiver(receiver)
                 respond(receiver, status: 201)
             }
