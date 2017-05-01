@@ -101,6 +101,8 @@ class WithingsService {
                     def withingsSleep = new WithingsSleep()
                     withingsSleep.with {
                         setDate(item.date as String)
+                        setStartDate(item.startdate as Long)
+                        setEndDate(item.enddate as Long)
                         setWakeupDuration(item.data.wakeupduration as Integer)
                         setWakeupCount(item.data.wakeupcount as Integer)
                         setLightSleepDuration(item.data.lightsleepduration as Integer)

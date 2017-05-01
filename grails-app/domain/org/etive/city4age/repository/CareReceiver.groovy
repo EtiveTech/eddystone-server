@@ -9,7 +9,7 @@ class CareReceiver {
     String emailAddress
     String token
     Long logbookId
-    String city4ageId
+    String city4ageId = "<unknown>"
     Long withingsId
     String accessKey
     String accessSecret

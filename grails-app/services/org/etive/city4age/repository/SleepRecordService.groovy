@@ -24,4 +24,13 @@ class SleepRecordService {
     def listSleepRecords() {
         return SleepRecord.list()
     }
+
+    @Transactional(readOnly = true)
+    def forUpload() {
+        return SleepRecord.where { uploaded == false }
+    }
+
+    def updateSleepRecord(sleepRecord) {
+        return sleepRecord.save()
+    }
 }

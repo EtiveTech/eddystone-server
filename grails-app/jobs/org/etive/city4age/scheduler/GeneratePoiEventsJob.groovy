@@ -1,8 +1,8 @@
-package org.etive.city4age
+package org.etive.city4age.scheduler
 
 class GenerateEventsJob {
     static triggers = {
-        cron name: 'withingsTrigger', cronExpression: "0 0 1 * * ?"
+        cron name: 'poiTrigger', cronExpression: "0 0 1 * * ?"
     }
 
     def execute() {

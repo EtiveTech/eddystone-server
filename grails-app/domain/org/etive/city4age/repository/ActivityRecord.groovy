@@ -25,4 +25,24 @@ class ActivityRecord {
         uploaded nullable: false
         careReceiver nullable: false
     }
+
+    def forUpload() {
+        return [
+                user: careReceiver.city4ageId,
+                interval_start: date + " 00:00",
+                interval_end: (Date.parse("yyyy-MM-dd", date) + 1).format("yyyy-MM-dd") + " 00:00",
+                payload: [
+                        WALK_STEPS: steps,
+                        WALK_DISTANCE: distance,
+                        PHYSICALACTIVITY_SOFT_TIME: soft,
+                        PHYSICALACTIVITY_MODERATE_TIME: moderate,
+                        PHYSICALACTIVITY_INTENSE_TIME: intense,
+                        PHYSICALACTIVITY_CALORIES: totalCalories
+                ],
+                extra: [
+                        pilot: "birmingham",
+                        dataSourceType: [ "external_dataset" ]
+                ]
+        ]
+    }
 }

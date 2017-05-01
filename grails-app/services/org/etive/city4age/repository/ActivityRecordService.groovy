@@ -24,4 +24,14 @@ class ActivityRecordService {
     def listActivityRecords() {
         return ActivityRecord.list()
     }
+
+    @Transactional(readOnly = true)
+    def forUpload() {
+        return ActivityRecord.where { uploaded == false }
+    }
+
+    def updateActivityRecord(activityRecord) {
+        return activityRecord.save()
+    }
+
 }
