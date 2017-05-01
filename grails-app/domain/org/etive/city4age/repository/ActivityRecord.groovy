@@ -14,7 +14,7 @@ class ActivityRecord {
     static belongsTo = [careReceiver: CareReceiver]
 
     static constraints = {
-        date blank: false, nullable: false
+        date blank: false, nullable: false, unique: 'careReceiver'
         calories nullable: false
         totalCalories nullable: false
         distance nullable: false

@@ -22,10 +22,10 @@ class CareReceiver {
     static hasOne = [device: Device]
 
     static constraints = {
-        emailAddress blank: false, nullable: false, email: true
+        emailAddress blank: false, nullable: false, email: true, unique: true
         token blank: false, nullable: false, unique: true
         proximityEvents nullable: true
-        logbookId nullable: false
+        logbookId nullable: false, unique: true
         city4ageId blank: false, nullable: true
         device nullable: true
         withingsId nullable: false
@@ -36,6 +36,7 @@ class CareReceiver {
     }
 
     private fetchActivityData(Date startDate, Date endDate = null) {
+        if (endDate && (startDate.format("yyyy-MM-dd") == endDate.format("yyyy-MM-dd"))) endDate = null
         return WithingsService.instance.fetchActivityData(this, startDate, endDate)
     }
 
@@ -48,10 +49,19 @@ class CareReceiver {
     }
 
     def updateWithingsData(Date endDate) {
-        return [
-                activity: fetchActivityData(Date.parse("dd-MM-yyyy", this.activityDownloadDate) + 1, endDate),
-                sleep: fetchSleepData(Date.parse("dd-MM-yyyy", this.sleepDownloadDate) + 1, endDate)
-        ]
+        def activities = []
+        def sleeps = []
+
+        def sEndDate = endDate.format("yyyy-MM-dd")
+        def activityDate = Date.parse("yyyy-MM-dd", this.activityDownloadDate) + 1
+        def sActivityDate = activityDate.format("yyyy-MM-dd")
+        def sleepDate = Date.parse("yyyy-MM-dd", this.sleepDownloadDate) + 1
+        def sSleepDate = sleepDate.format("yyyy-MM-dd")
+
+        if (sEndDate >= sActivityDate) activities = fetchActivityData(activityDate, endDate)
+        if (sEndDate >= sSleepDate) sleeps = fetchSleepData(sleepDate, endDate)
+
+        return [ activity: activities, sleep: sleeps ]
     }
 
     static Date getStartDate() {

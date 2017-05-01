@@ -1,12 +1,13 @@
 package org.etive.city4age.scheduler
 
-import org.etive.city4age.repository.CareReceiver
-
 class FetchWithingsDataJob {
+
     def careReceiverService
+    def activityRecordService
+    def sleepRecordService
 
     static triggers = {
-      cron name: 'withingsTrigger', cronExpression: "0 28 * * * ?"
+      cron name: 'withingsTrigger', cronExpression: "0 16 * * * ?"
     }
 
     def execute() {
@@ -14,7 +15,7 @@ class FetchWithingsDataJob {
         // Providing we don't have it yet
 
         def careReceivers = careReceiverService.listCareReceivers()
-        for (receiver in careReceivers) {
+         for (receiver in careReceivers) {
             def data = receiver.updateWithingsData(new Date() - 1)
 
             def activities = activityRecordService.bulkCreate(data.activity)

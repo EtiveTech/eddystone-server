@@ -4,7 +4,7 @@ class UrlMappings {
 
     static mappings = {
         group("/api") {
-            get "/activity" (controller: 'activity', action: 'index')
+            get "/activity" (controller: 'activityRecord', action: 'index')
             get "/beacon" (controller: 'beacon', action: 'index')
             get "/device" (controller: 'device', action: 'index')
             post "/device" (controller: 'device', action: 'save')
@@ -15,7 +15,7 @@ class UrlMappings {
             get "/receiver" (controller: 'careReceiver', action: 'index')
             post "/receiver" (controller: 'careReceiver', action: 'save')
             get "/receiver/$email" (controller: 'careReceiver', action: 'show')
-            get "/sleep" (controller: 'sleep', action: 'index')
+            get "/sleep" (controller: 'sleepRecord', action: 'index')
         }
 
         "500"(view: '/error')

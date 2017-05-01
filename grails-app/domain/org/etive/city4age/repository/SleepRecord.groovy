@@ -12,12 +12,13 @@ class SleepRecord {
     static belongsTo = [careReceiver: CareReceiver]
 
     static constraints = {
-        date blank: false, nullable: false
+        date blank: false, nullable: false, unique: 'careReceiver'
         wakeupDuration nullable: false
         wakeupCount nullable: false
         lightSleepDuration nullable: false
         deepSleepDuration nullable: false
         durationToSleep nullable: false
         uploaded nullable: false
+        careReceiver nullable: false
     }
 }
