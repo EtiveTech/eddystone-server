@@ -4,8 +4,9 @@ class Location {
 
     String name
     String type
+//    position (includes lat and long)
 
-    static hasMany = [beacons: Beacon]
+    static hasMany = [beacons: Beacon, poiEvents: PoiEvent]
 
     static constraints = {
         name blank: false, nullable: false

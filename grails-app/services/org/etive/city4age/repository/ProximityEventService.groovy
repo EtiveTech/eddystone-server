@@ -3,7 +3,7 @@ package org.etive.city4age.repository
 import grails.transaction.Transactional
 
 @Transactional
-class EventService {
+class ProximityEventService {
     def deviceService
 
     def createEvent(json) {
@@ -16,7 +16,7 @@ class EventService {
         def beacon = Beacon.findByBeaconId(json.beaconId.toString())
         if (!beacon) return null //throw 409
 
-        def event = new Event(
+        def event = new ProximityEvent(
                 eventType: json.eventType,
                 timestamp: new Date(Long.valueOf(json.timestamp.toString())),
                 rssi: json.rssi,

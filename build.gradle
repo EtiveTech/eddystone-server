@@ -22,6 +22,7 @@ apply plugin:"org.grails.plugins.views-json"
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://repo.grails.org/grails/plugins" }
 }
 
 dependencies {
@@ -47,7 +48,7 @@ dependencies {
     compile "org.grails.plugins:views-json"
     compile "org.grails.plugins:views-json-templates"
     compile "com.github.scribejava:scribejava-apis:3.2.0"
-    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compile 'org.grails.plugins:quartz:2.0.12'
     console "org.grails:grails-console"
     profile "org.grails.profiles:rest-api"
     runtime "com.h2database:h2"

@@ -11,7 +11,7 @@ grails:
         # Disabled by default for performance reasons.
         autowire: false         
         reactor:
-            # Whether to translate GORM events into Reactor events
+            # Whether to translate GORM proximityEvents into Reactor proximityEvents
             # Disabled by default for performance reasons
             events: false
 info:

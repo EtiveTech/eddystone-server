@@ -4,7 +4,7 @@ class Beacon {
 
     String beaconId
 
-    static hasMany = [events: Event]
+    static hasMany = [events: ProximityEvent]
     static belongsTo = [location: Location]
 
     static constraints = {

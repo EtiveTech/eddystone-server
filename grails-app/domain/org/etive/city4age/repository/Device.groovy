@@ -10,6 +10,7 @@ class Device {
     Date lastUpdated
 
     static belongsTo = [careReceiver: CareReceiver]
+    static hasMany = [proximityEvents: ProximityEvent]
 
     static constraints = {
         operatingSystem blank: false, nullable: false

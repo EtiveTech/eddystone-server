@@ -1,0 +1,7 @@
+import org.etive.city4age.repository.ProximityEvent
+
+model {
+	ProximityEvent event
+}
+
+json tmpl.event(event)

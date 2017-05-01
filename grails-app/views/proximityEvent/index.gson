@@ -1,0 +1,8 @@
+import org.etive.city4age.repository.ProximityEvent
+
+model {
+	Iterable<ProximityEvent> eventList
+}
+
+json tmpl.event(eventList ?: [])
+

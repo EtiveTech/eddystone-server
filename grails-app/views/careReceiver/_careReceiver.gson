@@ -8,4 +8,7 @@ json {
 	id careReceiver.id
 	email careReceiver.emailAddress
 	token careReceiver.token
+    activityRecordsTo careReceiver.getActivityDownloadDate()
+	sleepRecordsTo careReceiver.getSleepDownloadDate()
+
 }

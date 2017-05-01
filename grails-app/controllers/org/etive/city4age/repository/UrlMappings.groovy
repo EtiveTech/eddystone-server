@@ -9,12 +9,12 @@ class UrlMappings {
             get "/device" (controller: 'device', action: 'index')
             post "/device" (controller: 'device', action: 'save')
             put "/device/$uuid" (controller: 'device', action: 'update')
-            get "/event" (controller: 'event', action: 'index')
-            post "/event" (controller: 'event', action: 'save')
+            get "/proximity" (controller: 'proximityEvent', action: 'index')
+            post "/proximity" (controller: 'proximityEvent', action: 'save')
             get "/location" (controller: 'location', action: 'index')
-            get "/receiver" (controller: 'receiver', action: 'index')
-            post "/receiver" (controller: 'receiver', action: 'save')
-            get "/receiver/$email" (controller: 'receiver', action: 'show')
+            get "/receiver" (controller: 'careReceiver', action: 'index')
+            post "/receiver" (controller: 'careReceiver', action: 'save')
+            get "/receiver/$email" (controller: 'careReceiver', action: 'show')
             get "/sleep" (controller: 'sleep', action: 'index')
         }
 

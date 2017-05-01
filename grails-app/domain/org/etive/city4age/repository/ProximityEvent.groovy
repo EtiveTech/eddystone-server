@@ -1,6 +1,6 @@
 package org.etive.city4age.repository
 
-class Event {
+class ProximityEvent {
 
     String eventType
     Date timestamp
@@ -9,7 +9,7 @@ class Event {
     Date dateCreated
     Date lastUpdated
 
-    static belongsTo = [beacon: Beacon, careReceiver: CareReceiver, device: Device]
+    static belongsTo = [beacon: Beacon, careReceiver: CareReceiver, device: Device, poiEvent: PoiEvent]
 
     static constraints = {
         eventType blank: false, nullable: false
@@ -19,5 +19,6 @@ class Event {
         beacon nullable: false
         careReceiver nullable: false
         device nullable: false
+        poiEvent nullable: true
     }
 }

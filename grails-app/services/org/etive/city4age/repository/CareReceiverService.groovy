@@ -30,4 +30,13 @@ class CareReceiverService {
         receiver.save()
         return receiver
     }
+
+    def activityRecordDownloaded() {
+
+
+    }
+
+    def sleepRecordDownloaded() {
+
+    }
 }

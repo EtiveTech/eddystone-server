@@ -1,8 +1,0 @@
-import org.etive.city4age.repository.Event
-
-model {
-	Iterable<Event> eventList
-}
-
-json tmpl.event(eventList ?: [])
-

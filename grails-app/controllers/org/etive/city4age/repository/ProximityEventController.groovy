@@ -1,10 +1,10 @@
 package org.etive.city4age.repository
 
-class EventController {
+class ProximityEventController {
     def eventService
 
     def index() {
-        respond Event.list()
+        respond ProximityEvent.list()
     }
 
     def save() {
