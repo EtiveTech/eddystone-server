@@ -9,6 +9,7 @@ class ActivityRecord {
     Integer moderate
     Integer intense
     Integer steps
+    Boolean uploaded = false
 
     static belongsTo = [careReceiver: CareReceiver]
 
@@ -21,6 +22,7 @@ class ActivityRecord {
         moderate nullable: false
         intense nullable: false
         steps nullable: false
+        uploaded nullable: false
         careReceiver nullable: false
     }
 }

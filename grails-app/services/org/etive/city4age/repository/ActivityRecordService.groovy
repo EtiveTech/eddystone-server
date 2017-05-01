@@ -19,4 +19,9 @@ class ActivityRecordService {
         }
         return activityRecords
     }
+
+    @Transactional(readOnly = true)
+    def listActivityRecords() {
+        return ActivityRecord.list()
+    }
 }

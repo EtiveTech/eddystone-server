@@ -39,4 +39,9 @@ class DeviceService {
         }
         return device
     }
+
+    @Transactional(readOnly = true)
+    def listDevices() {
+        return Devices.list()
+    }
 }

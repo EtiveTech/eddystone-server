@@ -5,11 +5,16 @@ import grails.transaction.Transactional
 @Transactional
 class CareReceiverService {
 
+    @Transactional(readOnly = true)
+    def listCareReceivers() {
+        return CareReceiver.list()
+    }
+
     def createCareReceiver(json) {
 
         def logbookId = json.logbookId as Long
-        def receiver = CareReceiver.findByLogbookId(logbookId)
-        if (receiver) return null
+        def careReceiver = CareReceiver.findByLogbookId(logbookId)
+        if (careReceiver) return null
 
         // Should maybe get the City4Age Id now and save it with the rest of the info
 
@@ -19,7 +24,7 @@ class CareReceiverService {
             if (CareReceiver.findByToken(token)) token = null
         }
 
-        receiver = new CareReceiver(
+        careReceiver = new CareReceiver(
                 logbookId: logbookId,
                 withingsId: json.withingsId as Long,
                 emailAddress: json.emailAddress as String,
@@ -27,16 +32,12 @@ class CareReceiverService {
                 accessSecret: json.accessSecret as String,
                 token: token
         )
-        receiver.save()
-        return receiver
+        careReceiver.save()
+        return careReceiver
     }
 
-    def activityRecordDownloaded() {
-
-
+    def updateCareReceiver(careReceiver) {
+        return careReceiver.save()
     }
 
-    def sleepRecordDownloaded() {
-
-    }
 }

@@ -11,8 +11,8 @@ class CareReceiver {
     Long withingsId
     String accessKey
     String accessSecret
-    private String activityDownloadDate
-    private String sleepDownloadDate
+    private String activityDownloadDate = null
+    private String sleepDownloadDate = null
     Date dateCreated
     Date lastUpdated
 
@@ -20,8 +20,8 @@ class CareReceiver {
     static hasOne = [device: Device]
 
     static constraints = {
-        emailAddress blank: false, nullable: false
-        token blank: false, nullable: false
+        emailAddress blank: false, nullable: false, email: true
+        token blank: false, nullable: false, unique: true
         proximityEvents nullable: true
         logbookId nullable: false
         city4ageId blank: false, nullable: true
@@ -45,9 +45,16 @@ class CareReceiver {
         return [ activity: fetchActivityData(startDate, endDate), sleep: fetchSleepData(startDate, endDate) ]
     }
 
+    def updateWithingsData(Date endDate) {
+        return [
+                activity: fetchActivityData(Date.parse("dd-MM-yyyy", this.activityDownloadDate), endDate),
+                sleep: fetchSleepData(Date.parse("dd-MM-yyyy", this.sleepDownloadDate), endDate)
+        ]
+    }
+
     def setActivityDownloadDate(String date) {
         this.activityDownloadDate = date
-        this.save()
+        return this.save(failOnError: true)
     }
 
     String getActivityDownloadDate() {
@@ -56,7 +63,7 @@ class CareReceiver {
 
     def setSleepDownloadDate(String date) {
         this.sleepDownloadDate = date
-        this.save()
+        return this.save(failOnError: true)
     }
 
     String getSleepDownloadDate() {

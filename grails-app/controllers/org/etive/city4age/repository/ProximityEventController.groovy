@@ -1,14 +1,14 @@
 package org.etive.city4age.repository
 
 class ProximityEventController {
-    def eventService
+    def proximityEventService
 
     def index() {
-        respond ProximityEvent.list()
+        respond proximityEventService.listProximityEvents()
     }
 
     def save() {
-        def event = eventService.createEvent(request.JSON)
+        def event = proximityEventService.createProximityEvent(request.JSON)
         if (event)
             respond(event, status: 201)
         else

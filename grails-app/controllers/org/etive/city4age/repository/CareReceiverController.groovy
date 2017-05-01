@@ -15,7 +15,7 @@ class CareReceiverController {
 
     def index() {
         // Remove for production
-        respond CareReceiver.list()
+        respond careReceiverService.listCareReceivers()
     }
 
     def show() {
@@ -40,6 +40,7 @@ class CareReceiverController {
                 if (activities) receiver.setActivityDownloadDate(activities.last().date)
                 def sleeps = sleepRecordService.bulkCreate(data.sleep)
                 if (sleeps) receiver.setSleepDownloadDate(sleeps.last().date)
+                receiver = careReceiverService.updateCareReceiver(receiver)
                 respond(receiver, status: 201)
             }
             else

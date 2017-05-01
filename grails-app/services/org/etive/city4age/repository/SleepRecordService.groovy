@@ -19,4 +19,9 @@ class SleepRecordService {
         }
         return sleepRecords
     }
+
+    @Transactional(readOnly = true)
+    def listSleepRecords() {
+        return SleepRecord.list()
+    }
 }

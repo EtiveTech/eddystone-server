@@ -4,7 +4,7 @@ class DeviceController {
     def deviceService
 	
     def index() {
-        respond Device.list()
+        respond deviceService.listDevices()
     }
 
     def save() {

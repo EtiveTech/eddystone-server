@@ -7,6 +7,7 @@ class SleepRecord {
     Integer lightSleepDuration
     Integer deepSleepDuration
     Integer durationToSleep
+    Boolean uploaded = false
 
     static belongsTo = [careReceiver: CareReceiver]
 
@@ -17,5 +18,6 @@ class SleepRecord {
         lightSleepDuration nullable: false
         deepSleepDuration nullable: false
         durationToSleep nullable: false
+        uploaded nullable: false
     }
 }

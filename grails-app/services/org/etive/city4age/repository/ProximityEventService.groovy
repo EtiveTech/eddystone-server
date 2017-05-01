@@ -6,7 +6,7 @@ import grails.transaction.Transactional
 class ProximityEventService {
     def deviceService
 
-    def createEvent(json) {
+    def createProximityEvent(json) {
         def careReceiver = CareReceiver.findByToken(json.token.toString())
         if (!careReceiver) return null // throw 403
 
@@ -27,5 +27,10 @@ class ProximityEventService {
         )
         event.save()
         return event
+    }
+
+    @Transactional(readOnly = true)
+    def listProximityEvents() {
+        return ProximityEvent.list()
     }
 }
