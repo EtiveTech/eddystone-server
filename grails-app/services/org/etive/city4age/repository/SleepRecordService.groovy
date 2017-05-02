@@ -26,8 +26,9 @@ class SleepRecordService {
     }
 
     @Transactional(readOnly = true)
-    def forUpload() {
-        return SleepRecord.where { uploaded == false }
+    def readyForUpload() {
+        def query = SleepRecord.where { uploaded == false }
+        return query.list()
     }
 
     def updateSleepRecord(sleepRecord) {

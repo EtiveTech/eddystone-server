@@ -26,8 +26,9 @@ class ActivityRecordService {
     }
 
     @Transactional(readOnly = true)
-    def forUpload() {
-        return ActivityRecord.where { uploaded == false }
+    def readyForUpload() {
+        def query = ActivityRecord.where { uploaded == false }
+        return query.list()
     }
 
     def updateActivityRecord(activityRecord) {

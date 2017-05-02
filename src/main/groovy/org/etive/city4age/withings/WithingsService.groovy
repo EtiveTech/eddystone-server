@@ -86,8 +86,8 @@ class WithingsService {
         apiMeasuresUrl += "&userid=" + careReceiver.withingsId
 //        apiMeasuresUrl += "&startdate=" + startDate.format("yyyy-MM-dd")
 //        apiMeasuresUrl += "&enddate=" + endDate.format("yyyy-MM-dd")
-        apiMeasuresUrl += "&startdate=" + toEpoch(startDate)
-        apiMeasuresUrl += "&enddate=" + toEpoch(endDate)
+        apiMeasuresUrl += "&startdate=" + toEpoch(startDate.clearTime())
+        apiMeasuresUrl += "&enddate=" + toEpoch(endDate.clearTime())
         OAuthRequest request = new OAuthRequest(Verb.GET, apiMeasuresUrl, service)
         service.signRequest(accToken, request)
         Response response = request.send()

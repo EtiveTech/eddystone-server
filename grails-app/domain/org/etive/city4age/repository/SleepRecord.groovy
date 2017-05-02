@@ -28,7 +28,7 @@ class SleepRecord {
         careReceiver nullable: false
     }
 
-    def forUpload() {
+    def formatForUpload() {
         return [
                 user: careReceiver.city4ageId,
                 interval_start: startDate.format("yyyy-MM-dd hh:mm"),

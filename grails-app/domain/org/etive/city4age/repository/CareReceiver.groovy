@@ -45,7 +45,7 @@ class CareReceiver {
     }
 
     def fetchWithingsData(Date startDate, Date endDate = null) {
-        return [ activity: fetchActivityData(startDate, endDate), sleep: fetchSleepData(startDate, endDate) ]
+        return [ activity: fetchActivityData(startDate, endDate), sleep: fetchSleepData(startDate + 1, endDate) ]
     }
 
     def updateWithingsData(Date endDate) {

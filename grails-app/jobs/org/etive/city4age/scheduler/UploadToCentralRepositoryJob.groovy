@@ -8,7 +8,7 @@ class UploadToCentralRepositoryJob {
     def sleepRecordService
 
     static triggers = {
-        cron name: 'uploadTrigger', cronExpression: "0 0 * * * ?"
+        cron name: 'uploadTrigger', cronExpression: "0 53 * * * ?"
     }
 
     def execute() {
@@ -18,10 +18,16 @@ class UploadToCentralRepositoryJob {
         def activities = activityRecordService.forUpload()
         for (activity in activities) {
             def json = JsonOutput.toJson(activity.forUpload())
+            // send a POST request to the central repository with json as the payload
+            // activity.uploaded = true
+            // activityRecordService.update(activity)
         }
         def sleeps = sleepRecordService.forUpload()
         for (sleep in sleeps) {
             def json = JsonOutput.toJson(sleep.forUpload())
+            // send a POST request to the central repository with json as the payload
+            // sleep.uploaded = true
+            // sleepRecordService.update(sleep)
         }
     }
 }

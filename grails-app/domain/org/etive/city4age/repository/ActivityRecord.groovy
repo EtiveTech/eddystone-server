@@ -26,7 +26,7 @@ class ActivityRecord {
         careReceiver nullable: false
     }
 
-    def forUpload() {
+    def formatForUpload() {
         return [
                 user: careReceiver.city4ageId,
                 interval_start: date + " 00:00",
