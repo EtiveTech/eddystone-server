@@ -1,6 +1,6 @@
 package org.etive.city4age.scheduler
 
-class FetchWithingsDataJob {
+class FetchWithingsJob {
 
     def careReceiverService
     def activityRecordService

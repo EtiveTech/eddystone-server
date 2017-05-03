@@ -2,7 +2,7 @@ package org.etive.city4age.scheduler
 
 import groovy.json.JsonOutput
 
-class UploadToCentralRepositoryJob {
+class UploadJob {
 
     def activityRecordService
     def sleepRecordService
@@ -17,7 +17,7 @@ class UploadToCentralRepositoryJob {
         // execute job
 
         if (!centralRepository) return
-        
+
         // for all CareReceivers copy Activity/Sleep measures and POI events up to the Central Repository.
 
         def activities = activityRecordService.forUpload()
