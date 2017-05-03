@@ -36,7 +36,7 @@ class CareReceiverService {
         return careReceiver
     }
 
-    def updateCareReceiver(careReceiver) {
+    def persistChanges(careReceiver) {
         return careReceiver.save()
     }
 

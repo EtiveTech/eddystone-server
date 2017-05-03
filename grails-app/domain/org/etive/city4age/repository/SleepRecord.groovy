@@ -31,18 +31,30 @@ class SleepRecord {
     def formatForUpload() {
         return [
                 user: careReceiver.city4ageId,
+                pilot: "BHX",
                 interval_start: startDate.format("yyyy-MM-dd hh:mm"),
                 interval_end: endDate.format("yyyy-MM-dd hh:mm"),
                 payload: [
-                        SLEEP_LIGHT_TIME: lightSleepDuration,
-                        SLEEP_DEEP_TIME: deepSleepDuration,
-                        SLEEP_WAKEUP_NUM: wakeupCount,
-                        SLEEP_AWAKE_TIME: wakeupDuration,
-                        SLEEP_TOSLEEP_TIME: durationToSleep
-                ],
-                extra: [
-                        pilot: "birmingham",
-                        dataSourceType: [ "external_dataset" ]
+                        SLEEP_LIGHT_TIME: [
+                                value: lightSleepDuration,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        SLEEP_DEEP_TIME: [
+                                value: deepSleepDuration,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        SLEEP_WAKEUP_NUM: [
+                                value: wakeupCount,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        SLEEP_AWAKE_TIME: [
+                                value: wakeupDuration,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        SLEEP_TOSLEEP_TIME: [
+                                value: durationToSleep,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
                 ]
         ]
     }

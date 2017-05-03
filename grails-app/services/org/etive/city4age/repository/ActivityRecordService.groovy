@@ -31,7 +31,7 @@ class ActivityRecordService {
         return query.list()
     }
 
-    def updateActivityRecord(activityRecord) {
+    def persistChanges(activityRecord) {
         return activityRecord.save()
     }
 

@@ -31,7 +31,7 @@ class SleepRecordService {
         return query.list()
     }
 
-    def updateSleepRecord(sleepRecord) {
+    def persistChanges(sleepRecord) {
         return sleepRecord.save()
     }
 }

@@ -29,19 +29,34 @@ class ActivityRecord {
     def formatForUpload() {
         return [
                 user: careReceiver.city4ageId,
+                pilot: "BHX",
                 interval_start: date + " 00:00",
-                interval_end: (Date.parse("yyyy-MM-dd", date) + 1).format("yyyy-MM-dd") + " 00:00",
+                duration: "DAY",
                 payload: [
-                        WALK_STEPS: steps,
-                        WALK_DISTANCE: distance,
-                        PHYSICALACTIVITY_SOFT_TIME: soft,
-                        PHYSICALACTIVITY_MODERATE_TIME: moderate,
-                        PHYSICALACTIVITY_INTENSE_TIME: intense,
-                        PHYSICALACTIVITY_CALORIES: totalCalories
-                ],
-                extra: [
-                        pilot: "birmingham",
-                        dataSourceType: [ "external_dataset" ]
+                        WALK_STEPS: [
+                                value: steps,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        WALK_DISTANCE: [
+                                value: distance,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        PHYSICALACTIVITY_SOFT_TIME: [
+                                value: soft,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        PHYSICALACTIVITY_MODERATE_TIME: [
+                                value: moderate,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        PHYSICALACTIVITY_INTENSE_TIME: [
+                                value: intense,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
+                        PHYSICALACTIVITY_CALORIES: [
+                                value: totalCalories,
+                                dataSourceType: [ "external_dataset" ]
+                        ],
                 ]
         ]
     }

@@ -7,12 +7,17 @@ class UploadToCentralRepositoryJob {
     def activityRecordService
     def sleepRecordService
 
+    private final String centralRepository = System.getenv("CENTRAL_REPOSITORY")
+
     static triggers = {
         cron name: 'uploadTrigger', cronExpression: "0 53 * * * ?"
     }
 
     def execute() {
         // execute job
+
+        if (!centralRepository) return
+        
         // for all CareReceivers copy Activity/Sleep measures and POI events up to the Central Repository.
 
         def activities = activityRecordService.forUpload()

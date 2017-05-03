@@ -41,7 +41,7 @@ class CareReceiverController {
                 def sleeps = sleepRecordService.bulkCreate(data.sleep)
                 if (sleeps) receiver.sleepDownloadDate = sleeps.last().date
 
-                receiver = careReceiverService.updateCareReceiver(receiver)
+                receiver = careReceiverService.persistChanges(receiver)
                 respond(receiver, status: 201)
             }
             else
