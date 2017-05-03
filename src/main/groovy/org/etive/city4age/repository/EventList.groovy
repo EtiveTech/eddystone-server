@@ -13,20 +13,20 @@ class EventList {
     }
 
     def nextFound(beacon) {
-        if (list.isEmpty) return null
-        this.index++
-        while ((this.index < this.length) && (this.list[this.index].eventType != 'found') &&
-                (this.list[this.index].beacon.id != beacon.id)) this.index++
-        if (this.index >= this.length) return null
-        return this.list[this.index]
+        if (isEmpty()) return null
+        index += 1
+        while ((index < length) && (list[index].eventType != 'found') &&
+                (list[index].beacon.id != beacon.id)) index += 1
+        if (index >= length) return null
+        return list[index]
     }
 
     def nextLost() {
-        if (list.isEmpty) return null
-        this.index++
-        while ((this.index < this.length) && (this.list[this.index].eventType != 'lost')) this.index++
-        if (this.index >= this.length) return null
-        return this.list[this.index]
+        if (isEmpty()) return null
+        index += 1
+        while ((index < length) && (list[index].eventType != 'lost')) index += 1
+        if (index >= length) return null
+        return list[index]
     }
 
     def isEmpty() {
