@@ -1,17 +1,17 @@
 import org.etive.city4age.repository.ProximityEvent
 
 model {
-	ProximityEvent event
+	ProximityEvent proximityEvent
 }
 
 //json g.render(proximityEvent)
 json {
-	id event.id
-	eventType event.eventType
-	timestamp event.timestamp
-	rssi event.rssi
-	parameter event.parameter
-	beacon event.beacon.beaconId
-	careReceiver event.careReceiver.id
-	device event.device.id
+	id proximityEvent.id
+	eventType proximityEvent.eventType
+	timestamp proximityEvent.timestamp
+	rssi proximityEvent.rssi
+	parameter proximityEvent.parameter
+	beacon proximityEvent.beacon.beaconId
+	careReceiver proximityEvent.careReceiver.id
+	device proximityEvent.device.id
 }

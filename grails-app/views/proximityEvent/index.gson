@@ -1,8 +1,8 @@
 import org.etive.city4age.repository.ProximityEvent
 
 model {
-	Iterable<ProximityEvent> eventList
+	Iterable<ProximityEvent> proximityEventList
 }
 
-json tmpl.event(eventList ?: [])
+json tmpl.event(proximityEventList ?: [])
 
