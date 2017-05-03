@@ -7,7 +7,7 @@ class EventList {
 
     EventList(list) {
         if (list) {
-            this.list = list
+            this.list = list.reverse()
             this.length = list.size()
         }
     }
@@ -30,6 +30,6 @@ class EventList {
     }
 
     def isEmpty() {
-        return ((list) ? (this.index + 1 == this.length) : false)
+        return ((list && length > 0) ? (index + 1 == length) : true)
     }
 }
