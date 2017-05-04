@@ -31,7 +31,7 @@ class PoiEvent {
         Beacon beacon
 
         bepThreshold = (bepThreshold) ?: 60
-        noiseThreshold = (noiseThreshold) ?: 5
+        noiseThreshold = (noiseThreshold) ?: 2.5
 
         // The supplied list is a reversed list of proximity events
         // The result of this method - poiEvents - will have the order reversed again
@@ -43,7 +43,7 @@ class PoiEvent {
                 foundEvent = list.nextFound(beacon)
                 if (foundEvent) {
                     // Have a lost event and a found event
-                    def diff = lostEvent.timestamp - foundEvent.timestamp
+                    def diff = lostEvent.timestamp.getTime() - foundEvent.timestamp.getTime()
                     if (diff <= bepThreshold * 1000) {
                         // If the found and lost events are too close together the CareReceiver can't have gone into a POI
                         if (diff > noiseThreshold * 1000) {
@@ -84,7 +84,13 @@ class PoiEvent {
                             }
                         }
                     } else {
-                        // We have two distinct events
+                        // We appear to have two distinct events
+
+                        // If there is already an exit event on the stack then this could be a very long POI_ENTER
+                        // Need to either remove the stacked exit or re-classify this pair ss a BEP
+                        // Remove the stacked exit until it is clear we need to do otherwise
+                        if (exitStack && (exitStack.last().location.id == beacon.location.id)) exitStack.pop()
+
                         poiEvents.add(new PoiEvent(
                                 action: "POI_EXIT",
                                 careReceiver: receiver,
