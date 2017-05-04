@@ -3,6 +3,7 @@ package org.etive.city4age.repository
 class PoiEvent {
     String action
     Date timestamp
+    String instanceId
     Boolean uploaded = false
     Date dateCreated
     Date lastUpdated
@@ -21,6 +22,7 @@ class PoiEvent {
     static constraints = {
         action nullable: false, blank: false
         timestamp nullabe: false
+        instanceId nullable: false, blank: false
         careReceiver nullable: false
         location nullable: false
         uploaded nullable: false
@@ -57,9 +59,13 @@ class PoiEvent {
                                 if (exitEvent.location.id == beacon.location.id) {
                                     // The exit event and the new BEP are for the same location
                                     // Must be the enter event
+                                    def uuid = UUID.randomUUID().toString()
+                                    exitEvent.instanceId = uuid
+
                                     poiEvents.add(exitEvent)
                                     poiEvents.add(new PoiEvent(
                                             action: poiEnter,
+                                            instanceId: uuid,
                                             careReceiver: receiver,
                                             location: beacon.location,
                                             sourceEvents: sourceEvents))
@@ -93,13 +99,17 @@ class PoiEvent {
                         // Remove the stacked exit until it is clear we need to do otherwise
                         if (exitStack && (exitStack.last().location.id == beacon.location.id)) exitStack.pop()
 
+                        def uuid = UUID.randomUUID().toString()
+
                         poiEvents.add(new PoiEvent(
-                                action: "POI_EXIT",
+                                action: poiExit,
+                                instanceId: uuid,
                                 careReceiver: receiver,
                                 location: beacon.location,
                                 sourceEvents: [lostEvent]))
                         poiEvents.add(new PoiEvent(
-                                action: "POI_ENTRY",
+                                action: poiEnter,
+                                instanceId: uuid,
                                 careReceiver: receiver,
                                 location: beacon.location,
                                 sourceEvents: [foundEvent]))
@@ -108,5 +118,20 @@ class PoiEvent {
             }
         }
         return poiEvents
+    }
+
+    def formatForUpload() {
+        return [
+                action: "eu:c4a:" + action,
+                user: careReceiver.city4ageId,
+                pilot: "BHX",
+                location: "eu:c4a:" + location.type + ":" + location.name,
+                position: location.latitude + " " + location.longitude,
+                timestamp: timestamp.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                payload: [
+                        instance_id: instanceId
+                ],
+                data_source_type: [ "sensors" ]
+        ]
     }
 }

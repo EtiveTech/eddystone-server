@@ -9,6 +9,7 @@ json {
 	id poiEvent.id
 	action poiEvent.action
 	timestamp poiEvent.timestamp
+	instanceId poiEvent.instanceId
 	location poiEvent.location.id
 	careReceiver poiEvent.careReceiver.id
 	uploaded poiEvent.uploaded

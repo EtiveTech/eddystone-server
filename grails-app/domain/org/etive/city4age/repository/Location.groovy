@@ -6,6 +6,8 @@ class Location {
     String type
     Location container = null // Some locations will be inside others
 //    position (includes lat and long)
+    String latitude
+    String longitude
     Date dateCreated
     Date lastUpdated
 
@@ -14,6 +16,8 @@ class Location {
     static constraints = {
         name blank: false, nullable: false
         type nullable: false
+        latitude blank: false, nullable: false
+        longitude blank: false, nullable: false
         container nullable: true
     }
 }

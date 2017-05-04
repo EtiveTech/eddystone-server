@@ -70,4 +70,10 @@ class PoiEventService {
             query = PoiEvent.where{ timestamp >= early && timestamp < late }
         return query.list(max: 500)
     }
+
+    @Transactional(readOnly = true)
+    def readyForUpload() {
+        def query = PoiEvent.where{ uploaded == false }
+        return query.list()
+    }
 }
