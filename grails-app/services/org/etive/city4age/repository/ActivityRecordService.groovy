@@ -26,6 +26,13 @@ class ActivityRecordService {
     }
 
     @Transactional(readOnly = true)
+    def listActivityRecords(CareReceiver receiver) {
+
+        def query = (receiver) ? ActivityRecord.where{ careReceiver.id == receiver.id } : ActivityRecord
+        return query.list(max: 500)
+    }
+
+    @Transactional(readOnly = true)
     def readyForUpload() {
         def query = ActivityRecord.where { uploaded == false }
         return query.list()

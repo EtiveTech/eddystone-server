@@ -4,6 +4,8 @@ class SleepRecordController {
     def sleepRecordService
 
     def index() {
-        respond sleepRecordService.listSleepRecords()
+        def receiver = CareReceiver.findById(params.receiverId)
+        def list = sleepRecordService.listSleepRecords(receiver)
+        respond(list, status: 200)
     }
 }

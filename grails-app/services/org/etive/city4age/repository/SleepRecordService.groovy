@@ -21,13 +21,15 @@ class SleepRecordService {
     }
 
     @Transactional(readOnly = true)
-    def listSleepRecords() {
-        return SleepRecord.list()
+    def listSleepRecords(CareReceiver receiver) {
+
+        def query = (receiver) ? SleepRecord.where{ careReceiver.id == receiver.id } : SleepRecord
+        return query.list(max: 500)
     }
 
     @Transactional(readOnly = true)
     def readyForUpload() {
-        def query = SleepRecord.where { uploaded == false }
+        def query = SleepRecord.where{ uploaded == false }
         return query.list()
     }
 

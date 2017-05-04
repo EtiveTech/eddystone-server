@@ -16,7 +16,7 @@ class DeviceController {
     }
 
     def update() {
-        def device = deviceService.updateLastContact(request.JSON)
+        def device = deviceService.updateLastContact(request.JSON, params.uuid)
         if (device)
             respond(device, status: 201)
         else

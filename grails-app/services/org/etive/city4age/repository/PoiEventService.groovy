@@ -56,4 +56,18 @@ class PoiEventService {
     def persistChanges(poiEvent) {
         return poiEvent.save()
     }
+
+    @Transactional(readOnly = true)
+    def listPoiEvents(CareReceiver receiver) {
+        // Only list events for today to keep the amount of data down
+        def early = (new Date()).clearTime()
+        def late = early + 1
+
+        def query
+        if (receiver)
+            query = PoiEvent.where{ careReceiver.id == receiver.id && timestamp >= early && timestamp < late }
+        else
+            query = PoiEvent.where{ timestamp >= early && timestamp < late }
+        return query.list(max: 500)
+    }
 }

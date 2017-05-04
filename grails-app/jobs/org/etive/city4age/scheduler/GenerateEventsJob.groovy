@@ -18,7 +18,7 @@ class GenerateEventsJob {
 
         for (receiver in careReceivers) {
             EventList list = new EventList(proximityEventService.forCareReceiver(receiver, (new Date()) /* - 1 */ ))
-            def events = PoiEvent.findEvents(receiver, list)
+            def events = PoiEvent.findEvents(receiver, list).reverse()
             for (event in events) {
                 poiEventService.createPoiEvent(event)
             }

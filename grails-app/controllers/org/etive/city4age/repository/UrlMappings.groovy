@@ -15,6 +15,10 @@ class UrlMappings {
             get "/receiver" (controller: 'careReceiver', action: 'index')
             post "/receiver" (controller: 'careReceiver', action: 'save')
             get "/receiver/$email" (controller: 'careReceiver', action: 'show')
+            get "/receiver/$receiverId/activity" (controller: 'activityRecord', action: 'index')
+            get "/receiver/$receiverId/poi" (controller: 'poiEvent', action: 'index')
+            get "/receiver/$receiverId/proximity" (controller: 'proximityEvent', action: 'index')
+            get "/receiver/$receiverId/sleep" (controller: 'sleepRecord', action: 'index')
             get "/sleep" (controller: 'sleepRecord', action: 'index')
         }
 
