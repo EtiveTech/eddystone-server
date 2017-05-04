@@ -4,4 +4,4 @@ model {
 	ProximityEvent proximityEvent
 }
 
-json tmpl.proximityEvent(event)
+json tmpl.proximityEvent(proximityEvent)

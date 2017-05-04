@@ -1,0 +1,15 @@
+import org.etive.city4age.repository.PoiEvent
+
+model {
+	PoiEvent poiEvent
+}
+
+//json g.render(proximityEvent)
+json {
+	id poiEvent.id
+	action poiEvent.action
+	timestamp poiEvent.timestamp
+	location poiEvent.location.id
+	careReceiver poiEvent.careReceiver.id
+	uploaded poiEvent.uploaded
+}

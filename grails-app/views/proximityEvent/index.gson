@@ -4,5 +4,5 @@ model {
 	Iterable<ProximityEvent> proximityEventList
 }
 
-json tmpl.event(proximityEventList ?: [])
+json tmpl.proximityEvent(proximityEventList ?: [])
 

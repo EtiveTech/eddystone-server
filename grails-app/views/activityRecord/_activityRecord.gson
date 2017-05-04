@@ -15,6 +15,7 @@ json {
     intense activityRecord.intense
     steps activityRecord.steps
     careReceiver activityRecord.careReceiver.id
+    uploaded activityRecord.uploaded
 }
 
 

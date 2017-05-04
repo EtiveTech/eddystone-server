@@ -15,4 +15,5 @@ json {
     deepSleepDuration sleepRecord.lightSleepDuration
     durationToSleep sleepRecord.durationToSleep
     careReceiver sleepRecord.careReceiver.id
+    uploaded sleepRecord.uploaded
 }
