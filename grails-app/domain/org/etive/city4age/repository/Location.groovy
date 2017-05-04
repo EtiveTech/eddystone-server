@@ -6,6 +6,8 @@ class Location {
     String type
     Location container = null // Some locations will be inside others
 //    position (includes lat and long)
+    Date dateCreated
+    Date lastUpdated
 
     static hasMany = [beacons: Beacon, poiEvents: PoiEvent]
 

@@ -12,6 +12,8 @@ class SleepRecord {
     Integer deepSleepDuration
     Integer durationToSleep
     Boolean uploaded = false
+    Date dateCreated
+    Date lastUpdated
 
     static belongsTo = [careReceiver: CareReceiver]
 

@@ -10,6 +10,8 @@ class ActivityRecord {
     Integer intense
     Integer steps
     Boolean uploaded = false
+    Date dateCreated
+    Date lastUpdated
 
     static belongsTo = [careReceiver: CareReceiver]
 

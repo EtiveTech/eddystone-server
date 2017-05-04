@@ -4,6 +4,8 @@ class PoiEvent {
     String action
     Date timestamp
     Boolean uploaded = false
+    Date dateCreated
+    Date lastUpdated
     List<ProximityEvent> sourceEvents = []
 
     static bepThreshold = System.getenv("BEP_THRESHOLD")
