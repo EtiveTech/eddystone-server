@@ -13,8 +13,9 @@ class CareReceiver {
     Long withingsId
     String accessKey
     String accessSecret
-    String activityDownloadDate = (getStartDate() - 1).format("yyyy-MM-dd") // The day before startDate
-    String sleepDownloadDate = (getStartDate() - 1).format("yyyy-MM-dd")
+    String activityRecordsDownloaded = (getStartDate() - 1).format("yyyy-MM-dd") // The day before startDate
+    String sleepRecordsDownloaded = (getStartDate() - 1).format("yyyy-MM-dd")
+    Date eventsGenerated
     Date dateCreated
     Date lastUpdated
 
@@ -31,8 +32,9 @@ class CareReceiver {
         withingsId nullable: false
         accessKey blank: false, nullable: false
         accessSecret blank: false, nullable: false
-        activityDownloadDate nullable: false, blank: false
-        sleepDownloadDate nullable: false, blank: false
+        activityRecordsDownloaded nullable: false, blank: false
+        sleepRecordsDownloaded nullable: false, blank: false
+        eventsGenerated nullable: true
     }
 
     private fetchActivityData(Date startDate, Date endDate = null) {
@@ -53,9 +55,9 @@ class CareReceiver {
         def sleeps = []
 
         def sEndDate = endDate.format("yyyy-MM-dd")
-        def activityDate = Date.parse("yyyy-MM-dd", this.activityDownloadDate) + 1
+        def activityDate = Date.parse("yyyy-MM-dd", this.activityRecordsDownloaded) + 1
         def sActivityDate = activityDate.format("yyyy-MM-dd")
-        def sleepDate = Date.parse("yyyy-MM-dd", this.sleepDownloadDate) + 1
+        def sleepDate = Date.parse("yyyy-MM-dd", this.sleepRecordsDownloaded) + 1
         def sSleepDate = sleepDate.format("yyyy-MM-dd")
 
         if (sEndDate >= sActivityDate) activities = fetchActivityData(activityDate, endDate)

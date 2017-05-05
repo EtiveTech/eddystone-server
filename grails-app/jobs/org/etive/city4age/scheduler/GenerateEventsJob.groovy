@@ -12,16 +12,27 @@ class GenerateEventsJob {
         cron name: 'poiTrigger', cronExpression: "0 0/5 * * * ?"
     }
 
+    static boolean sameDay(Date date1, Date date2) {
+        def first = (new Date(date1.getTime())).clearTime()
+        def second = (new Date(date2.getTime())).clearTime()
+        return first.compareTo(second)
+    }
+
     def execute() {
         // execute job
         def careReceivers = careReceiverService.listCareReceivers()
-
         for (receiver in careReceivers) {
-            EventList list = new EventList(proximityEventService.forProcessing(receiver, (new Date()) /* - 1 */ ))
-            def events = PoiEvent.findEvents(receiver, list).reverse()
-            for (event in events) {
-                poiEventService.createPoiEvent(event)
+            def yesterday = new Date() - 1
+            def start = (receiver.eventsGenerated) ? receiver.eventsGenerated : yesterday
+            start.upto(yesterday) { date ->
+                EventList list = new EventList(proximityEventService.forProcessing(receiver, date ))
+                def events = PoiEvent.findEvents(receiver, list).reverse()
+                for (event in events) {
+                    poiEventService.createPoiEvent(event)
+                }
+                receiver.eventsGenerated = events.last().timestamp
             }
+            careReceiverService.persistChanges(receiver)
         }
     }
 }
