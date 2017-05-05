@@ -21,18 +21,24 @@ class GenerateEventsJob {
     def execute() {
         // execute job
         def careReceivers = careReceiverService.listCareReceivers()
+        def today = (new Date()).clearTime()
+        def yesterday = today - 1
         for (receiver in careReceivers) {
-            def yesterday = new Date() - 1
-            def start = (receiver.eventsGenerated) ? receiver.eventsGenerated : yesterday
-            start.upto(yesterday) { date ->
+            Date start = (receiver.eventsGenerated) ? receiver.eventsGenerated : yesterday
+            start.upto(today, { date ->
                 EventList list = new EventList(proximityEventService.forProcessing(receiver, date ))
                 def events = PoiEvent.findEvents(receiver, list).reverse()
+                def timestamp = null
                 for (event in events) {
-                    poiEventService.createPoiEvent(event)
+                    def poiEvent = poiEventService.createPoiEvent(event)
+                    if (!poiEvent) break
+                    timestamp = poiEvent.timestamp
                 }
-                receiver.eventsGenerated = events.last().timestamp
-            }
-            careReceiverService.persistChanges(receiver)
+                if (timestamp) {
+                    receiver.eventsGenerated = timestamp
+                    careReceiverService.persistChanges(receiver)
+                }
+            })
         }
     }
 }
