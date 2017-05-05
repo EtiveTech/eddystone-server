@@ -36,10 +36,10 @@ class CareReceiverController {
                 def data = receiver.fetchWithingsData(CareReceiver.getStartDate(), new Date() - 1)
 
                 def activities = activityRecordService.bulkCreate(data.activity)
-                if (activities) receiver.activityDownloadDate = activities.last().date
+                if (activities) receiver.activityRecordsDownloaded = activities.last().date
 
                 def sleeps = sleepRecordService.bulkCreate(data.sleep)
-                if (sleeps) receiver.sleepDownloadDate = sleeps.last().date
+                if (sleeps) receiver.sleepRecordsDownloaded = sleeps.last().date
 
                 receiver = careReceiverService.persistChanges(receiver)
                 respond(receiver, status: 201)

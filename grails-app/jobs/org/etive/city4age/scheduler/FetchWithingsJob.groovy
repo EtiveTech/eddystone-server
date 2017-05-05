@@ -19,12 +19,12 @@ class FetchWithingsJob {
             def data = receiver.updateWithingsData(new Date() - 1)
 
             def activities = activityRecordService.bulkCreate(data.activity)
-            if (activities) receiver.activityDownloadDate = activities.last().date
+            if (activities) receiver.activityRecordsDownloaded = activities.last().date
 
             def sleeps = sleepRecordService.bulkCreate(data.sleep)
-            if (sleeps) receiver.sleepDownloadDate = sleeps.last().date
+            if (sleeps) receiver.sleepRecordsDownloadeded = sleeps.last().date
 
-            careReceiverService.updateCareReceiver(receiver)
+            careReceiverService.persistChanges(receiver)
         }
     }
 }

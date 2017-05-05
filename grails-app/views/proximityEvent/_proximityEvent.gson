@@ -12,6 +12,7 @@ json {
 	rssi proximityEvent.rssi
 	parameter proximityEvent.parameter
 	beacon proximityEvent.beacon.beaconId
+	location proximityEvent.beacon.location.name
 	device proximityEvent.device.id
 	careReceiver proximityEvent.careReceiver.id
 }

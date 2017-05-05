@@ -8,7 +8,6 @@ json {
 	id careReceiver.id
 	email careReceiver.emailAddress
 	token careReceiver.token
-	device careReceiver.device.id
     activityRecordsTo careReceiver.activityRecordsDownloaded
 	sleepRecordsTo careReceiver.sleepRecordsDownloaded
 	eventsGeneratedTo careReceiver.eventsGenerated
