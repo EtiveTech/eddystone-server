@@ -7,13 +7,7 @@ class PoiEventService {
     def proximityEventService
 
     PoiEvent createPoiEvent(PoiEvent poiEvent) {
-        def timestamp = null
-        for (sourceEvent in poiEvent.sourceEvents) {
-            if (!timestamp || (sourceEvent.timestamp.getTime() < timestamp.getTime())) timestamp = sourceEvent.timestamp
-        }
-        poiEvent.timestamp = timestamp
         poiEvent = poiEvent.save()
-
         if (poiEvent) {
             // The next line will only work if the ENTER event is processed before the EXIT
             poiEvent.instanceId = poiEvent.instance.id
@@ -24,7 +18,6 @@ class PoiEventService {
             }
             log.info("CareReceiver #" + poiEvent.careReceiver.id + ": Created " + poiEvent.action + " event for " + poiEvent.location.name)
         }
-
         return poiEvent
     }
 

@@ -29,6 +29,14 @@ class PoiEvent {
         uploaded nullable: false
     }
 
+    static private Date getTimestamp(sourceEvents) {
+        def timestamp = null
+        for (sourceEvent in sourceEvents) {
+            if (!timestamp || (sourceEvent.timestamp.getTime() < timestamp.getTime())) timestamp = sourceEvent.timestamp
+        }
+        return timestamp
+    }
+
     static List<PoiEvent> findEvents(CareReceiver receiver, EventList list) {
         List<PoiEvent> poiEvents = []
         List<PoiEvent> exitStack = []
@@ -65,7 +73,8 @@ class PoiEvent {
                                             action: poiEnter,
                                             careReceiver: receiver,
                                             location: beacon.location,
-                                            sourceEvents: sourceEvents)
+                                            sourceEvents: sourceEvents,
+                                            timestamp: getTimestamp(sourceEvents))
 
                                     exitEvent.instance = entryEvent.instance = entryEvent
                                     poiEvents.add(exitEvent)
@@ -81,7 +90,8 @@ class PoiEvent {
                                             action: poiExit,
                                             careReceiver: receiver,
                                             location: beacon.location,
-                                            sourceEvents: sourceEvents))
+                                            sourceEvents: sourceEvents,
+                                            timestamp: getTimestamp(sourceEvents)))
                                 }
                             } else {
                                 // No stacked exit event so this must be an exit event
@@ -89,7 +99,8 @@ class PoiEvent {
                                         action: poiExit,
                                         careReceiver: receiver,
                                         location: beacon.location,
-                                        sourceEvents: sourceEvents))
+                                        sourceEvents: sourceEvents,
+                                        timestamp: getTimestamp(sourceEvents)))
                             }
                         }
                     } else {
@@ -108,7 +119,8 @@ class PoiEvent {
                                 action: poiEnter,
                                 careReceiver: receiver,
                                 location: beacon.location,
-                                sourceEvents: [foundEvent])
+                                sourceEvents: [foundEvent],
+                                timestamp: foundEvent.timestamp)
                         entryEvent.instance = entryEvent
 
                         def exitEvent = new PoiEvent(
@@ -116,7 +128,8 @@ class PoiEvent {
                                 instance: entryEvent,
                                 careReceiver: receiver,
                                 location: beacon.location,
-                                sourceEvents: [lostEvent])
+                                sourceEvents: [lostEvent],
+                                timestamp: lostEvent.timestamp)
 
                         poiEvents.add(exitEvent)
                         poiEvents.add(entryEvent)
@@ -124,7 +137,7 @@ class PoiEvent {
                 }
             }
         }
-        return poiEvents
+        return poiEvents.sort{ a, b -> a.timestamp.getTime() <=> b.timestamp.getTime() }
     }
 
     def formatForUpload() {
