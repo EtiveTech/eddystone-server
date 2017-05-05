@@ -97,8 +97,12 @@ class PoiEvent {
 
                         // If there is already an exit event on the stack then this could be a very long POI_ENTER
                         // Need to either remove the stacked exit or re-classify this pair ss a BEP
-                        // Remove the stacked exit until it is clear we need to do otherwise
-                        if (exitStack && (exitStack.last().location.id == beacon.location.id)) exitStack.pop()
+                        // Remove the stacked exit unless it's for the container location of this location until it is clear
+                        // we need to do otherwise
+                        if ((exitStack) &&
+                                !(beacon.location.container && beacon.location.container.id == exitStack.last().location.id)) {
+                            exitStack.pop()
+                        }
 
                         def entryEvent = new PoiEvent(
                                 action: poiEnter,
