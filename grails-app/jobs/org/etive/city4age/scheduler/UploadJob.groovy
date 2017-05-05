@@ -10,7 +10,7 @@ class UploadJob {
     private final String centralRepository = System.getenv("CENTRAL_REPOSITORY")
 
     static triggers = {
-        cron name: 'uploadTrigger', cronExpression: "0 53 * * * ?"
+        cron name: 'uploadTrigger', cronExpression: "0 0 2 * * ?"
     }
 
     def execute() {

@@ -9,7 +9,7 @@ class GenerateEventsJob {
     def careReceiverService
 
     static triggers = {
-        cron name: 'poiTrigger', cronExpression: "0 0/5 * * * ?"
+        cron name: 'poiTrigger', cronExpression: "0 30 1 * * ?"
     }
 
     static boolean sameDay(Date date1, Date date2) {

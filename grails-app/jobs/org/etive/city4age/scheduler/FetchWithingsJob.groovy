@@ -7,7 +7,7 @@ class FetchWithingsJob {
     def sleepRecordService
 
     static triggers = {
-      cron name: 'withingsTrigger', cronExpression: "0 46 * * * ?"
+      cron name: 'withingsTrigger', cronExpression: "0 0 1 * * ?"
     }
 
     def execute() {
