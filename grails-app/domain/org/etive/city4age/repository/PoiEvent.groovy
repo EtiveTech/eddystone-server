@@ -8,6 +8,7 @@ class PoiEvent {
     Date dateCreated
     Date lastUpdated
     List<ProximityEvent> sourceEvents = []
+    PoiEvent instance
 
     static bepThreshold = System.getenv("BEP_THRESHOLD")
     static noiseThreshold = System.getenv("NOISE_THRESHOLD")
@@ -17,12 +18,12 @@ class PoiEvent {
     static hasMany = [proximityEvents: ProximityEvent]
     static belongsTo = [careReceiver: CareReceiver, location: Location]
 
-    static transients = [ "sourceEvents" ]
+    static transients = [ "sourceEvents", "instance" ]
 
     static constraints = {
         action nullable: false, blank: false
         timestamp nullabe: false
-        instanceId nullable: false, blank: false
+        instanceId nullable: true
         careReceiver nullable: false
         location nullable: false
         uploaded nullable: false
@@ -59,16 +60,16 @@ class PoiEvent {
                                 if (exitEvent.location.id == beacon.location.id) {
                                     // The exit event and the new BEP are for the same location
                                     // Must be the enter event
-                                    def uuid = UUID.randomUUID().toString()
-                                    exitEvent.instanceId = uuid
 
-                                    poiEvents.add(exitEvent)
-                                    poiEvents.add(new PoiEvent(
+                                    def entryEvent = new PoiEvent(
                                             action: poiEnter,
-                                            instanceId: uuid,
                                             careReceiver: receiver,
                                             location: beacon.location,
-                                            sourceEvents: sourceEvents))
+                                            sourceEvents: sourceEvents)
+
+                                    exitEvent.instance = entryEvent.instance = entryEvent
+                                    poiEvents.add(exitEvent)
+                                    poiEvents.add(entryEvent)
                                 } else {
                                     // Our new BEP is not in the same location as the stacked exit event
                                     if (beacon.location.container &&
@@ -99,20 +100,22 @@ class PoiEvent {
                         // Remove the stacked exit until it is clear we need to do otherwise
                         if (exitStack && (exitStack.last().location.id == beacon.location.id)) exitStack.pop()
 
-                        def uuid = UUID.randomUUID().toString()
-
-                        poiEvents.add(new PoiEvent(
-                                action: poiExit,
-                                instanceId: uuid,
-                                careReceiver: receiver,
-                                location: beacon.location,
-                                sourceEvents: [lostEvent]))
-                        poiEvents.add(new PoiEvent(
+                        def entryEvent = new PoiEvent(
                                 action: poiEnter,
-                                instanceId: uuid,
                                 careReceiver: receiver,
                                 location: beacon.location,
-                                sourceEvents: [foundEvent]))
+                                sourceEvents: [foundEvent])
+                        entryEvent.instance = entryEvent
+
+                        def exitEvent = new PoiEvent(
+                                action: poiExit,
+                                instance: entryEvent,
+                                careReceiver: receiver,
+                                location: beacon.location,
+                                sourceEvents: [lostEvent])
+
+                        poiEvents.add(exitEvent)
+                        poiEvents.add(entryEvent)
                     }
                 }
             }

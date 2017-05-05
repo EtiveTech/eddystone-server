@@ -15,6 +15,9 @@ class PoiEventService {
         poiEvent = poiEvent.save()
 
         if (poiEvent) {
+            // The next line will only work if the ENTER event is processed before the EXIT
+            poiEvent.instanceId = poiEvent.instance.id
+            poiEvent.save()
             for (sourceEvent in poiEvent.sourceEvents) {
                 sourceEvent.poiEvent = poiEvent
                 proximityEventService.persistChanges(sourceEvent)
@@ -24,34 +27,6 @@ class PoiEventService {
 
         return poiEvent
     }
-
-//    PoiEvent createPoiEvent(String action, CareReceiver receiver, Location location, List<ProximityEvent> sourceEvents) {
-//        def poiEvent = new PoiEvent(
-//                action: action,
-//                careReceiver: receiver,
-//                location: location
-//        )
-//        def timestamp = null
-//        for (sourceEvent in sourceEvents) {
-//            sourceEvent.poiEvent = poiEvent
-//            proximityEventService.persistChanges(sourceEvent)
-//            if (!timestamp || (sourceEvent.timestamp < timestamp)) timestamp = sourceEvent.timestamp
-//        }
-//        poiEvent.timestamp = timestamp
-//        log.info("CareReceiver #" + receiver.id + ": Created " + action + " event for " + location.name)
-//        return poiEvent
-//    }
-//
-//    def deletePoiEvent(event) {
-//        def query = ProximityEvent.where { poiEvent.id == event.id }
-//        def proximityEvents = query.list()
-//        for (proximityEvent in proximityEvents) {
-//            proximityEvent.poiEvent = null
-//            proximityEventService.persistChanges(proximityEvent)
-//        }
-//        log.info("CareReceiver #" + event.careReceiver.id + ": Deleting " + event.action + " event for " + event.location.name)
-//        event.delete()
-//    }
 
     def persistChanges(poiEvent) {
         return poiEvent.save()
@@ -74,6 +49,6 @@ class PoiEventService {
     @Transactional(readOnly = true)
     def readyForUpload() {
         def query = PoiEvent.where{ uploaded == false }
-        return query.list()
+        return query.list(order: timestamp)
     }
 }
