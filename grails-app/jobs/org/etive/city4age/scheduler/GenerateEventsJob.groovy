@@ -27,7 +27,7 @@ class GenerateEventsJob {
             Date start = (receiver.eventsGenerated) ? receiver.eventsGenerated : yesterday
             start.upto(today, { date ->
                 EventList list = new EventList(proximityEventService.forProcessing(receiver, date ))
-                def events = PoiEvent.findEvents(receiver, list).reverse()
+                def events = PoiEvent.findEvents(receiver, list)
                 def timestamp = null
                 for (event in events) {
                     def poiEvent = poiEventService.createPoiEvent(event)
