@@ -43,6 +43,6 @@ class DeviceService {
 
     @Transactional(readOnly = true)
     def listDevices() {
-        return Devices.list()
+        return Device.list()
     }
 }
