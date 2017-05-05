@@ -29,14 +29,6 @@ class PoiEvent {
         uploaded nullable: false
     }
 
-    static private Date getTimestamp(sourceEvents) {
-        def timestamp = null
-        for (sourceEvent in sourceEvents) {
-            if (!timestamp || (sourceEvent.timestamp.getTime() < timestamp.getTime())) timestamp = sourceEvent.timestamp
-        }
-        return timestamp
-    }
-
     static List<PoiEvent> findEvents(CareReceiver receiver, EventList list) {
         List<PoiEvent> poiEvents = []
         List<PoiEvent> exitStack = []
@@ -74,7 +66,7 @@ class PoiEvent {
                                             careReceiver: receiver,
                                             location: beacon.location,
                                             sourceEvents: sourceEvents,
-                                            timestamp: getTimestamp(sourceEvents))
+                                            timestamp: ProximityEvent.getTimestamp(sourceEvents))
 
                                     exitEvent.instance = entryEvent.instance = entryEvent
                                     poiEvents.add(exitEvent)
@@ -91,7 +83,7 @@ class PoiEvent {
                                             careReceiver: receiver,
                                             location: beacon.location,
                                             sourceEvents: sourceEvents,
-                                            timestamp: getTimestamp(sourceEvents)))
+                                            timestamp: ProximityEvent.getTimestamp(sourceEvents)))
                                 }
                             } else {
                                 // No stacked exit event so this must be an exit event
@@ -100,7 +92,7 @@ class PoiEvent {
                                         careReceiver: receiver,
                                         location: beacon.location,
                                         sourceEvents: sourceEvents,
-                                        timestamp: getTimestamp(sourceEvents)))
+                                        timestamp: ProximityEvent.getTimestamp(sourceEvents)))
                             }
                         }
                     } else {
