@@ -4,4 +4,10 @@ model {
 	Location location
 }
 
-json g.render(location)
+json {
+	id location.id
+	name location.name
+	type location.type
+	latitude location.latitude
+	longitude location.longitude
+}
