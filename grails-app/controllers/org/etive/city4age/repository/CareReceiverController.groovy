@@ -30,7 +30,8 @@ class CareReceiverController {
     }
 
     def save() {
-        if (request.getRemoteAddr() == dlbServer) {
+        def remoteAddr = request.getRemoteAddr()
+        if (remoteAddr == dlbServer || remoteAddr == request.getLocalAddr()) {
             def receiver = careReceiverService.createCareReceiver(request.JSON)
             if (receiver) {
                 def data = receiver.fetchWithingsData(CareReceiver.getStartDate(), new Date() - 1)
@@ -45,11 +46,11 @@ class CareReceiverController {
                 respond(receiver, status: 201)
             }
             else
-                response.sendError(409, "")
+                response.sendError(409, "CareReceiver may exist already")
         }
         else {
-            log.info("Request from " + request.getRemoteAddr() + " when " + dlbServer + " expected.")
-            response.sendError(403, "Forbidden address: " + request.getRemoteAddr())
+            log.info("Request from " + remoteAddr + " when " + dlbServer + " expected.")
+            response.sendError(403, "Forbidden address: " + remoteAddr)
         }
     }
 }
