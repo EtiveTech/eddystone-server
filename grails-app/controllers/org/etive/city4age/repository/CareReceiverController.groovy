@@ -48,7 +48,8 @@ class CareReceiverController {
                 response.sendError(409, "")
         }
         else {
-            response.sendError(403, "Forbidden")
+            log.info("Request from " + request.getRemoteAddr() + " when " + dlbServer + " expected.")
+            response.sendError(403, "Forbidden address: " + request.getRemoteAddr())
         }
     }
 }
