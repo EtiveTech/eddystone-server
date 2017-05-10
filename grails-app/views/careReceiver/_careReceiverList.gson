@@ -6,8 +6,6 @@ model {
 
 json {
 	id careReceiver.id
-	token careReceiver.token
-	emailAddress careReceiver.emailAddress
     activityRecordsTo careReceiver.activityRecordsDownloaded
 	sleepRecordsTo careReceiver.sleepRecordsDownloaded
 	eventsGeneratedTo careReceiver.eventsGenerated

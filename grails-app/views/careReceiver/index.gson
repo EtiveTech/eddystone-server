@@ -4,5 +4,5 @@ model {
 	Iterable<CareReceiver> careReceiverList
 }
 
-json tmpl.careReceiver(careReceiverList ?: [])
+json tmpl.careReceiverList(careReceiverList ?: [])
 
