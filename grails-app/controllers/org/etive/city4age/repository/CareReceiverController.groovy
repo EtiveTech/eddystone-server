@@ -12,15 +12,14 @@ class CareReceiverController {
     private final String localRepository = System.getenv("REPOSITORY_KEY")
 
     def index() {
-        // Remove for production
-        respond careReceiverService.listCareReceivers()
+        respond (careReceiverService.listCareReceivers(), [ status: 200 ])
     }
 
     def show() {
         if (params.key == localRepository) {
             def receiver = CareReceiver.findByEmailAddress(params.email.toString())
             if (receiver)
-                respond(receiver, status: 200)
+                respond(receiver, [ status: 200 ])
             else
                 response.sendError(404, "Care Receiver not found")
         }
@@ -43,7 +42,7 @@ class CareReceiverController {
                 if (sleeps) receiver.sleepRecordsDownloaded = sleeps.last().date
 
                 receiver = careReceiverService.persistChanges(receiver)
-                respond(receiver, status: 201)
+                respond (receiver, [ status: 201 ])
             }
             else
                 response.sendError(409, "CareReceiver may exist already")

@@ -1,11 +1,11 @@
 package org.etive.city4age.repository
 
 class Location {
-
+    String locationId
     String name
     String type
     Location container = null // Some locations will be inside others
-//    position (includes lat and long)
+    String address
     String latitude
     String longitude
     Date dateCreated
@@ -14,8 +14,10 @@ class Location {
     static hasMany = [beacons: Beacon, poiEvents: PoiEvent]
 
     static constraints = {
+        locationId blank: false, nullable: false
         name blank: false, nullable: false
         type nullable: false
+        address blank: true, nullable: true
         latitude blank: false, nullable: false
         longitude blank: false, nullable: false
         container nullable: true

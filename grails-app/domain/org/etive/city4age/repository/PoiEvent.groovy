@@ -137,13 +137,17 @@ class PoiEvent {
                 action: "eu:c4a:" + action,
                 user: careReceiver.city4ageId,
                 pilot: "BHX",
-                location: "eu:c4a:" + location.type + ":" + location.name,
+                location: "eu:c4a:" + location.type + ":" + location.locationId,
                 position: location.latitude + " " + location.longitude,
                 timestamp: timestamp.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
                 payload: [
                         instance_id: instanceId
                 ],
-                data_source_type: [ "sensors" ]
+                data_source_type: [ "sensors" ],
+                extra: [
+                        name: location.name,
+                        address: location.address
+                ]
         ]
     }
 }

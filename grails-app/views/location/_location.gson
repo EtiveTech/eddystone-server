@@ -6,6 +6,7 @@ model {
 
 json {
 	id location.id
+	locationId location.locationId
 	name location.name
 	type location.type
 	latitude location.latitude
