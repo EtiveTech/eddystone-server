@@ -1,7 +1,0 @@
-import org.etive.city4age.repository.Location
-
-model {
-	Location location
-}
-
-json tmpl.location(location)

@@ -73,8 +73,8 @@ class PoiEvent {
                                     poiEvents.add(entryEvent)
                                 } else {
                                     // Our new BEP is not in the same location as the stacked exit event
-                                    if (beacon.location.container &&
-                                            beacon.location.container.id == exitEvent.location.id) {
+                                    if (beacon.location.containedBy &&
+                                            beacon.location.containedBy.id == exitEvent.location.id) {
                                         // Forget about the exit event unless we have a POI inside a POI
                                         exitStack.push(exitEvent)
                                     }
@@ -100,10 +100,10 @@ class PoiEvent {
 
                         // If there is already an exit event on the stack then this could be a very long POI_ENTER
                         // Need to either remove the stacked exit or re-classify this pair ss a BEP
-                        // Remove the stacked exit unless it's for the container location of this location until it is clear
+                        // Remove the stacked exit unless it's for the containedBy location of this location until it is clear
                         // we need to do otherwise
                         if ((exitStack) &&
-                                !(beacon.location.container && beacon.location.container.id == exitStack.last().location.id)) {
+                                !(beacon.location.containedBy && beacon.location.containedBy.id == exitStack.last().location.id)) {
                             exitStack.pop()
                         }
 

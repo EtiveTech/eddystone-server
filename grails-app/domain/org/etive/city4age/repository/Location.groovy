@@ -4,7 +4,7 @@ class Location {
     String locationId
     String name
     String type
-    Location container = null // Some locations will be inside others
+    Location containedBy = null // Some locations will be inside others
     String address
     String latitude
     String longitude
@@ -16,10 +16,10 @@ class Location {
     static constraints = {
         locationId blank: false, nullable: false
         name blank: false, nullable: false
-        type nullable: false
+        type blank: false, nullable: false
         address blank: true, nullable: true
         latitude blank: false, nullable: false
         longitude blank: false, nullable: false
-        container nullable: true
+        containedBy nullable: true
     }
 }
