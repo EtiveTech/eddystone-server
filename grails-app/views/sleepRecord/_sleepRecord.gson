@@ -12,7 +12,7 @@ json {
     wakeupDuration sleepRecord.wakeupDuration
     wakeupCount sleepRecord.wakeupCount
     lightSleepDuration sleepRecord.lightSleepDuration
-    deepSleepDuration sleepRecord.lightSleepDuration
+    deepSleepDuration sleepRecord.deepSleepDuration
     durationToSleep sleepRecord.durationToSleep
     careReceiver sleepRecord.careReceiver.id
     uploaded sleepRecord.uploaded
