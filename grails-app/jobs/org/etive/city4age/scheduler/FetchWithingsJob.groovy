@@ -7,7 +7,7 @@ class FetchWithingsJob {
     def sleepRecordService
 
     static triggers = {
-      cron name: 'withingsTrigger', cronExpression: "0 0 1 * * ?"
+      cron name: 'withingsTrigger', cronExpression: "0 30 1 * * ?"
     }
 
     def execute() {
@@ -22,7 +22,7 @@ class FetchWithingsJob {
             if (activities) receiver.activityRecordsDownloaded = activities.last().date
 
             def sleeps = sleepRecordService.bulkCreate(data.sleep)
-            if (sleeps) receiver.sleepRecordsDownloadeded = sleeps.last().date
+            if (sleeps) receiver.sleepRecordsDownloaded = sleeps.last().date
 
             careReceiverService.persistChanges(receiver)
         }

@@ -84,10 +84,8 @@ class WithingsService {
         OAuth1AccessToken accToken = new OAuth1AccessToken(careReceiver.accessKey, careReceiver.accessSecret)
         def apiMeasuresUrl = "https://wbsapi.withings.net/v2/sleep?action=getsummary"
         apiMeasuresUrl += "&userid=" + careReceiver.withingsId
-//        apiMeasuresUrl += "&startdate=" + startDate.format("yyyy-MM-dd")
-//        apiMeasuresUrl += "&enddate=" + endDate.format("yyyy-MM-dd")
-        apiMeasuresUrl += "&startdate=" + toEpoch(startDate.clearTime())
-        apiMeasuresUrl += "&enddate=" + toEpoch(endDate.clearTime())
+        apiMeasuresUrl += "&startdateymd=" + startDate.format("yyyy-MM-dd")
+        apiMeasuresUrl += "&enddateymd=" + endDate.format("yyyy-MM-dd")
         OAuthRequest request = new OAuthRequest(Verb.GET, apiMeasuresUrl, service)
         service.signRequest(accToken, request)
         Response response = request.send()
@@ -96,7 +94,9 @@ class WithingsService {
         try {
             def json = response.getBody()
             if (json) {
-                def series = JSON.parse(json).body.series
+                def body = JSON.parse(json).body
+                def series = []
+                if (body.series) series = body.series
                 for (item in series) {
                     def withingsSleep = new WithingsSleep()
                     withingsSleep.with {
@@ -130,5 +130,4 @@ class WithingsService {
                 item.containsKey('distance') && item.containsKey('soft') && item.containsKey('moderate') &&
                 item.containsKey('intense') && item.containsKey('steps')
     }
-
 }
