@@ -16,6 +16,7 @@ class CareReceiver {
     String activityRecordsDownloaded = (getStartDate() - 1).format("yyyy-MM-dd") // The day before startDate
     String sleepRecordsDownloaded = (getStartDate() - 1).format("yyyy-MM-dd")
     Date eventsGenerated
+    Boolean forTest = false // This Care Receiver's data is for test only and should not be uploaded
     Date dateCreated
     Date lastUpdated
 
@@ -35,6 +36,7 @@ class CareReceiver {
         activityRecordsDownloaded nullable: false, blank: false
         sleepRecordsDownloaded nullable: false, blank: false
         eventsGenerated nullable: true
+        forTest nullable: false
     }
 
     private fetchActivityData(Date startDate, Date endDate = null) {

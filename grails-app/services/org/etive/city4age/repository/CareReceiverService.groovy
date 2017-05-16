@@ -30,7 +30,8 @@ class CareReceiverService {
                 emailAddress: json.emailAddress as String,
                 accessKey: json.accessKey as String,
                 accessSecret: json.accessSecret as String,
-                token: token
+                token: token,
+                forTest: (json.forTest) ? json.forTest : false
         )
         careReceiver.save()
         return careReceiver
