@@ -14,7 +14,7 @@ class Location {
     static hasMany = [beacons: Beacon, poiEvents: PoiEvent]
 
     static constraints = {
-        locationId blank: false, nullable: false
+        locationId blank: false, nullable: false, unique: true
         name blank: false, nullable: false
         type blank: false, nullable: false
         address blank: true, nullable: true

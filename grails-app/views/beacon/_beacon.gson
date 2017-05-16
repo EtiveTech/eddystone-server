@@ -7,5 +7,6 @@ model {
 json {
     id beacon.id
 	beaconId beacon.beaconId
+	locationId beacon.location.locationId
 	location beacon.location.name + ": " + beacon.description
 }

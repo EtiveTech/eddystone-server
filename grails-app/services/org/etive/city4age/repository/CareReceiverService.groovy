@@ -33,8 +33,7 @@ class CareReceiverService {
                 token: token,
                 forTest: (json.forTest) ? json.forTest : false
         )
-        careReceiver.save()
-        return careReceiver
+        return careReceiver.save()
     }
 
     def persistChanges(careReceiver) {

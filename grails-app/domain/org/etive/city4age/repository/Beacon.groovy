@@ -11,7 +11,7 @@ class Beacon {
     static belongsTo = [location: Location]
 
     static constraints = {
-        beaconId blank: false, nullable: false
+        beaconId blank: false, nullable: false, unique: true
         description blank: false, nullable: false
         events nullable: true
     }
