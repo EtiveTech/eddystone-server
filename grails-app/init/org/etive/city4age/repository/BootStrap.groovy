@@ -5,7 +5,7 @@ import grails.util.Environment
 class BootStrap {
 
     def init = { servletContext ->
-        if (Environment.isDevelopmentMode()) {
+        if (Environment.current == Environment.DEVELOPMENT) {
             def manorVeseyPractice = new Location(locationId: "ManorVeseyPractice", name: "Manor/Vesey Practice", type: "HealthPlace:GP", address: "61 Holland Rd, Sutton Coldfield, B72 1RL", latitude: "52.558301", longitude: "-1.823587").save(failOnError: true)
             def manorAshfurlongMedicalCentre = new Location(locationId: "ManorAshfurlongMedicalCentre", name: "Manor/Ashfurlong Medical Centre", type: "HealthPlace:GP", address: "233 Tamworth Rd, Sutton Coldfield, B75 6DX", latitude: "52.578182", longitude: "-1.804926").save(failOnError: true)
             def leyHillSurgery = new Location(locationId: "LeyHillSurgery", name: "Ley Hill Surgery", type: "HealthPlace:GP", address: "228 Lichfield Rd, Sutton Coldfield, B74 2UE", latitude: "52.582995", longitude: "-1.828277").save(failOnError: true)
