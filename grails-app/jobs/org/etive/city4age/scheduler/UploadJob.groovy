@@ -24,28 +24,28 @@ class UploadJob {
         def activities = activityRecordService.readyForUpload()
         for (activity in activities) {
             if (!activity.careReceiver.forTest) {
-                def json = JsonOutput.toJson(activity.forUpload())
+                def json = JsonOutput.toJson(activity.formatForUpload())
                 // send a POST request to the central repository with json as the payload
                 activity.uploaded = true
-                activityRecordService.update(activity)
+                activityRecordService.persistChanges(activity)
             }
         }
         def sleeps = sleepRecordService.readyForUpload()
         for (sleep in sleeps) {
             if (!sleep.careReceiver.forTest) {
-                def json = JsonOutput.toJson(sleep.forUpload())
+                def json = JsonOutput.toJson(sleep.formatForUpload())
                 // send a POST request to the central repository with json as the payload
                 sleep.uploaded = true
-                sleepRecordService.update(sleep)
+                sleepRecordService.persistChanges(sleep)
             }
         }
         def events = poiEventService.readyForUpload()
         for (event in events) {
             if (!event.careReceiver.forTest) {
-                def json = JsonOutput.toJson(event.forUpload())
+                def json = JsonOutput.toJson(event.formatForUpload())
                 // send a POST request to the central repository with json as the payload
                 event.uploaded = true
-                poiEventService.update(event)
+                poiEventService.persistChanges(event)
             }
         }
     }
