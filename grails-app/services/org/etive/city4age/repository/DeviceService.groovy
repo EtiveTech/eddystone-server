@@ -24,8 +24,7 @@ class DeviceService {
                     lastContact: new Date(Long.valueOf(json.timestamp.toString())),
             )
         }
-        device.save()
-        return device
+        return device.save()
     }
 
     def updateLastContact(json, uuid = null) {
