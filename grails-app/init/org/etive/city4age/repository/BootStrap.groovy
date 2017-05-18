@@ -19,7 +19,7 @@ class BootStrap {
             def bistrotPierre = new Location(locationId: "BistrotPierre", name: "Bistrot Pierre", type: "SocializingPlace:Restaurant", address: "2 Mere Green Rd, Sutton Coldfield, B75 5BP", latitude: "52.587403", longitude: "-1.829227").save(failOnError: true)
             def theOldSchoolHouse = new Location(locationId: "TheOldSchoolHouse", name: "The Old School House", type: "SocializingPlace:Restaurant", address: "12 Mere Green Rd, Sutton Coldfield, B75 5BL", latitude: "52.587532", longitude: "-1.828316").save(failOnError: true)
             def mereGreenCommunityCentre = new Location(locationId: "MereGreenCommunityCentre", name: "Mere Green Community Centre", type: "SocializingPlace:SeniorCenter", address: "30A Mere Green Rd, Sutton Coldfield, B75 5BT", latitude: "52.586428", longitude: "-1.8274").save(failOnError: true)
-            def mereGreenLibrary = new Location(containedBy: mereGreenCommunityCentre, locationId: "MereGreenLibrary", name: "Mere Green Library", type: "SocializingPlace", address: "30A Mere Green Rd, Sutton Coldfield, B75 5BT", latitude: "52.586635", longitude: "-1.827299").save(failOnError: true)
+            def mereGreenLibrary = new Location(containedBy: mereGreenCommunityCentre, locationId: "MereGreenLibrary", name: "Mere Green Library", type: "SocializingPlace:OtherSocialPlace", address: "30A Mere Green Rd, Sutton Coldfield, B75 5BT", latitude: "52.586635", longitude: "-1.827299").save(failOnError: true)
             def theMarePoolWetherspoons = new Location(locationId: "TheMarePoolWetherspoons", name: "The Mare Pool (Wetherspoons)", type: "SocializingPlace:Restaurant", address: "297 Lichfield Rd, Sutton Coldfield, B74 2UG", latitude: "52.586504", longitude: "-1.828528").save(failOnError: true)
             def waitroseTheHighgateCentre = new Location(locationId: "WaitroseTheHighgateCentre", name: "Waitrose, The Highgate Centre", type: "Shop:Supermarket", address: "The Highgate Centre, 7 Belwell Lane, Sutton Coldfield, B74 4AB", latitude: "52.587669", longitude: "-1.831764").save(failOnError: true)
             def postOfficeInTescoExpress = new Location(locationId: "PostOfficeInTescoExpress", name: "Post Office (in Tesco Express)", type: "Shop", address: "80 Walsall Rd, Sutton Coldfield, B74 4QY", latitude: "52.590205", longitude: "-1.848042").save(failOnError: true)
@@ -29,9 +29,9 @@ class BootStrap {
             def costaCoffeeGracechurchShoppingCentre = new Location(containedBy: gracechurchShoppingCentre, locationId: "CostaCoffeeGracechurchShoppingCentre", name: "Costa Coffee, Gracechurch Shopping Centre", type: "SocializingPlace:Restaurant", address: "182 The Parade, Gracechurch Shopping Centre,  Sutton Coldfield, B72 1PH", latitude: "52.563056", longitude: "-1.824492").save(failOnError: true)
             def suttonParkSurgery = new Location(locationId: "SuttonParkSurgery", name: "Sutton Park Surgery", type: "HealthPlace:GP", address: "34 Chester Road North, Sutton Coldfield, B73 6SP", latitude: "52.564477", longitude: "-1.878559").save(failOnError: true)
             def bootsMereGreen = new Location(locationId: "BootsMereGreen", name: "Boots, Mere Green", type: "Shop:Pharmacy", address: "16 Mere Green Rd, Sutton Coldfield, B75 5BP", latitude: "52.587386", longitude: "-1.828246").save(failOnError: true)
-            def cancerResearchMereGreen = new Location(locationId: "CancerResearchMereGreen", name: "Cancer Research, Mere Green", type: "Shop", address: "280 Lichfield Rd, Sutton Coldfield B74 2UG", latitude: "52.585642", longitude: "-1.82922").save(failOnError: true)
+            def cancerResearchMereGreen = new Location(locationId: "CancerResearchMereGreen", name: "Cancer Research, Mere Green", type: "Shop", address: "280 Lichfield Rd, Sutton Coldfield, B74 2UG", latitude: "52.585642", longitude: "-1.82922").save(failOnError: true)
             def costaCoffeeWyndleyLeisureCentre = new Location(locationId: "CostaCoffeeWyndleyLeisureCentre", name: "Costa Coffee, Wyndley Leisure Centre", type: "SocializingPlace:Restaurant", address: "Wyndley Leisure Centre, Clifton Rd, Sutton Coldfield, B73 6EB", latitude: "52.562596", longitude: "-1.834169").save(failOnError: true)
-            def holyCrossStFrancisRcChurch = new Location(locationId: "HolyCrossStFrancisRcChurch", name: "Holy Cross & St Francis RC Church", type: "SocializingPlace", address: "1 Signal Hayes Rd, Sutton Coldfield, B76 2RS", latitude: "52.550383", longitude: "-1.79636").save(failOnError: true)
+            def holyCrossStFrancisRcChurch = new Location(locationId: "HolyCrossStFrancisRcChurch", name: "Holy Cross & St Francis RC Church", type: "SocializingPlace:OtherSocialPlace", address: "1 Signal Hayes Rd, Sutton Coldfield, B76 2RS", latitude: "52.550383", longitude: "-1.79636").save(failOnError: true)
 
             new Beacon(beaconId: "c4a00000272b", description: "Above main entrance from car park", location: manorVeseyPractice).save(failOnError: true)
             new Beacon(beaconId: "c4a00000274c", description: "Above entrance from street", location: manorVeseyPractice).save(failOnError: true)
@@ -73,7 +73,7 @@ class BootStrap {
             new Beacon(beaconId: "c4a00000275f", description: "On pillar right of main entrance", location: cancerResearchMereGreen).save(failOnError: true)
             new Beacon(beaconId: "c4a000002727", description: "Above side entrance to leisure centre reception", location: costaCoffeeWyndleyLeisureCentre).save(failOnError: true)
             new Beacon(beaconId: "c4a000002742", description: "Above main entrance on the right", location: holyCrossStFrancisRcChurch).save(failOnError: true)
-        }
+         }
     }
     def destroy = {
     }
