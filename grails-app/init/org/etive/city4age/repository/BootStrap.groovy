@@ -73,7 +73,7 @@ class BootStrap {
             new Beacon(beaconId: "c4a00000275f", description: "On pillar right of main entrance", location: cancerResearchMereGreen).save(failOnError: true)
             new Beacon(beaconId: "c4a000002727", description: "Above side entrance to leisure centre reception", location: costaCoffeeWyndleyLeisureCentre).save(failOnError: true)
             new Beacon(beaconId: "c4a000002742", description: "Above main entrance on the right", location: holyCrossStFrancisRcChurch).save(failOnError: true)
-         }
+        }
     }
     def destroy = {
     }

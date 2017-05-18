@@ -12,32 +12,33 @@ class GenerateEventsJob {
         cron name: 'poiTrigger', cronExpression: "0 30 2 * * ?"
     }
 
-    static boolean sameDay(Date date1, Date date2) {
-        def first = (new Date(date1.getTime())).clearTime()
-        def second = (new Date(date2.getTime())).clearTime()
-        return first.compareTo(second)
-    }
-
     def execute() {
         // execute job
         def careReceivers = careReceiverService.listCareReceivers()
         def today = (new Date()).clearTime()
         def yesterday = today - 1
         for (receiver in careReceivers) {
-            Date start = (receiver.eventsGenerated) ? receiver.eventsGenerated.clearTime() : yesterday
+            Date start = receiver.eventsGenerated
+            if (!start) {
+                def first = proximityEventService.firstProximityEvent(receiver)
+                start = (first) ? first.timestamp : yesterday
+            }
+            start.clearTime()
             Date date = new Date(start.getTime())
             for (; date <= yesterday; date += 1) {
                 EventList list = new EventList(proximityEventService.forProcessing(receiver, date))
                 def events = PoiEvent.findEvents(receiver, list)
-                def timestamp = null
-                for (event in events) {
-                    def poiEvent = poiEventService.createPoiEvent(event)
-                    if (!poiEvent) break
-                    timestamp = poiEvent.timestamp
-                }
-                if (timestamp) {
-                    receiver.eventsGenerated = timestamp
-                    careReceiverService.persistChanges(receiver)
+                if (events) {
+                    def timestamp = null
+                    for (event in events) {
+                        def poiEvent = poiEventService.createPoiEvent(event)
+                        if (!poiEvent) break
+                        timestamp = poiEvent.timestamp
+                    }
+                    if (timestamp) {
+                        receiver.eventsGenerated = timestamp
+                        careReceiverService.persistChanges(receiver)
+                    }
                 }
             }
         }

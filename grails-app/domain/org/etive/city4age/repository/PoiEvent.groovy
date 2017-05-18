@@ -38,7 +38,7 @@ class PoiEvent {
         bepThreshold = (bepThreshold) ?: 60
         noiseThreshold = (noiseThreshold) ?: 2.5
 
-        // The supplied list is a reversed list of proximity events
+        // The supplied mList is a reversed mList of proximity events
         // The result of this method - poiEvents - will have the order reversed again
         while (!list.isEmpty()) {
             lostEvent = list.nextLost()

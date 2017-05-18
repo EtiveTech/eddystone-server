@@ -51,4 +51,11 @@ class ProximityEventService {
         }
         return query.list()
     }
+
+    @Transactional(readOnly = true)
+    def firstProximityEvent(CareReceiver receiver) {
+        def query = ProximityEvent.where{ careReceiver.id == receiver.id }
+        def first = query.list(max: 1)
+        return (first) ? first[0] : null
+    }
 }

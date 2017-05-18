@@ -27,9 +27,9 @@ class PoiEventService {
 
     @Transactional(readOnly = true)
     def listPoiEvents(CareReceiver receiver) {
-        // Only list events for today to keep the amount of data down
-        def early = (new Date()).clearTime()
-        def late = early + 1
+        // Only list events for yesterday (there will be no events for today yet) to keep the amount of data down
+        def late = (new Date()).clearTime()
+        def early = late - 1
 
         def query
         if (receiver)
