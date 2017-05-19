@@ -20,8 +20,7 @@ class CareReceiver {
     Date dateCreated
     Date lastUpdated
 
-    static hasMany = [proximityEvents: ProximityEvent, activityRecords: ActivityRecord, sleepRecords: SleepRecord]
-    static hasOne = [device: Device]
+    static hasMany = [device: Device, proximityEvents: ProximityEvent, activityRecords: ActivityRecord, sleepRecords: SleepRecord]
 
     static constraints = {
         emailAddress blank: false, nullable: false, email: true, unique: true
