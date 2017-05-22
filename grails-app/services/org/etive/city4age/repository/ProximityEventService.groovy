@@ -27,15 +27,8 @@ class ProximityEventService {
 
     @Transactional(readOnly = true)
     def listProximityEvents(CareReceiver receiver) {
-        def early = (new Date()).clearTime()
-        def late = early + 1
-
-        def query
-        if (receiver)
-            query = ProximityEvent.where{ careReceiver.id == receiver.id && timestamp >= early && timestamp < late }
-        else
-            query = ProximityEvent.where{ timestamp >= early && timestamp < late }
-        return query.list(max: 500)
+        def query = (receiver) ? ProximityEvent.where{ careReceiver.id == receiver.id } : ProximityEvent
+        return query.list(offset: 0, max: 500, sort: "id", order: "desc")
     }
 
     @Transactional(readOnly = true)

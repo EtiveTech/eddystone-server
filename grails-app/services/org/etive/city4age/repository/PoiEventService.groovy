@@ -27,16 +27,8 @@ class PoiEventService {
 
     @Transactional(readOnly = true)
     def listPoiEvents(CareReceiver receiver) {
-        // Only list events for yesterday (there will be no events for today yet) to keep the amount of data down
-        def late = (new Date()).clearTime()
-        def early = late - 1
-
-        def query
-        if (receiver)
-            query = PoiEvent.where{ careReceiver.id == receiver.id && timestamp >= early && timestamp < late }
-        else
-            query = PoiEvent.where{ timestamp >= early && timestamp < late }
-        return query.list(max: 500)
+        def query = (receiver) ? PoiEvent.where{ careReceiver.id == receiver.id } : PoiEvent
+        return query.list(offset: 0, max: 500, sort: "id", order: "desc")
     }
 
     @Transactional(readOnly = true)
