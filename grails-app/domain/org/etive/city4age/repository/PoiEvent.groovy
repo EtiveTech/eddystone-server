@@ -29,6 +29,11 @@ class PoiEvent {
         uploaded nullable: false
     }
 
+    static Integer getId(instance) {
+        if (instance) return instance.id
+        return null
+    }
+
     static List<PoiEvent> findEvents(CareReceiver receiver, EventList list) {
         List<PoiEvent> poiEvents = []
         List<PoiEvent> exitStack = []

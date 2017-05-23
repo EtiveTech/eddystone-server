@@ -1,3 +1,4 @@
+import org.etive.city4age.repository.PoiEvent
 import org.etive.city4age.repository.ProximityEvent
 
 model {
@@ -13,6 +14,6 @@ json {
 	beacon proximityEvent.beacon.beaconId
 	location proximityEvent.beacon.location.name
 	device proximityEvent.device.id
-	poiEvent (proximityEvent.poiEvent) ? proximityEvent.poiEvent.id : null
+	poiEvent PoiEvent.getId(proximityEvent.poiEvent)
 	careReceiver proximityEvent.careReceiver.id
 }
