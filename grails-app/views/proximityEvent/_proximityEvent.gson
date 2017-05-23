@@ -4,7 +4,6 @@ model {
 	ProximityEvent proximityEvent
 }
 
-//json g.render(proximityEvent)
 json {
 	id proximityEvent.id
 	eventType proximityEvent.eventType
@@ -14,5 +13,6 @@ json {
 	beacon proximityEvent.beacon.beaconId
 	location proximityEvent.beacon.location.name
 	device proximityEvent.device.id
+	poiEvent (proximityEvent.poiEvent) ? proximityEvent.poiEvent.id : null
 	careReceiver proximityEvent.careReceiver.id
 }
