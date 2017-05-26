@@ -20,7 +20,7 @@ class Region {
             mSingleton = !location.regionId
             if (mSingleton) {
                 mName = "_" + location.locationId
-                mCentre = [ latitude: location.latitude.toDouble(), longitude: location.longitude.toDouble() ]
+                mCentre = toLatLng(location.latitude, location.longitude)
                 mRadius = (location.radius) ? location.radius + PADDING : PADDING * 2
             }
             else {
@@ -57,6 +57,10 @@ class Region {
         return mRadius
     }
 
+    private static toLatLng(latitude, longitude) {
+        return [ lat: latitude as Double, lng: longitude as Double ]
+    }
+
     private static Double toRadians(x) {
         return x.toDouble() * Math.PI / 180
     }
@@ -69,7 +73,7 @@ class Region {
         def count = mLocations.size()
 
         if (count == 1) {
-            return [ latitude: mLocations[0].latitude.toDouble(), longitude: mLocations[0].longitude.toDouble() ]
+            return toLatLng(mLocations[0].latitude, mLocations[0].longitude)
         }
 
         Double x = 0
@@ -92,7 +96,7 @@ class Region {
         def centreLongitude = toDegrees(Math.atan2(y, x))
         def centreLatitude = toDegrees(Math.atan2(z, Math.sqrt(x * x + y * y)))
 
-        return [ latitude: centreLatitude as Double, longitude: centreLongitude as Double ]
+        return toLatLng(centreLatitude, centreLongitude)
     }
 
     private calculateRadius() {
@@ -161,12 +165,12 @@ class Region {
         for (def region in allRegions) {
             if (!timestamp || timestamp.getTime() < region.mTimestamp.getTime()) timestamp = region.mTimestamp
             list.add([
-                    centre: region.getCentre(),
+                    point: region.getCentre(),
                     radius: region.getRadius()
             ])
         }
         return [
-                lastChange: timestamp.getTime(),
+                changed: timestamp.getTime(),
                 regions: list
         ]
     }
