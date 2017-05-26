@@ -29,36 +29,37 @@ class ActivityRecord {
     }
 
     def formatForUpload() {
+        Date intervalStart = Date.parse("yyyy-MM-dd", date)
         return [
                 user: careReceiver.city4ageId,
                 pilot: "BHX",
-                interval_start: date + " 00:00",
+                interval_start: intervalStart.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
                 duration: "DAY",
                 payload: [
                         WALK_STEPS: [
                                 value: steps,
-                                dataSourceType: [ "external_dataset" ]
+                                data_source_type: [ "external_dataset" ]
                         ],
                         WALK_DISTANCE: [
                                 value: distance,
-                                dataSourceType: [ "external_dataset" ]
+                                data_source_type: [ "external_dataset" ]
                         ],
                         PHYSICALACTIVITY_SOFT_TIME: [
                                 value: soft,
-                                dataSourceType: [ "external_dataset" ]
+                                data_source_type: [ "external_dataset" ]
                         ],
                         PHYSICALACTIVITY_MODERATE_TIME: [
                                 value: moderate,
-                                dataSourceType: [ "external_dataset" ]
+                                data_source_type: [ "external_dataset" ]
                         ],
                         PHYSICALACTIVITY_INTENSE_TIME: [
                                 value: intense,
-                                dataSourceType: [ "external_dataset" ]
+                                data_source_type: [ "external_dataset" ]
                         ],
                         PHYSICALACTIVITY_CALORIES: [
                                 value: totalCalories,
-                                dataSourceType: [ "external_dataset" ]
-                        ],
+                                data_source_type: [ "external_dataset" ]
+                        ]
                 ]
         ]
     }

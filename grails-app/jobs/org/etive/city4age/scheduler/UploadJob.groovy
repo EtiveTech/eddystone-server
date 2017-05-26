@@ -19,6 +19,9 @@ class UploadJob {
 
         if (!centralRepository) return
 
+        // LOGIN
+        // GET /api/0.1/login
+
         // for all CareReceivers copy Activity/Sleep measures and POI events up to the Central Repository.
 
         def activities = activityRecordService.readyForUpload()
@@ -26,6 +29,7 @@ class UploadJob {
             if (!activity.careReceiver.forTest) {
                 def json = JsonOutput.toJson(activity.formatForUpload())
                 // send a POST request to the central repository with json as the payload
+                // POST /api/0.1/add_measure
                 activity.uploaded = true
                 activityRecordService.persistChanges(activity)
             }
@@ -35,6 +39,7 @@ class UploadJob {
             if (!sleep.careReceiver.forTest) {
                 def json = JsonOutput.toJson(sleep.formatForUpload())
                 // send a POST request to the central repository with json as the payload
+                // POST /api/0.1/add_measure
                 sleep.uploaded = true
                 sleepRecordService.persistChanges(sleep)
             }
@@ -44,9 +49,13 @@ class UploadJob {
             if (!event.careReceiver.forTest) {
                 def json = JsonOutput.toJson(event.formatForUpload())
                 // send a POST request to the central repository with json as the payload
+                // POST /api/0.1/add_action
                 event.uploaded = true
                 poiEventService.persistChanges(event)
             }
         }
+
+        // LOGOUT
+        // GET /api/0.1/logout
     }
 }
