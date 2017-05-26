@@ -4,7 +4,7 @@ import org.etive.city4age.withings.WithingsService
 
 class CareReceiver {
 
-    static private final String startDate = "2017-01-01" // The first date used to retrieve Withings data
+    static private final String dayBeforeProjectStart = "2016-12-31"
 
     String emailAddress
     String token
@@ -13,8 +13,8 @@ class CareReceiver {
     Long withingsId
     String accessKey
     String accessSecret
-    String activityRecordsDownloaded = (getStartDate() - 1).format("yyyy-MM-dd") // The day before startDate
-    String sleepRecordsDownloaded = (getStartDate() - 1).format("yyyy-MM-dd")
+    String activityRecordsDownloaded
+    String sleepRecordsDownloaded
     Date eventsGenerated
     Boolean forTest = false // This Care Receiver's data is for test only and should not be uploaded
     Date dateCreated
@@ -32,8 +32,8 @@ class CareReceiver {
         withingsId nullable: false
         accessKey blank: false, nullable: false
         accessSecret blank: false, nullable: false
-        activityRecordsDownloaded nullable: false, blank: false
-        sleepRecordsDownloaded nullable: false, blank: false
+        activityRecordsDownloaded nullable: true, blank: false
+        sleepRecordsDownloaded nullable: true, blank: false
         eventsGenerated nullable: true
         forTest nullable: false
     }
@@ -56,10 +56,10 @@ class CareReceiver {
         def sleeps = []
 
         def sEndDate = endDate.format("yyyy-MM-dd")
-        def activityDate = Date.parse("yyyy-MM-dd", this.activityRecordsDownloaded) + 1
-        def sActivityDate = activityDate.format("yyyy-MM-dd")
-        def sleepDate = Date.parse("yyyy-MM-dd", this.sleepRecordsDownloaded) + 1
-        def sSleepDate = sleepDate.format("yyyy-MM-dd")
+        def sActivityDate = (activityRecordsDownloaded) ? activityRecordsDownloaded : dayBeforeProjectStart
+        def activityDate = Date.parse("yyyy-MM-dd", sActivityDate) + 1
+        def sSleepDate = (sleepRecordsDownloaded) ? sleepRecordsDownloaded : dayBeforeProjectStart
+        def sleepDate = Date.parse("yyyy-MM-dd", sSleepDate) + 1
 
         if (sEndDate >= sActivityDate) activities = fetchActivityData(activityDate, endDate)
         if (sEndDate >= sSleepDate) sleeps = fetchSleepData(sleepDate, endDate)
@@ -67,7 +67,7 @@ class CareReceiver {
         return [ activity: activities, sleep: sleeps ]
     }
 
-    static Date getStartDate() {
-        return Date.parse("yyyy-MM-dd", startDate)
+    static getStartDate() {
+        return Date.parse("yyyy-MM-dd", dayBeforeProjectStart) + 1
     }
 }
