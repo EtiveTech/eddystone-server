@@ -21,6 +21,7 @@ class UrlMappings {
             get "/receiver/$receiverId/poi" (controller: 'poiEvent', action: 'index')
             get "/receiver/$receiverId/proximity" (controller: 'proximityEvent', action: 'index')
             get "/receiver/$receiverId/sleep" (controller: 'sleepRecord', action: 'index')
+            get "/region" (controller: 'region', action: 'index')
             get "/sleep" (controller: 'sleepRecord', action: 'index')
 //        }
 

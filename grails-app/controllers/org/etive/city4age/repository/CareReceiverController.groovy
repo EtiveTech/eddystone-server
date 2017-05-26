@@ -7,7 +7,6 @@ class CareReceiverController {
     def sleepRecordService
 
     private final String dlbServer = System.getenv("DLB_SERVER")
-//    private final String dlbServer = "192.168.1.130"
 
     private final String localRepository = System.getenv("REPOSITORY_KEY")
 

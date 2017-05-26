@@ -12,4 +12,6 @@ json {
     type location.type
     latitude location.latitude
     longitude location.longitude
+    radius location.radius
+    regionId location.regionId
 }

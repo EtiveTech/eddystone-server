@@ -20,9 +20,13 @@ class LocationService {
                 type: json.type as String,
                 containedBy: container,
                 address: json.address as String,
-                latitude: json.latitude as String,
-                longitude: json.longitude as String
+                latitude: json.latitude as Double,
+                longitude: json.longitude as Double,
+                radius: json.radius as Integer,
+                regionId: json.regionId as String
         )
-        return location.save()
+        location = location.save()
+        Region.addLocation(location)
+        return location
     }
 }

@@ -6,8 +6,10 @@ class Location {
     String type
     Location containedBy = null // Some locations will be inside others
     String address
-    String latitude
-    String longitude
+    Double latitude
+    Double longitude
+    Integer radius
+    String regionId
     Date dateCreated
     Date lastUpdated
 
@@ -18,8 +20,10 @@ class Location {
         name blank: false, nullable: false
         type blank: false, nullable: false
         address blank: true, nullable: true
-        latitude blank: false, nullable: false
-        longitude blank: false, nullable: false
+        latitude nullable: false
+        longitude nullable: false
+        radius nullable: true
+        regionId blank: false, nullable: true
         containedBy nullable: true
     }
 }
