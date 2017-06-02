@@ -36,4 +36,11 @@ class PoiEventService {
         def query = PoiEvent.where{ uploaded == false }
         return query.list(order: timestamp)
     }
+
+    @Transactional(readOnly = true)
+    def firstPoiEvent(CareReceiver receiver) {
+        def query = PoiEvent.where{ careReceiver.id == receiver.id }
+        def first = query.list(max: 1)
+        return (first) ? first[0] : null
+    }
 }

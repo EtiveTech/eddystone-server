@@ -6,6 +6,7 @@ model {
 
 json {
 	id careReceiver.id
+	logbookId careReceiver.logbookId
     activityRecordsTo careReceiver.activityRecordsDownloaded
 	sleepRecordsTo careReceiver.sleepRecordsDownloaded
 	eventsGeneratedTo careReceiver.eventsGenerated

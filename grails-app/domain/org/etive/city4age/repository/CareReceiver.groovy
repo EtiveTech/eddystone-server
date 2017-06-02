@@ -5,11 +5,12 @@ import org.etive.city4age.withings.WithingsService
 class CareReceiver {
 
     static private final String dayBeforeProjectStart = "2016-12-31"
+    static private final String nullCity4AgeId = "<unknown>"
 
     String emailAddress
     String token
     Long logbookId
-    String city4ageId = "<unknown>"
+    String city4AgeId = nullCity4AgeId
     Long withingsId
     String accessKey
     String accessSecret
@@ -20,14 +21,14 @@ class CareReceiver {
     Date dateCreated
     Date lastUpdated
 
-    static hasMany = [device: Device, proximityEvents: ProximityEvent, activityRecords: ActivityRecord, sleepRecords: SleepRecord]
+    static hasMany = [device: Device, proximityEvents: ProximityEvent, poiEvents: PoiEvent, activityRecords: ActivityRecord, sleepRecords: SleepRecord]
 
     static constraints = {
         emailAddress blank: false, nullable: false, email: true, unique: true
         token blank: false, nullable: false, unique: true
         proximityEvents nullable: true
         logbookId nullable: false, unique: true
-        city4ageId blank: false, nullable: true
+        city4AgeId blank: false, nullable: true
         device nullable: true
         withingsId nullable: false
         accessKey blank: false, nullable: false
@@ -66,6 +67,23 @@ class CareReceiver {
 
         return [ activity: activities, sleep: sleeps ]
     }
+
+    def getDataDate() {
+        def dates = []
+
+        if (this.poiEvents) dates << new Date(this.poiEvents[0].timestamp.getTime()).clearTime()
+        if (this.sleepRecords) dates << Date.parse("yyyy-MM-dd", this.sleepRecords[0].date)
+        if (this.activityRecords) dates << Date.parse("yyyy-MM-dd", this.activityRecords[0].date)
+
+        dates.sort{ a, b -> a.getTime() <=> b.getTime() }
+
+        return (dates) ? dates.first() : (new Date()).clearTime()
+    }
+
+    def hasCity4AgeId() {
+        return (city4AgeId) ? (city4AgeId != nullCity4AgeId) : false
+    }
+
 
     static getStartDate() {
         return Date.parse("yyyy-MM-dd", dayBeforeProjectStart) + 1

@@ -2,7 +2,7 @@ package org.etive.city4age.repository
 
 class Region {
     private static List<Region> allRegions = []
-    private static final PADDING = 25
+    private static final DEFAULT_RADIUS = 25
     private String mName
     private List<Location> mLocations
     private mCentre
@@ -21,7 +21,7 @@ class Region {
             if (mSingleton) {
                 mName = "_" + location.locationId
                 mCentre = toLatLng(location.latitude, location.longitude)
-                mRadius = (location.radius) ? location.radius + PADDING : PADDING * 2
+                mRadius = (location.radius) ? location.radius : DEFAULT_RADIUS
             }
             else {
                 mName = location.regionId
@@ -121,8 +121,7 @@ class Region {
             def distance = 6371e3 * c // in metres
             if (distance > radius) radius = distance
         }
-        if (radius == 0) radius = PADDING
-        radius += PADDING
+        if (radius == 0) radius = DEFAULT_RADIUS
         return radius
     }
 
@@ -161,9 +160,9 @@ class Region {
 
     static forDownload() {
         def list = []
-        Date timestamp
+        Date timestamp = new Date(0)
         for (def region in allRegions) {
-            if (!timestamp || timestamp.getTime() < region.mTimestamp.getTime()) timestamp = region.mTimestamp
+            if (timestamp.getTime() < region.mTimestamp.getTime()) timestamp = region.mTimestamp
             list.add([
                     point: region.getCentre(),
                     radius: region.getRadius()

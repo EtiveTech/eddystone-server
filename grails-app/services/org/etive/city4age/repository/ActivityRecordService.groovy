@@ -42,4 +42,11 @@ class ActivityRecordService {
         return activityRecord.save()
     }
 
+    @Transactional(readOnly = true)
+    def firstActivityRecord(CareReceiver receiver) {
+        def query = ActivityRecord.where{ careReceiver.id == receiver.id }
+        def first = query.list(max: 1)
+        return (first) ? first[0] : null
+    }
+
 }

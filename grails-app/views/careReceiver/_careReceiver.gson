@@ -6,6 +6,7 @@ model {
 
 json {
 	id careReceiver.id
+	logbookId careReceiver.logbookId
 	token careReceiver.token
 	emailAddress careReceiver.emailAddress
     activityRecordsTo careReceiver.activityRecordsDownloaded

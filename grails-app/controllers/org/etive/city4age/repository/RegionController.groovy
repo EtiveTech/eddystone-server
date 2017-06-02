@@ -8,6 +8,5 @@ class RegionController {
             respond (list, status: 200)
         else
             render status: 304
-
     }
 }

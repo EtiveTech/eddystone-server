@@ -31,7 +31,7 @@ class ActivityRecord {
     def formatForUpload() {
         Date intervalStart = Date.parse("yyyy-MM-dd", date)
         return [
-                user: careReceiver.city4ageId,
+                user: careReceiver.city4AgeId,
                 pilot: "BHX",
                 interval_start: intervalStart.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
                 duration: "DAY",

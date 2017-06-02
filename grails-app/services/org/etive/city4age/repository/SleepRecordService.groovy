@@ -36,4 +36,11 @@ class SleepRecordService {
     def persistChanges(sleepRecord) {
         return sleepRecord.save()
     }
+
+    @Transactional(readOnly = true)
+    def firstSleepRecord(CareReceiver receiver) {
+        def query = SleepRecord.where{ careReceiver.id == receiver.id }
+        def first = query.list(max: 1)
+        return (first) ? first[0] : null
+    }
 }

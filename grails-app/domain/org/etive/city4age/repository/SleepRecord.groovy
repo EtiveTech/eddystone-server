@@ -30,7 +30,7 @@ class SleepRecord {
 
     def formatForUpload() {
         return [
-                user: careReceiver.city4ageId,
+                user: careReceiver.city4AgeId,
                 pilot: "BHX",
                 interval_start: startDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
                 interval_end: endDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),

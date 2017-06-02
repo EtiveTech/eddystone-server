@@ -140,7 +140,7 @@ class PoiEvent {
     def formatForUpload() {
         return [
                 action: "eu:c4a:" + action,
-                user: careReceiver.city4ageId,
+                user: careReceiver.city4AgeId,
                 pilot: "BHX",
                 location: "eu:c4a:" + location.type + ":" + location.locationId,
                 position: location.latitude + " " + location.longitude,
