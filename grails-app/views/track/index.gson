@@ -1,7 +1,8 @@
 import org.etive.city4age.repository.Track
 
 model {
-    Iterable<Track> trackList
+	Iterable<Track> trackList
 }
 
 json tmpl.track(trackList ?: [])
+

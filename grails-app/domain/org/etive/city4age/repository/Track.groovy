@@ -1,10 +1,11 @@
 package org.etive.city4age.repository
 
 class Track {
-    Double accuracy
+    Integer accuracy
     Double latitude
     Double longitude
     Date timestamp
+    Integer battery
     Date dateCreated
     Date lastUpdated
 
@@ -14,6 +15,7 @@ class Track {
         accuracy nullable: false
         latitude nullable: false
         longitude nullable: false
+        battery nullable: false
         timestamp nullable: false
     }
 }

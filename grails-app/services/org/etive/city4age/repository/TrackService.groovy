@@ -9,10 +9,12 @@ class TrackService {
         if (json._type == "location") {
             // This is an OwnTracks record
             def track = new Track(
-                    accuracy: json.acc as Double,
                     latitude: json.lat as Double,
-                    longitude: json.long as Double,
-                    timestamp: new Date(json.tst.toLong() * 1000)
+                    longitude: json.lon as Double,
+                    accuracy: Math.round(json.acc as Double),
+                    battery: json.batt as Integer,
+                    timestamp: new Date(json.tst.toLong() * 1000),
+                    careReceiver: receiver
             )
             return track.save()
         }

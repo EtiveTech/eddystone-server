@@ -8,7 +8,8 @@ class TrackController {
         def receiver = (params.receiverId) ? CareReceiver.findById(params.receiverId) : CareReceiver.findByToken(json.token as String)
 
         if (receiver) {
-            trackService.createTrack(receiver, json)
+            def track = trackService.createTrack(receiver, json)
+            respond(track, status: 201)
         }
         else {
             response.sendError(403, "")

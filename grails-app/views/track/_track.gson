@@ -1,8 +1,17 @@
 import org.etive.city4age.repository.Track
 
 model {
-    Track track
+	Track track
 }
 
+// json g.render(track)
+
 json {
+	id track.id
+	latitude track.latitude
+	longitude track.longitude
+	accuracy track.accuracy
+	battery track.battery
+	timestamp track.timestamp
+	careReceiver track.careReceiver.id
 }
