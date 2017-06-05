@@ -12,6 +12,7 @@ json {
     model device.model
     uuid device.uniqueId
     careReceiver device.careReceiver.id
+    created device.dateCreated
     lastContact device.lastContact
 }
 

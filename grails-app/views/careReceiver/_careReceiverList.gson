@@ -10,5 +10,6 @@ json {
     activityRecordsTo careReceiver.activityRecordsDownloaded
 	sleepRecordsTo careReceiver.sleepRecordsDownloaded
 	eventsGeneratedTo careReceiver.eventsGenerated
+	created careReceiver.dateCreated
 	forTest careReceiver.forTest
 }
