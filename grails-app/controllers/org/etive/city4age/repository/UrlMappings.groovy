@@ -3,7 +3,6 @@ package org.etive.city4age.repository
 class UrlMappings {
 
     static mappings = {
-//        group("/api") {
             get "/activity" (controller: 'activityRecord', action: 'index')
             get "/beacon" (controller: 'beacon', action: 'index')
             post "/beacon" (controller: 'beacon', action: 'save')
@@ -21,11 +20,12 @@ class UrlMappings {
             get "/receiver/$receiverId/poi" (controller: 'poiEvent', action: 'index')
             get "/receiver/$receiverId/proximity" (controller: 'proximityEvent', action: 'index')
             get "/receiver/$receiverId/sleep" (controller: 'sleepRecord', action: 'index')
+            get "/receiver/$receiverId/track" (controller: 'track', action: 'index')
+            post "/receiver/$receiverId/track" (controller: 'track', action: 'save')
             get "/region" (controller: 'region', action: 'index')
             get "/sleep" (controller: 'sleepRecord', action: 'index')
-//        }
 
-        "500"(view: '/error')
-        "404"(view: '/notFound')
+            "500"(view: '/error')
+            "404"(view: '/notFound')
     }
 }
