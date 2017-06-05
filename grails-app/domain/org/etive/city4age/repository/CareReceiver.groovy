@@ -10,7 +10,7 @@ class CareReceiver {
     String emailAddress
     String token
     Long logbookId
-    String city4AgeId = nullCity4AgeId
+    String city4AgeId = nullCity4AgeId  // not given a proper id until data is uploaded
     Long withingsId
     String accessKey
     String accessSecret

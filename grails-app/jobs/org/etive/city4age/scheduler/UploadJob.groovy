@@ -1,7 +1,7 @@
 package org.etive.city4age.scheduler
 
 import groovy.json.JsonOutput
-// import org.etive.city4age.repository.CareReceiver
+import groovyx.net.http.HTTPBuilder
 
 class UploadJob {
 
@@ -40,6 +40,10 @@ class UploadJob {
 
         // LOGIN
         // GET /api/0.1/login
+
+        // Create the request
+//        def client = new HttpClientFactory().createHttpClient()
+//        def request = new HttpRequest
 
         // Check that all Care Receivers have a City4AgeId
         def careReceivers = careReceiverService.listCareReceivers()
