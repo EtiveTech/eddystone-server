@@ -4,8 +4,6 @@ model {
 	Track track
 }
 
-// json g.render(track)
-
 json {
 	id track.id
 	latitude track.latitude
@@ -13,5 +11,8 @@ json {
 	accuracy track.accuracy
 	battery track.battery
 	timestamp track.timestamp
+	timeAtLocation track.timeAtLocation / 60000
+	trigger track.trigger
 	careReceiver track.careReceiver.id
+	device (track.device) ? track.device.id : null
 }

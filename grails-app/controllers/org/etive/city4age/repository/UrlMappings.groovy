@@ -24,6 +24,7 @@ class UrlMappings {
             post "/receiver/$receiverId/track" (controller: 'track', action: 'save')
             get "/region" (controller: 'region', action: 'index')
             get "/sleep" (controller: 'sleepRecord', action: 'index')
+            post "/track" (controller: 'track', action: 'save')
 
             "500"(view: '/error')
             "404"(view: '/notFound')

@@ -5,17 +5,33 @@ import grails.transaction.Transactional
 @Transactional
 class TrackService {
 
+    private static Boolean isLocation(json) {
+        return (json._type == "location")
+    }
+
+    private static Boolean isStationary(json) {
+        return (json._type == "stationary")
+    }
+
     def createTrack(CareReceiver receiver, json) {
-        if (json._type == "location") {
-            // This is an OwnTracks record
+        if (isLocation(json) || isStationary(json)) {
             def track = new Track(
                     latitude: json.lat as Double,
                     longitude: json.lon as Double,
                     accuracy: Math.round(json.acc as Double),
                     battery: json.batt as Integer,
                     timestamp: new Date(json.tst.toLong() * 1000),
-                    careReceiver: receiver
+                    timeAtLocation: ((json.time) ? json.time : 0) as Long,
+                    trigger: json.t as Character,
+                    careReceiver: receiver,
+                    device: null
             )
+
+            if (isStationary(json)) {
+                // This event was generated from an Android device
+                track.device = Device.findByUniqueId(json.uuid)
+            }
+
             return track.save()
         }
     }

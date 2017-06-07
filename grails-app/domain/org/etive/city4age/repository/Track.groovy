@@ -6,10 +6,12 @@ class Track {
     Double longitude
     Date timestamp
     Integer battery
+    Long timeAtLocation
+    Character trigger
     Date dateCreated
     Date lastUpdated
 
-    static belongsTo = [careReceiver: CareReceiver]
+    static belongsTo = [careReceiver: CareReceiver, device: Device]
 
     static constraints = {
         accuracy nullable: false
@@ -17,5 +19,8 @@ class Track {
         longitude nullable: false
         battery nullable: false
         timestamp nullable: false
+        timeAtLocation nullable: false
+        trigger nullable: false
+        device nullable: true
     }
 }
