@@ -1,7 +1,7 @@
 package org.etive.city4age.scheduler
 
 import groovy.json.JsonOutput
-import groovyx.net.http.HTTPBuilder
+//import groovyx.net.http.HTTPBuilder
 
 class UploadJob {
 

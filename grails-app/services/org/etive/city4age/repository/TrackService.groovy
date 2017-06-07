@@ -22,7 +22,7 @@ class TrackService {
                     battery: json.batt as Integer,
                     timestamp: new Date(json.tst.toLong() * 1000),
                     timeAtLocation: ((json.time) ? json.time : 0) as Long,
-                    trigger: json.t as Character,
+                    triggeredBy: json.t as Character,
                     careReceiver: receiver,
                     device: null
             )
@@ -38,8 +38,20 @@ class TrackService {
 
     @Transactional(readOnly = true)
     def listTracks(CareReceiver receiver) {
-
         def query = (receiver) ? Track.where{ careReceiver.id == receiver.id } : Track
         return query.list(max: 500)
+    }
+
+    @Transactional(readOnly = true)
+    def forProcessing(CareReceiver receiver, Date date) {
+        def early = (new Date(date.getTime())).clearTime()
+        def late = early + 1
+
+        def query = Track.where{
+            careReceiver.id == receiver.id &&
+                    timestamp >= early &&
+                    timestamp < late
+        }
+        return query.list()
     }
 }

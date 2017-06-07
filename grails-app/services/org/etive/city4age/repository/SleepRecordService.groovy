@@ -22,7 +22,6 @@ class SleepRecordService {
 
     @Transactional(readOnly = true)
     def listSleepRecords(CareReceiver receiver) {
-
         def query = (receiver) ? SleepRecord.where{ careReceiver.id == receiver.id } : SleepRecord
         return query.list(max: 500)
     }

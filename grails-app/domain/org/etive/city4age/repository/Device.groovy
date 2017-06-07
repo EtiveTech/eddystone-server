@@ -20,6 +20,11 @@ class Device {
         careReceiver nullable: false
         lastContact nullable: false
     }
+
+    static Long getId(device) {
+        if (!device) return null
+        return device.id
+    }
 }
 
 
