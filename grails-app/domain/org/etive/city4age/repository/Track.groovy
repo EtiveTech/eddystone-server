@@ -4,7 +4,6 @@ class Track {
     Double latitude
     Double longitude
     Integer accuracy
-    Integer battery
     Date timestamp
     Long timeAtLocation
     Character triggeredBy
@@ -17,7 +16,6 @@ class Track {
         latitude nullable: false
         longitude nullable: false
         accuracy nullable: false
-        battery nullable: false
         timestamp nullable: false
         timeAtLocation nullable: false
         triggeredBy nullable: false

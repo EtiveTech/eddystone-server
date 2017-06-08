@@ -10,10 +10,10 @@ json {
 	latitude track.latitude
 	longitude track.longitude
 	accuracy track.accuracy
-	battery track.battery
 	timestamp track.timestamp
 	timeAtLocation Math.round(((track.timeAtLocation / 60) * 100) as Float) / 100
 	triggeredBy track.triggeredBy
 	careReceiver track.careReceiver.id
 	device Device.getId(track.device)
+	dateCreated track.dateCreated
 }
