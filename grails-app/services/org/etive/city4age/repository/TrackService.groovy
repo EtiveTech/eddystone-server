@@ -19,7 +19,7 @@ class TrackService {
                     latitude: json.lat as Double,
                     longitude: json.lon as Double,
                     accuracy: Math.round(json.acc as Double),
-                    timestamp: new Date(json.tst.toLong() * 1000),
+                    timestamp: new Date((json.tst * 1000) as Long),
                     timeAtLocation: ((json.time) ? json.time : 0) as Long,
                     triggeredBy: json.t as Character,
                     careReceiver: receiver,
@@ -38,7 +38,7 @@ class TrackService {
     @Transactional(readOnly = true)
     def listTracks(CareReceiver receiver) {
         def query = (receiver) ? Track.where{ careReceiver.id == receiver.id } : Track
-        return query.list(max: 500)
+        return query.list(offset: 0, max: 500, sort: "id", order: "desc")
     }
 
     @Transactional(readOnly = true)
