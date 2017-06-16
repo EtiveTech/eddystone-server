@@ -75,6 +75,7 @@ class BootStrap {
             new Beacon(beaconId: "c4a000002742", description: "Above main entrance on the right", location: holyCrossStFrancisRcChurch).save(failOnError: true)
         }
         Region.addLocations(Location.list())
+        City4AgeTrustManager.trustAllCertificates()
     }
     def destroy = {
     }

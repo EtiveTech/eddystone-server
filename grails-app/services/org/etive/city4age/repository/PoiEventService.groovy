@@ -34,7 +34,7 @@ class PoiEventService {
     @Transactional(readOnly = true)
     def readyForUpload() {
         def query = PoiEvent.where{ uploaded == false }
-        return query.list(order: timestamp)
+        return query.list(sort: "timestamp", order: "asc")
     }
 
     @Transactional(readOnly = true)

@@ -1,11 +1,9 @@
 package org.etive.city4age.repository
 
 import grails.plugin.json.builder.JsonOutput
-import org.grails.web.json.JSONObject
+import groovy.json.JsonSlurper
+import javax.net.ssl.HttpsURLConnection
 
-/**
- * Created by user on 15/06/2017.
- */
 class CentralRepositorySession {
 
     private final String centralRepository = System.getenv("CENTRAL_ADDRESS")
@@ -21,14 +19,14 @@ class CentralRepositorySession {
 
     private mToken = null
 
-    private readJson(InputStream content) {
+    private static readJson(InputStream content) {
         def reader = new BufferedReader(new InputStreamReader(content))
         def jsonText = ""
         int cp
         while ((cp = reader.read()) != -1) {
             jsonText += cp as char
         }
-        return (jsonText) ? JSONObject(jsonText) : null
+        return (jsonText) ? new JsonSlurper().parseText(jsonText) : null
     }
 
     private getEncodedCredentials() {
@@ -37,8 +35,8 @@ class CentralRepositorySession {
         return encodedCredentials
     }
 
-    private HttpURLConnection makePostConnection(route, payload, useToken = false) {
-        def connection = new URL(protocol + centralRepository + route).openConnection() as HttpURLConnection
+    private HttpsURLConnection makePostConnection(route, payload, useToken = false) {
+        def connection = new URL(protocol + centralRepository + route).openConnection() as HttpsURLConnection
         connection.setRequestMethod("POST")
         connection.setDoOutput(true)
         connection.setRequestProperty("Content-Type", "application/json")
@@ -55,7 +53,7 @@ class CentralRepositorySession {
     }
 
     def login() {
-        def connection = new URL(protocol + centralRepository + loginRoute).openConnection() as HttpURLConnection
+        def connection = new URL(protocol + centralRepository + loginRoute).openConnection() as HttpsURLConnection
         connection.setRequestMethod("GET")
         connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
         def content = connection.getInputStream()
@@ -73,7 +71,7 @@ class CentralRepositorySession {
     }
 
     def logout() {
-        def connection = new URL(protocol + centralRepository + logoutRoute).openConnection() as HttpURLConnection
+        def connection = new URL(protocol + centralRepository + logoutRoute).openConnection() as HttpsURLConnection
         connection.setRequestMethod("GET")
         connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
         def status = connection.getResponseCode()
@@ -125,4 +123,5 @@ class CentralRepositorySession {
         def status = connection.getResponseCode()
         return (status == 200)
     }
+
 }

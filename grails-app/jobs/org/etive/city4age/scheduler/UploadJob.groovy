@@ -12,7 +12,8 @@ class UploadJob {
     private final String centralRepository = System.getenv("CENTRAL_ADDRESS")
 
     static triggers = {
-        cron name: 'uploadTrigger', cronExpression: "0 30 3 * * ?"
+//        cron name: 'uploadTrigger', cronExpression: "0 30 3 * * ?"
+        cron name: 'uploadTrigger', cronExpression: "0 27 * * * ?"
     }
 
     def execute() {
@@ -32,9 +33,7 @@ class UploadJob {
         for (def careReceiver in careReceivers) {
             if (!careReceiver.hasCity4AgeId()) {
                 // Create a City4AgeId for this user
-                def validFrom = careReceiver.getDataDate()
-                def id = careReceiver.logbookId
-                def city4AgeId = session.getCity4AgeId(id, validFrom)
+                def city4AgeId = session.getCity4AgeId(careReceiver.logbookId, careReceiver.getDataDate() as Date)
                 if (city4AgeId) {
                     careReceiver.city4AgeId = city4AgeId
                     careReceiverService.persistChanges(careReceiver)
