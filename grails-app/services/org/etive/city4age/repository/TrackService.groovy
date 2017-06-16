@@ -4,6 +4,7 @@ import grails.transaction.Transactional
 
 @Transactional
 class TrackService {
+    def deviceService
 
     private static Boolean isLocation(json) {
         return (json._type == "location")
@@ -28,7 +29,8 @@ class TrackService {
 
             if (isStationary(json)) {
                 // This event was generated from an Android device
-                track.device = Device.findByUniqueId(json.uuid)
+                def device = deviceService.updateLastContact(json)
+                track.device = device
             }
 
             return track.save()
