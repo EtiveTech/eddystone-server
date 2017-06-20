@@ -20,7 +20,7 @@ class TrackService {
                     latitude: json.lat as Double,
                     longitude: json.lon as Double,
                     accuracy: Math.round(json.acc as Double),
-                    timestamp: new Date((json.tst * 1000) as Long),
+                    timestamp: new Date(json.tst.toLong() * 1000L),
                     timeAtLocation: ((json.time) ? json.time : 0) as Long,
                     triggeredBy: json.t as Character,
                     careReceiver: receiver,
