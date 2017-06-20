@@ -34,6 +34,20 @@ class PoiEvent {
         return null
     }
 
+    static private Boolean isNoise(lost, found) {
+        def diff = lost.timestamp.getTime() - found.timestamp.getTime()
+        return (diff <= noiseThreshold * 1000)
+    }
+
+    static private Boolean isBEP(lost, found) {
+        def diff = lost.timestamp.getTime() - found.timestamp.getTime()
+        return (diff <= bepThreshold * 1000)
+    }
+
+    static private Boolean shouldActAsBEP(beacon, exitStack) {
+        return (exitStack && (exitStack.last().location.id == beacon.location.id))
+    }
+
     static List<PoiEvent> findEvents(CareReceiver receiver, EventList list) {
         List<PoiEvent> poiEvents = []
         List<PoiEvent> exitStack = []
@@ -51,56 +65,53 @@ class PoiEvent {
                 // Have a lost event. Now look for the found event.
                 beacon = lostEvent.beacon
                 foundEvent = list.nextFound(beacon)
-                if (foundEvent) {
+                if (foundEvent && !isNoise(lostEvent, foundEvent)) {
                     // Have a lost event and a found event
-                    def diff = lostEvent.timestamp.getTime() - foundEvent.timestamp.getTime()
-                    if (diff <= bepThreshold * 1000) {
-                        // If the found and lost events are too close together the CareReceiver can't have gone into a POI
-                        if (diff > noiseThreshold * 1000) {
-                            // Have a Beacon Event Pair (BEP) - found and lost events that are close together
-                            def sourceEvents = [foundEvent, lostEvent]
-                            if (exitStack) {
-                                // Have a stacked exit event - may just have found the entry event
-                                PoiEvent exitEvent = exitStack.pop()
-                                if (exitEvent.location.id == beacon.location.id) {
-                                    // The exit event and the new BEP are for the same location
-                                    // Must be the enter event
+                    if (isBEP(lostEvent, foundEvent) || shouldActAsBEP(beacon, exitStack)) {
+                        def sourceEvents = [foundEvent, lostEvent]
+                        if (exitStack) {
+                            // Have a stacked exit event - may just have found the entry event
+                            PoiEvent exitEvent = exitStack.pop()
+                            if (exitEvent.location.id == beacon.location.id) {
+                                // The exit event and the new BEP are for the same location
+                                // Must be the enter event
+                                 def entryEvent = new PoiEvent(
+                                         action: poiEnter,
+                                         careReceiver: receiver,
+                                         location: beacon.location,
+                                         sourceEvents: sourceEvents,
+                                         timestamp: ProximityEvent.getEntryTimestamp(sourceEvents))
 
-                                    def entryEvent = new PoiEvent(
-                                            action: poiEnter,
-                                            careReceiver: receiver,
-                                            location: beacon.location,
-                                            sourceEvents: sourceEvents,
-                                            timestamp: ProximityEvent.getTimestamp(sourceEvents))
-
-                                    exitEvent.instance = entryEvent.instance = entryEvent
-                                    poiEvents.add(exitEvent)
-                                    poiEvents.add(entryEvent)
-                                } else {
-                                    // Our new BEP is not in the same location as the stacked exit event
-                                    if (beacon.location.containedBy &&
-                                            beacon.location.containedBy.id == exitEvent.location.id) {
-                                        // Forget about the exit event unless we have a POI inside a POI
-                                        exitStack.push(exitEvent)
-                                    }
-                                    exitStack.push(new PoiEvent(
-                                            action: poiExit,
-                                            careReceiver: receiver,
-                                            location: beacon.location,
-                                            sourceEvents: sourceEvents,
-                                            timestamp: ProximityEvent.getTimestamp(sourceEvents)))
+                                exitEvent.instance = entryEvent.instance = entryEvent
+                                poiEvents.add(exitEvent)
+                                poiEvents.add(entryEvent)
+                            }
+                            else {
+                                // Our new BEP is not in the same location as the stacked exit event
+                                if (beacon.location.containedBy &&
+                                        beacon.location.containedBy.id == exitEvent.location.id) {
+                                    // Forget about the exit event unless we have a POI inside a POI
+                                    exitStack.push(exitEvent)
                                 }
-                            } else {
-                                // No stacked exit event so this must be an exit event
                                 exitStack.push(new PoiEvent(
                                         action: poiExit,
                                         careReceiver: receiver,
                                         location: beacon.location,
                                         sourceEvents: sourceEvents,
-                                        timestamp: ProximityEvent.getTimestamp(sourceEvents)))
+                                        timestamp: ProximityEvent.getExitTimestamp(sourceEvents)))
                             }
                         }
-                    } else {
+                        else {
+                            // No stacked exit event so this must be an exit event
+                            exitStack.push(new PoiEvent(
+                                    action: poiExit,
+                                    careReceiver: receiver,
+                                    location: beacon.location,
+                                    sourceEvents: sourceEvents,
+                                    timestamp: ProximityEvent.getExitTimestamp(sourceEvents)))
+                        }
+                    }
+                    else {
                         // We appear to have two distinct events
 
                         // If there is already an exit event on the stack then this could be a very long POI_ENTER

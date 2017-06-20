@@ -22,10 +22,18 @@ class ProximityEvent {
         poiEvent nullable: true
     }
 
-    static Date getTimestamp(List<ProximityEvent> sourceEvents) {
+    static Date getEntryTimestamp(List<ProximityEvent> sourceEvents) {
         def timestamp = null
         for (sourceEvent in sourceEvents) {
             if (!timestamp || (sourceEvent.timestamp.getTime() < timestamp.getTime())) timestamp = sourceEvent.timestamp
+        }
+        return timestamp
+    }
+
+    static Date getExitTimestamp(List<ProximityEvent> sourceEvents) {
+        def timestamp = null
+        for (sourceEvent in sourceEvents) {
+            if (!timestamp || (sourceEvent.timestamp.getTime() > timestamp.getTime())) timestamp = sourceEvent.timestamp
         }
         return timestamp
     }
