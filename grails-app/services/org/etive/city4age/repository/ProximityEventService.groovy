@@ -42,13 +42,13 @@ class ProximityEventService {
                     timestamp < late &&
                     poiEvent == null
         }
-        return query.list()
+        return query.list(sort: "timestamp", order: "asc")
     }
 
     @Transactional(readOnly = true)
     def firstProximityEvent(CareReceiver receiver) {
         def query = ProximityEvent.where{ careReceiver.id == receiver.id }
-        def first = query.list(max: 1)
+        def first = query.list(offset: 0, max: 1, sort: "timestamp", order: "asc")
         return (first) ? first[0] : null
     }
 }
