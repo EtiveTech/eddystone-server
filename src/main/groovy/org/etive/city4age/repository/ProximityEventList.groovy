@@ -1,6 +1,6 @@
 package org.etive.city4age.repository
 
-class EventList {
+class ProximityEventList {
     // The client waits 1.4 seconds before declaring a beacon found and 8.4 seconds before declaring a beacon lost
     // There are still occasions when a lost beacon is re-found quickly after being lost
     // This could be due to a lot of environmental factors so is impossible to mitigate against inside the phone
@@ -15,9 +15,9 @@ class EventList {
     private Integer mIndex = -1
     private Integer mLength = 0
 
-    EventList(list) {
+    ProximityEventList(list) {
         if (list) {
-            this.mList = EventList.removeDropouts(list).reverse()
+            this.mList = removeDropouts(list).reverse()
             this.mLength = this.mList.size()
         }
     }
@@ -26,8 +26,10 @@ class EventList {
 
     def nextFound(beacon) {
         if (isEmpty()) return null
-        mIndex = nextFoundIndex(beacon.beaconId, mIndex + 1)
-        return (mIndex >= mLength) ? null : mList[mIndex]
+//        mIndex = nextFoundIndex(beacon.beaconId, mIndex + 1)
+//        return (mIndex >= mLength) ? null : mList[mIndex]
+        def index = nextFoundIndex(beacon.beaconId, mIndex + 1)
+        return (index >= mLength) ? null : mList[index]
     }
 
     def nextLost() {
@@ -56,7 +58,7 @@ class EventList {
 
     private static Boolean isDropout(list, indexA, indexB) {
         def diff = (list[indexA].timestamp.getTime() - list[indexB].timestamp.getTime()).abs()
-        return (diff < EventList.MAX_DROP_OUT)
+        return (diff < MAX_DROP_OUT)
     }
 
     private static Boolean isLost(listEntry) {
