@@ -32,8 +32,8 @@ class SleepRecord {
         return [
                 user: careReceiver.city4AgeId,
                 pilot: "BHX",
-                interval_start: startDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
-                interval_end: endDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                interval_start: startDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London")),
+                interval_end: endDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London")),
                 payload: [
                         SLEEP_LIGHT_TIME: [
                                 value: lightSleepDuration,

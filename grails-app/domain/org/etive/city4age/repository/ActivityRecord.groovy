@@ -33,7 +33,7 @@ class ActivityRecord {
         return [
                 user: careReceiver.city4AgeId,
                 pilot: "BHX",
-                interval_start: intervalStart.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                interval_start: intervalStart.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London")),
                 duration: "DAY",
                 payload: [
                         WALK_STEPS: [

@@ -127,7 +127,7 @@ class PoiEvent {
                 pilot: "BHX",
                 location: "eu:c4a:" + location.type + ":" + location.locationId,
                 position: location.latitude + " " + location.longitude,
-                timestamp: timestamp.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                timestamp: timestamp.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London")),
                 payload: [
                         instance_id: instanceId
                 ],
