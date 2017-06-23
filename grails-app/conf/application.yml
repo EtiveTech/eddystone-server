@@ -91,7 +91,7 @@ environments:
             password: ${DB_PASSWORD}
     test:
         dataSource:
-            dbCreate: update
+            dbCreate: create
             url: jdbc:mysql://localhost/city4age?useUnicode=yes&characterEncoding=UTF-8
             username: city4age
             password: ${DB_PASSWORD}
