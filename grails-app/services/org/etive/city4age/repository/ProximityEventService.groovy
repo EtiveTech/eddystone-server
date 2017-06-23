@@ -21,6 +21,11 @@ class ProximityEventService {
         return event.save()
     }
 
+    def createProximityEvent(CareReceiver careReceiver, json) {
+        def beacon = Beacon.findByBeaconId(json.beaconId.toString())
+        return createProximityEvent(careReceiver, beacon, json)
+    }
+
     def persistChanges(proximityEvent) {
         return proximityEvent.save()
     }
