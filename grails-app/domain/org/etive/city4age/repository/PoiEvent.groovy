@@ -120,6 +120,11 @@ class PoiEvent {
         return poiEvents.sort{ a, b -> a.timestamp.getTime() <=> b.timestamp.getTime() }
     }
 
+    static List<PoiEvent> findEvents(String receiverEmail, ProximityEventList list) {
+        def careReceiver = CareReceiver.findByEmailAddress(receiverEmail)
+        return findEvents(careReceiver, list)
+    }
+
     def formatForUpload() {
         return [
                 action: "eu:c4a:" + action,
