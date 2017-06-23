@@ -51,6 +51,14 @@ class ProximityEventService {
     }
 
     @Transactional(readOnly = true)
+    def forProcessing(String receiverEmail, String strDate) {
+        def careReceiver = CareReceiver.findByEmailAddress(receiverEmail)
+        def date = new Date().parse("yyyy-MM-dd", strDate)
+        if (!careReceiver || !date) return null
+        return forProcessing(careReceiver, date)
+    }
+
+    @Transactional(readOnly = true)
     def firstProximityEvent(CareReceiver receiver) {
         def query = ProximityEvent.where{ careReceiver.id == receiver.id }
         def first = query.list(offset: 0, max: 1, sort: "timestamp", order: "asc")

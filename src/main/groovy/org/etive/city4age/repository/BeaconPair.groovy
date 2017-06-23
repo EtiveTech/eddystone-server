@@ -33,15 +33,14 @@ class BeaconPair {
     }
 
     Boolean overlaps(BeaconPair another) {
-        return ((another.mFoundTimestamp <= mFoundTimestamp && another.mFoundTimestamp >= mLostTimestamp) ||
-                (another.mLostTimestamp <= mFoundTimestamp && another.mLostTimestamp >= mLostTimestamp) ||
-                (another.mFoundTimestamp >= mFoundTimestamp && another.mLostTimestamp <= mLostTimestamp))
+        return ((another.mFoundTimestamp >= mFoundTimestamp && another.mFoundTimestamp <= mLostTimestamp) ||
+                (another.mLostTimestamp >= mFoundTimestamp && another.mLostTimestamp <= mLostTimestamp) ||
+                (another.mFoundTimestamp <= mFoundTimestamp && another.mLostTimestamp >= mLostTimestamp))
     }
 
     Boolean sameLocation(BeaconPair another) {
         return (mLocationId == another.mLocationId)
     }
-
 
     Boolean containedBy(BeaconPair another) {
         return (mContainingLocationId > 0 && mContainingLocationId == another.mLocationId)
@@ -75,7 +74,7 @@ class BeaconPair {
         return mLost
     }
 
-    static List<BeaconPair> findBeaconPairs(ProximityEventList list) {
+    static List<BeaconPair> findBeaconPairs(ProximityEventList list, Boolean keepOverlaps = false) {
         ProximityEvent foundEvent, lostEvent
         List<BeaconPair> eventPairs = []
 
@@ -91,13 +90,13 @@ class BeaconPair {
                     def eventPair = new BeaconPair(foundEvent, lostEvent)
                     if (!eventPair.isNoise()) {
                         def previous = (eventPairs) ? eventPairs.last() : null
-                        if (!(previous && previous.sameLocation(eventPair) && previous.overlaps(eventPair))) {
+                        if (!(previous && previous.sameLocation(eventPair) && previous.overlaps(eventPair)) || keepOverlaps) {
                             eventPairs << eventPair
                         }
                     }
                 }
             }
         }
-        return eventPairs.reverse()
+        return eventPairs
     }
 }

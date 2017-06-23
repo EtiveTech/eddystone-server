@@ -42,6 +42,16 @@ class ProximityEventList {
         return ((mList && mLength > 0) ? (mIndex + 1 >= mLength) : true)
     }
 
+    def size() {
+        return mLength
+    }
+
+    def getIndex() {
+        // For test purposes - not much use otherwise
+        return mIndex
+    }
+
+
     // Private Instance Methods
 
     private nextFoundIndex(beaconId, start) {
@@ -72,7 +82,7 @@ class ProximityEventList {
     private static nextFoundIndex(beaconId, list, start) {
         def i = new Integer(start)
         def length = list.size()
-        while ((i < length) && !isFound(list[i]) && (list[i].beacon.beaconId != beaconId)) i += 1
+        while ((i < length) && !(isFound(list[i]) && (list[i].beacon.beaconId == beaconId))) i += 1
         return i
     }
 
