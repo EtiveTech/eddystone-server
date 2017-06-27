@@ -9,6 +9,7 @@ class PoiEvent {
     Date lastUpdated
     List<ProximityEvent> sourceEvents = []
     PoiEvent instance
+    BeaconPair beaconPair
 
     static final String poiEnter = "POI_ENTER"
     static final String poiExit = "POI_EXIT"
@@ -16,7 +17,7 @@ class PoiEvent {
     static hasMany = [proximityEvents: ProximityEvent]
     static belongsTo = [careReceiver: CareReceiver, location: Location]
 
-    static transients = [ "sourceEvents", "instance" ]
+    static transients = [ "sourceEvents", "instance", "beaconPair" ]
 
     static constraints = {
         action nullable: false, blank: false
@@ -32,31 +33,26 @@ class PoiEvent {
         return null
     }
 
-    static private Boolean shouldActAsWalkBy(eventPair, exitStack) {
-        return (exitStack && (exitStack.last().sameLocation(eventPair)))
-    }
-
-    static List<PoiEvent> findEvents(CareReceiver receiver, ProximityEventList list) {
+    private static List<PoiEvent> finder(CareReceiver receiver, List<BeaconPair> list) {
         List<PoiEvent> poiEvents = []
-        List<BeaconPair> exitStack = []
+        ExitStack stack = new ExitStack()
         BeaconPair pair
-
-        // beaconPairs are in reverse order - this is historical - no real need now
-        def beaconPairs = BeaconPair.findBeaconPairs(list)
+        List<BeaconPair> beaconPairs = list.clone().reverse()
 
         // The supplied mList is a reversed mList of proximity events
         // The result of this method - poiEvents - will have the order reversed again
         while (beaconPairs) {
             pair = beaconPairs.pop()
-            if (pair.isWalkBy() || shouldActAsWalkBy(pair, exitStack)) {
+            stack.locationMatch(pair)  // If there's an entry with the same location put it on the top of the stack
+            if (pair.isWalkBy() || stack.locationCheck(pair)) {
                 // If there is already an event pair on the stack then the new pair will always be treated as a POI_ENTER
-                if (!exitStack) {
+                if (stack.isEmpty()) {
                     // No stacked exit event so this may be an exit event pair
-                    exitStack.push(pair)
+                    stack.pairPush(pair)
                 }
                 else {
                     // Have a stacked event pair - may just have found the entry event pair
-                    def exitPair = exitStack.pop()
+                    def exitPair = stack.pairPop()
                     if (exitPair.sameLocation(pair)) {
                         // The exit pair and the new pair are for the same location
                         // Must be the enter event
@@ -66,7 +62,8 @@ class PoiEvent {
                                 careReceiver: receiver,
                                 location: pair.getLocation(),
                                 sourceEvents: sourceEvents,
-                                timestamp: ProximityEvent.getEntryTimestamp(sourceEvents))
+                                timestamp: ProximityEvent.getEntryTimestamp(sourceEvents),
+                                beaconPair: pair)
 
                         sourceEvents = exitPair.getSourceEvents()
                         def exitEvent = new PoiEvent(
@@ -74,7 +71,8 @@ class PoiEvent {
                                 careReceiver: receiver,
                                 location: exitPair.getLocation(),
                                 sourceEvents: sourceEvents,
-                                timestamp: ProximityEvent.getExitTimestamp(sourceEvents))
+                                timestamp: ProximityEvent.getExitTimestamp(sourceEvents),
+                                beaconPair: exitPair)
 
                         exitEvent.instance = entryEvent.instance = entryEvent
                         poiEvents.add(exitEvent)
@@ -82,8 +80,8 @@ class PoiEvent {
                     }
                     else {
                         // The new event pair is not in the same location as the stacked pair
-                        if (pair.containedBy(exitPair)) exitStack.push(exitPair)
-                        exitStack.push(pair)
+                        if (pair.containedBy(exitPair)) stack.pairPush(exitPair)
+                        stack.pairPush(pair)
                     }
                 }
             }
@@ -91,7 +89,7 @@ class PoiEvent {
                 // Consider the event pair to contain two distinct events
 
                 // Remove a stacked event pair unless it's for the containedBy location
-                if (exitStack && !pair.containedBy(exitStack.last())) exitStack.pop()
+                if (!stack.isEmpty() && !pair.containedBy(stack.pairPeek())) stack.pairPop()
 
                 def sourceEvent = pair.getFoundEvent()
                 def location = pair.getLocation()
@@ -100,7 +98,8 @@ class PoiEvent {
                         careReceiver: receiver,
                         location: location,
                         sourceEvents: [sourceEvent],
-                        timestamp: sourceEvent.timestamp)
+                        timestamp: sourceEvent.timestamp,
+                        beaconPair: pair)
                 entryEvent.instance = entryEvent
 
                 sourceEvent = pair.getLostEvent()
@@ -110,7 +109,8 @@ class PoiEvent {
                         careReceiver: receiver,
                         location: location,
                         sourceEvents: [sourceEvent],
-                        timestamp: sourceEvent.timestamp)
+                        timestamp: sourceEvent.timestamp,
+                        beaconPair: pair)
 
                 poiEvents.add(exitEvent)
                 poiEvents.add(entryEvent)
@@ -120,9 +120,21 @@ class PoiEvent {
         return poiEvents.sort{ a, b -> a.timestamp.getTime() <=> b.timestamp.getTime() }
     }
 
+    static List<PoiEvent> findEvents(CareReceiver receiver, ProximityEventList list) {
+        // beaconPairs are in reverse order - this is historical - no real need now
+        List<BeaconPair> beaconPairs = BeaconPair.findBeaconPairs(list)
+        return finder(receiver, beaconPairs)
+    }
+
+    static List<PoiEvent> findEvents(String receiverEmail, List<BeaconPair> beaconPairs) {
+        def careReceiver = CareReceiver.findByEmailAddress(receiverEmail)
+        return finder(careReceiver, beaconPairs)
+    }
+
     static List<PoiEvent> findEvents(String receiverEmail, ProximityEventList list) {
         def careReceiver = CareReceiver.findByEmailAddress(receiverEmail)
-        return findEvents(careReceiver, list)
+        List<BeaconPair> beaconPairs = BeaconPair.findBeaconPairs(list)
+        return finder(careReceiver, beaconPairs)
     }
 
     def formatForUpload() {

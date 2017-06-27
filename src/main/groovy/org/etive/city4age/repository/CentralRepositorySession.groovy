@@ -35,11 +35,14 @@ class CentralRepositorySession {
         return encodedCredentials
     }
 
-    private HttpsURLConnection makePostConnection(route, payload, useToken = false) {
-        def connection = new URL(protocol + centralRepository + route).openConnection() as HttpsURLConnection
-        connection.setRequestMethod("POST")
+    private HttpsURLConnection makePostConnection(String route, payload, useToken = false) {
+        def url = new URL(protocol + centralRepository + route)
+        HttpsURLConnection connection = url.openConnection() as HttpsURLConnection
+//        connection.setRequestMethod("POST")
         connection.setDoOutput(true)
+        connection.setDoInput(true)
         connection.setRequestProperty("Content-Type", "application/json")
+        connection.setRequestProperty("Accept", "application/json")
         if (useToken) {
             connection.setRequestProperty("Cookie", mToken)
         }
@@ -49,11 +52,13 @@ class CentralRepositorySession {
 
         def output = connection.getOutputStream()
         output.write(JsonOutput.toJson(payload).getBytes())
+        output.close()
         return connection
     }
 
     def login() {
-        def connection = new URL(protocol + centralRepository + loginRoute).openConnection() as HttpsURLConnection
+        def url = new URL(protocol + centralRepository + loginRoute)
+        HttpsURLConnection connection = url.openConnection() as HttpsURLConnection
         connection.setRequestMethod("GET")
         connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
         def content = connection.getInputStream()
@@ -71,7 +76,8 @@ class CentralRepositorySession {
     }
 
     def logout() {
-        def connection = new URL(protocol + centralRepository + logoutRoute).openConnection() as HttpsURLConnection
+        def url = new URL(protocol + centralRepository + logoutRoute)
+        HttpsURLConnection connection = url.openConnection() as HttpsURLConnection
         connection.setRequestMethod("GET")
         connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
         def status = connection.getResponseCode()
@@ -89,20 +95,21 @@ class CentralRepositorySession {
                 pilot_user_source_id: id,
                 username: "bhx" + id,
                 password: "bhx" + id,
-                valid_from: validFrom.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+                valid_from: validFrom.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London"))
         ]
 
         def connection = makePostConnection(careReceiverRoute, payload)
-        def input = connection.getInputStream()
+        def input = null
         try{
             def status = connection.getResponseCode()
             if (status == 200) {
+                input = connection.getInputStream()
                 def json = readJson(input)
                 city4AgeId = json.bimin_care_r as String
             }
         }
         finally {
-            input.close()
+            if (input) input.close()
         }
         if (!city4AgeId) return null
         return "eu:c4a:user:" + id
@@ -111,16 +118,16 @@ class CentralRepositorySession {
     def sendMeasure(measure) {
         if (!mToken) return false
 
-        def connection = makePostConnection(measureRoute, measure)
-        def status = connection.getResponseCode()
+//        def connection = makePostConnection(measureRoute, measure)
+//        def status = connection.getResponseCode()
         return (status == 200)
     }
 
     def sendAction(action) {
         if (!mToken) return false
 
-        def connection = makePostConnection(actionRoute, action)
-        def status = connection.getResponseCode()
+//        def connection = makePostConnection(actionRoute, action)
+//        def status = connection.getResponseCode()
         return (status == 200)
     }
 

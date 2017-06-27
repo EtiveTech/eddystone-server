@@ -48,9 +48,14 @@ class ProximityEventList {
 
     def getIndex() {
         // For test purposes - not much use otherwise
-        return mIndex
+        return new Integer(mIndex)
     }
 
+    def getEntry(index) {
+        // For test purposes - not much use otherwise
+        if (!mList || index < 0 || index >= mLength) return null
+        return mList[index]
+    }
 
     // Private Instance Methods
 
