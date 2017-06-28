@@ -7,7 +7,7 @@ import spock.lang.*
 @Integration
 @Stepwise
 @Transactional
-class BeaconPairSpec extends Specification {
+class BeaconPairIntegrationSpec extends Specification {
     def proximityEventService
 
     @Shared

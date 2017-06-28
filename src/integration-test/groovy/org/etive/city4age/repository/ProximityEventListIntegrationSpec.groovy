@@ -7,7 +7,7 @@ import spock.lang.*
 @Integration
 @Stepwise
 @Transactional
-class ProximityEventListSpec extends Specification {
+class ProximityEventListIntegrationSpec extends Specification {
     def proximityEventService
 
     @Shared

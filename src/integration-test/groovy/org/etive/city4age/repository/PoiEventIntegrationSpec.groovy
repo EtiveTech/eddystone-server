@@ -7,7 +7,7 @@ import spock.lang.*
 @Integration
 @Stepwise
 @Transactional
-class PoiEventSpec extends Specification {
+class PoiEventIntegrationSpec extends Specification {
     static String email = "eventlist1@test.org"
 
     def proximityEventService
@@ -36,37 +36,37 @@ class PoiEventSpec extends Specification {
             // Sainsbury's Mere Green
             beaconPairs[0].getFoundEvent() == proximityList[14]
             beaconPairs[0].getLostEvent() == proximityList[17]
-            beaconPairs[0].isVisit() == false
+            !beaconPairs[0].isVisit()
             beaconPairs[0].getLocation().locationId == "SainsburysMereGreen"
 
             // Boots Mere Green
             beaconPairs[1].getFoundEvent() == proximityList[11]
             beaconPairs[1].getLostEvent() == proximityList[13]
-            beaconPairs[1].isVisit() == false
+            !beaconPairs[1].isVisit()
             beaconPairs[1].getLocation().locationId == "BootsMereGreen"
 
             // Mere Green Community Centre
             beaconPairs[2].getFoundEvent() == proximityList[7]
             beaconPairs[2].getLostEvent() == proximityList[9]
-            beaconPairs[2].isVisit() == false
+            !beaconPairs[2].isVisit()
             beaconPairs[2].getLocation().locationId == "MereGreenCommunityCentre"
 
             // Mere Green Library
             beaconPairs[3].getFoundEvent() == proximityList[6]
             beaconPairs[3].getLostEvent() == proximityList[8]
-            beaconPairs[3].isVisit() == true
+            beaconPairs[3].isVisit()
             beaconPairs[3].getLocation().locationId == "MereGreenLibrary"
 
             // Mere Green Library
             beaconPairs[4].getFoundEvent() == proximityList[4]
             beaconPairs[4].getLostEvent() == proximityList[5]
-            beaconPairs[4].isVisit() == false
+            !beaconPairs[4].isVisit()
             beaconPairs[4].getLocation().locationId == "MereGreenLibrary"
 
             // Mere Green Community Centre
             beaconPairs[5].getFoundEvent() == proximityList[2]
             beaconPairs[5].getLostEvent() == proximityList[3]
-            beaconPairs[5].isVisit() == true
+            beaconPairs[5].isVisit()
             beaconPairs[5].getLocation().locationId == "MereGreenCommunityCentre"
     }
 
