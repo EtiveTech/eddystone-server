@@ -5,11 +5,11 @@ import groovy.json.JsonSlurper
 import javax.net.ssl.HttpsURLConnection
 
 class CentralRepositorySession {
-
-    private final String centralRepository = System.getenv("CENTRAL_ADDRESS")
+    private final SSL = false
+    private final String centralRepository = (SSL) ? System.getenv("CENTRAL_ADDRESS") : "localhost:8080"
     private final String username = System.getenv("CENTRAL_USERNAME")
     private final String password = System.getenv("CENTRAL_PASSWORD")
-    private final String protocol = "https://"
+    private final String protocol = (SSL) ? "https://" : "http://"
     private final String apiVersion = "/api/0.1/"
     private final String loginRoute = apiVersion + "login"
     private final String logoutRoute = apiVersion + "logout"
@@ -35,10 +35,14 @@ class CentralRepositorySession {
         return encodedCredentials
     }
 
-    private HttpsURLConnection makePostConnection(String route, payload, useToken = false) {
+    private getConnection(URL url) {
+        def connection = url.openConnection()
+        return (SSL) ? connection as HttpsURLConnection : connection as HttpURLConnection
+    }
+
+    private makePostConnection(String route, payload, useToken = false) {
         def url = new URL(protocol + centralRepository + route)
-        HttpsURLConnection connection = url.openConnection() as HttpsURLConnection
-//        connection.setRequestMethod("POST")
+        def connection = getConnection(url)
         connection.setDoOutput(true)
         connection.setDoInput(true)
         connection.setRequestProperty("Content-Type", "application/json")
@@ -58,7 +62,7 @@ class CentralRepositorySession {
 
     def login() {
         def url = new URL(protocol + centralRepository + loginRoute)
-        HttpsURLConnection connection = url.openConnection() as HttpsURLConnection
+        def connection = getConnection(url)
         connection.setRequestMethod("GET")
         connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
         def content = connection.getInputStream()
@@ -77,7 +81,7 @@ class CentralRepositorySession {
 
     def logout() {
         def url = new URL(protocol + centralRepository + logoutRoute)
-        HttpsURLConnection connection = url.openConnection() as HttpsURLConnection
+        def connection = getConnection(url)
         connection.setRequestMethod("GET")
         connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
         def status = connection.getResponseCode()
@@ -112,22 +116,22 @@ class CentralRepositorySession {
             if (input) input.close()
         }
         if (!city4AgeId) return null
-        return "eu:c4a:user:" + id
+        return "eu:c4a:user:" + city4AgeId
     }
 
     def sendMeasure(measure) {
         if (!mToken) return false
 
-//        def connection = makePostConnection(measureRoute, measure)
-//        def status = connection.getResponseCode()
+        def connection = makePostConnection(measureRoute, measure)
+        def status = connection.getResponseCode()
         return (status == 200)
     }
 
     def sendAction(action) {
         if (!mToken) return false
 
-//        def connection = makePostConnection(actionRoute, action)
-//        def status = connection.getResponseCode()
+        def connection = makePostConnection(actionRoute, action)
+        def status = connection.getResponseCode()
         return (status == 200)
     }
 
