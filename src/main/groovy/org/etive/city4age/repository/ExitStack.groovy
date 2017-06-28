@@ -26,15 +26,16 @@ class ExitStack {
         return mStack.last()
     }
 
-    def locationMatch(another) {
+    def locationExists(another) {
         def i
         for (i = 0; i < mStack.size(); i++){
             if(mStack[i].sameLocation(another)) break
         }
-        if (i < mStack.size()) mStack = mStack[0..i]
+        return (i < mStack.size())
+        // if (i < mStack.size()) mStack = mStack[0..i]
     }
 
-    def locationCheck(pair) {
+    def locationMatch(pair) {
         return (!isEmpty() && pairPeek().sameLocation(pair))
     }
 }
