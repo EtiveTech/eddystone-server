@@ -131,7 +131,8 @@ class PoiEvent {
 
         // If there is anything remaining on the exit stack, see if events can be raised
         while (!stack.isEmpty()) {
-            if (stack.pairPeek().isVisit()) addVisit(stack.pairPop(), receiver, poiEvents)
+            pair = stack.pairPop()
+            if (pair.isVisit()) addVisit(pair, receiver, poiEvents)
         }
 
         return poiEvents.sort{ a, b -> a.timestamp.getTime() <=> b.timestamp.getTime() }
