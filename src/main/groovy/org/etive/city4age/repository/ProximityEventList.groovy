@@ -97,9 +97,10 @@ class ProximityEventList {
         while (i < list.size()) {
             if (isLost(list[i])) {
                 def j = nextFoundIndex(list[i].beacon.beaconId, list, i + 1)
-                if (j < list.size() && isDropout(list, i, j)) {
+                // If j is the last item then the list ends with a found event - don't want to delete the final lost event
+                if (j < list.size() - 1 && isDropout(list, i, j)) {
                     list.removeAt(i)
-                    list.removeAt(j)
+                    list.removeAt(j - 1) // allow for the removal of item at index i
                     // The list is two elements shorter
                     // The index of the next item to be processed is unchanged so decrement i - it will be incremented later
                     i -= 1
