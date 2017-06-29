@@ -13,7 +13,7 @@ class UploadJob {
 
     static triggers = {
         cron name: 'uploadTrigger', cronExpression: "0 30 3 * * ?"
-//        cron name: 'uploadTrigger', cronExpression: "0 41 * * * ?"
+//        cron name: 'uploadTrigger', cronExpression: "0 52 * * * ?"
     }
 
     def execute() {

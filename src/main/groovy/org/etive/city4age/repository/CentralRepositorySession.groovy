@@ -41,6 +41,7 @@ class CentralRepositorySession {
     }
 
     private makePostConnection(String route, payload, useToken = false) {
+        // Use of token to authenticate is NOT working
         def url = new URL(protocol + centralRepository + route)
         def connection = getConnection(url)
         connection.setDoOutput(true)
@@ -48,7 +49,7 @@ class CentralRepositorySession {
         connection.setRequestProperty("Content-Type", "application/json")
         connection.setRequestProperty("Accept", "application/json")
         if (useToken) {
-            connection.setRequestProperty("Cookie", mToken)
+            connection.setRequestProperty("Cookie", "session=" + mToken)
         }
         else {
             connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
@@ -95,8 +96,9 @@ class CentralRepositorySession {
         if (!mToken) return null
 
         def city4AgeId = ""
+        // All payload parameters MUST be strings
         def payload = [
-                pilot_user_source_id: id,
+                pilot_user_source_id: id.toString(),
                 username: "bhx" + id,
                 password: "bhx" + id,
                 valid_from: validFrom.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London"))
