@@ -41,11 +41,11 @@ class ProximityEventService {
         def early = (new Date(date.getTime())).clearTime()
         def late = early + 1
 
+        // Query ignores any links to poiEvents as it simplifies testing
         def query = ProximityEvent.where{
             careReceiver.id == receiver.id &&
                     timestamp >= early &&
-                    timestamp < late &&
-                    poiEvent == null
+                    timestamp < late
         }
         return query.list(sort: "timestamp", order: "asc")
     }
