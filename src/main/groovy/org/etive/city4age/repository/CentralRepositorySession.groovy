@@ -6,7 +6,7 @@ import javax.net.ssl.HttpsURLConnection
 
 class CentralRepositorySession {
     private final SSL = true
-    private final String centralRepository = (SSL) ? System.getenv("CENTRAL_ADDRESS") : "localhost:8080"
+    private final String centralRepository = System.getenv("CENTRAL_ADDRESS")
     private final String username = System.getenv("CENTRAL_USERNAME")
     private final String password = System.getenv("CENTRAL_PASSWORD")
     private final String protocol = (SSL) ? "https://" : "http://"

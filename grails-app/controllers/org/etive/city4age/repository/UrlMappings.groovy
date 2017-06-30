@@ -1,7 +1,5 @@
 package org.etive.city4age.repository
 
-import grails.util.Environment
-
 class UrlMappings {
 
     static mappings = {
@@ -22,12 +20,12 @@ class UrlMappings {
             get "/receiver/$receiverId/poi" (controller: 'poiEvent', action: 'index')
             get "/receiver/$receiverId/proximity" (controller: 'proximityEvent', action: 'index')
             get "/receiver/$receiverId/sleep" (controller: 'sleepRecord', action: 'index')
-//            get "/receiver/$receiverId/track" (controller: 'track', action: 'index')
-//            post "/receiver/$receiverId/track" (controller: 'track', action: 'save')
+            get "/receiver/$receiverId/track" (controller: 'track', action: 'index')
+            post "/receiver/$receiverId/track" (controller: 'track', action: 'save')
             get "/region" (controller: 'region', action: 'index')
             get "/sleep" (controller: 'sleepRecord', action: 'index')
-//            get "/track" (controller: 'track', action: 'index')
-//            post "/track" (controller: 'track', action: 'save')
+            get "/track" (controller: 'track', action: 'index')
+            post "/track" (controller: 'track', action: 'save')
 
             "500"(view: '/error')
             "404"(view: '/notFound')
