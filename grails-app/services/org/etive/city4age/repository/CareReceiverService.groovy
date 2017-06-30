@@ -33,6 +33,7 @@ class CareReceiverService {
                 token: token,
                 forTest: (json.forTest) ? json.forTest : false
         )
+        if (json.city4ageId) careReceiver.city4AgeId = json.city4ageId
         return careReceiver.save()
     }
 
