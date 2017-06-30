@@ -56,7 +56,8 @@ class CentralRepositorySession {
         }
 
         def output = connection.getOutputStream()
-        output.write(JsonOutput.toJson(payload).getBytes())
+        def json = JsonOutput.toJson(payload)
+        output.write(json.getBytes())
         output.close()
         return connection
     }
@@ -96,11 +97,12 @@ class CentralRepositorySession {
         if (!mToken) return null
 
         def city4AgeId = ""
+        def username = "bhx" + id
         // All payload parameters MUST be strings
         def payload = [
                 pilot_user_source_id: id.toString(),
-                username: "bhx" + id,
-                password: "bhx" + id,
+                username: username,
+                password: username,
                 valid_from: validFrom.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London"))
         ]
 
@@ -111,7 +113,7 @@ class CentralRepositorySession {
             if (status == 200) {
                 input = connection.getInputStream()
                 def json = readJson(input)
-                city4AgeId = json.bimin_care_r as String
+                city4AgeId = json[username] as String
             }
         }
         finally {

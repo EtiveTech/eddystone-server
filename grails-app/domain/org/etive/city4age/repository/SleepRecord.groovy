@@ -37,7 +37,7 @@ class SleepRecord {
                 payload: [
                         SLEEP_LIGHT_TIME: [
                                 value: lightSleepDuration,
-                                ddata_source_type: [ "external_dataset" ]
+                                data_source_type: [ "external_dataset" ]
                         ],
                         SLEEP_DEEP_TIME: [
                                 value: deepSleepDuration,

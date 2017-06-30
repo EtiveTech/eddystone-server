@@ -41,7 +41,7 @@ class ActivityRecord {
                                 data_source_type: [ "external_dataset" ]
                         ],
                         WALK_DISTANCE: [
-                                value: distance,
+                                value: Math.round(distance),
                                 data_source_type: [ "external_dataset" ]
                         ],
                         PHYSICALACTIVITY_SOFT_TIME: [

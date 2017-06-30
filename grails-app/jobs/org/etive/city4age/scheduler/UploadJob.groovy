@@ -1,5 +1,6 @@
 package org.etive.city4age.scheduler
 
+import grails.util.Environment
 import org.etive.city4age.repository.CentralRepositorySession
 
 class UploadJob {
@@ -13,7 +14,11 @@ class UploadJob {
 
     static triggers = {
         cron name: 'uploadTrigger', cronExpression: "0 30 3 * * ?"
-//        cron name: 'uploadTrigger', cronExpression: "0 52 * * * ?"
+//        cron name: 'uploadTrigger', cronExpression: "0 13 * * * ?"
+    }
+
+    def uploadable(careReceiver) {
+        return (Environment.current != Environment.PRODUCTION) ? true : !careReceiver.forTest
     }
 
     def execute() {
@@ -45,7 +50,7 @@ class UploadJob {
 
         def activities = activityRecordService.readyForUpload()
         for (def activity in activities) {
-            if ((activity.careReceiver.hasCity4AgeId()) && !activity.careReceiver.forTest) {
+            if ((activity.careReceiver.hasCity4AgeId()) && uploadable(activity.careReceiver)) {
                 if (session.sendMeasure(activity.formatForUpload())) {
                     activity.uploaded = true
                     activityRecordService.persistChanges(activity)
@@ -55,7 +60,7 @@ class UploadJob {
 
         def sleeps = sleepRecordService.readyForUpload()
         for (def sleep in sleeps) {
-            if ((sleep.careReceiver.hasCity4AgeId()) && !sleep.careReceiver.forTest) {
+            if ((sleep.careReceiver.hasCity4AgeId()) && uploadable(sleep.careReceiver)) {
                 if (session.sendMeasure(sleep.formatForUpload())) {
                     sleep.uploaded = true
                     sleepRecordService.persistChanges(sleep)
@@ -65,7 +70,7 @@ class UploadJob {
 
         def events = poiEventService.readyForUpload()
         for (def event in events) {
-            if ((event.careReceiver.hasCity4AgeId()) && !event.careReceiver.forTest) {
+            if ((event.careReceiver.hasCity4AgeId()) && uploadable(event.careReceiver)) {
                 if (session.sendAction(event.formatForUpload())) {
                     event.uploaded = true
                     poiEventService.persistChanges(event)
