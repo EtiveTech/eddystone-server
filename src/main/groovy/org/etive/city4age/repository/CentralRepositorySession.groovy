@@ -138,5 +138,4 @@ class CentralRepositorySession {
         def status = connection.getResponseCode()
         return (status == 200)
     }
-
 }

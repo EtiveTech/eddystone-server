@@ -2,6 +2,7 @@ package org.etive.city4age.scheduler
 
 import grails.util.Environment
 import org.etive.city4age.repository.CentralRepositorySession
+import org.etive.city4age.repository.PoiEventGenerator
 
 class UploadJob {
 
@@ -14,7 +15,7 @@ class UploadJob {
 
     static triggers = {
         cron name: 'uploadTrigger', cronExpression: "0 30 3 * * ?"
-//        cron name: 'uploadTrigger', cronExpression: "0 13 * * * ?"
+//        cron name: 'uploadTrigger', cronExpression: "0 21 * * * ?"
     }
 
     def uploadable(careReceiver) {

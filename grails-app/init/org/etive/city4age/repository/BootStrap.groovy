@@ -78,25 +78,31 @@ class BootStrap {
             new Beacon(beaconId: "c4a000002742", description: "Above main entrance on the right", location: holyCrossStFrancisRcChurch).save(failOnError: true)
         
             if (Environment.current == Environment.TEST) {
+                def email = "eventlist1@test.org"
+
                 def json = [
                         logbookId: 1234567890,
                         withingsId: 2345678901,
-                        emailAddress: "eventlist1@test.org",
+                        emailAddress: email,
                         accessKey: "key:abcdefghijk",
                         accessSecret: "secret:abcdefghijk",
+                        city4ageId: "eu:c4a:user:66",
                         forTest: true
                 ]
-                def careReceiver = careReceiverService.createCareReceiver(json)
+                careReceiverService.createCareReceiver(json)
+                def careReceiver = CareReceiver.findByEmailAddress(email)
 
+                def uuid = "3f1a10a9abe23a08"
                 json = [
                         os: "Android",
                         osVersion: "7.0",
                         model: "Moto G (4)",
-                        uuid: "3f1a10a9abe23a08",
+                        uuid: uuid,
                         token: careReceiver.token,
                         timestamp: new Date().getTime()
                 ]
-                def device = deviceService.createDevice(json)
+                deviceService.createDevice(json)
+                def device = Device.findByUniqueId(uuid)
 
                 json = [
                         eventType: "found",
