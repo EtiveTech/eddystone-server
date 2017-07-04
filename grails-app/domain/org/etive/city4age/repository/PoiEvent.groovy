@@ -167,6 +167,7 @@ class PoiEvent {
                         instance_id: instanceId
                 ],
                 data_source_type: [ "sensors" ],
+                rating: 0.5,
                 extra: [
                         name: location.name,
                         address: location.address
