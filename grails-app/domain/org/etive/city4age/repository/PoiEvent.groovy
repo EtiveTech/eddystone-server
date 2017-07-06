@@ -5,6 +5,7 @@ class PoiEvent {
     Date timestamp
     String instanceId
     Boolean uploaded = false
+    Float rating
     Date dateCreated
     Date lastUpdated
     List<ProximityEvent> sourceEvents = []
@@ -17,7 +18,8 @@ class PoiEvent {
     static hasMany = [proximityEvents: ProximityEvent]
     static belongsTo = [careReceiver: CareReceiver, location: Location]
 
-    static transients = [ "sourceEvents", "instance", "beaconPair" ]
+    // The rating field is a transient for now to stop it changing the schema
+    static transients = [ "sourceEvents", "instance", "beaconPair", "rating" ]
 
     static constraints = {
         action nullable: false, blank: false
@@ -34,6 +36,9 @@ class PoiEvent {
     }
 
     private static addVisit(pair, receiver, eventList) {
+        // Set rating to 0.9 because, while we don't know the Care Receiver went into the store,
+        // We know they hung around for a while
+        def rating = 0.9
         def sourceEvent = pair.getFoundEvent()
         def location = pair.getLocation()
         def entryEvent = new PoiEvent(
@@ -42,6 +47,7 @@ class PoiEvent {
                 location: location,
                 sourceEvents: [sourceEvent],
                 timestamp: sourceEvent.timestamp,
+                rating: rating,
                 beaconPair: pair)
         entryEvent.instance = entryEvent
 
@@ -53,6 +59,7 @@ class PoiEvent {
                 location: location,
                 sourceEvents: [sourceEvent],
                 timestamp: sourceEvent.timestamp,
+                rating: rating,
                 beaconPair: pair)
 
         eventList.add(exitEvent)
@@ -60,6 +67,12 @@ class PoiEvent {
     }
 
     private static addWalkBys(entryPair, exitPair, receiver, eventList) {
+        // We can't be sure that the Care Receiver actually went into the POI
+        // However, the chances are pretty high
+        def rating = 0.7
+        if (entryPair.isVisit()) rating += 0.1
+        if (exitPair.isVisit()) rating += 0.1
+
         def sourceEvents = entryPair.getSourceEvents()
         def entryEvent = new PoiEvent(
                 action: poiEnter,
@@ -67,6 +80,7 @@ class PoiEvent {
                 location: entryPair.getLocation(),
                 sourceEvents: sourceEvents,
                 timestamp: ProximityEvent.getEntryTimestamp(sourceEvents),
+                rating: rating,
                 beaconPair: entryPair)
 
         sourceEvents = exitPair.getSourceEvents()
@@ -76,6 +90,7 @@ class PoiEvent {
                 location: exitPair.getLocation(),
                 sourceEvents: sourceEvents,
                 timestamp: ProximityEvent.getExitTimestamp(sourceEvents),
+                rating: rating,
                 beaconPair: exitPair)
 
         exitEvent.instance = entryEvent.instance = entryEvent
@@ -167,7 +182,7 @@ class PoiEvent {
                         instance_id: instanceId
                 ],
                 data_source_type: [ "sensors" ],
-                rating: 0.5,
+                rating: (rating) ? rating :  0.8,
                 extra: [
                         name: location.name,
                         address: location.address
