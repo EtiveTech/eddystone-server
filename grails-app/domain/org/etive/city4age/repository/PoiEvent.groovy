@@ -19,7 +19,7 @@ class PoiEvent {
     static belongsTo = [careReceiver: CareReceiver, location: Location]
 
     // The rating field is a transient for now to stop it changing the schema
-    static transients = [ "sourceEvents", "instance", "beaconPair", "rating" ]
+    static transients = [ "sourceEvents", "instance", "beaconPair" ]
 
     static constraints = {
         action nullable: false, blank: false
@@ -28,6 +28,7 @@ class PoiEvent {
         careReceiver nullable: false
         location nullable: false
         uploaded nullable: false
+        rating nullable: false
     }
 
     static Integer getId(instance) {
@@ -182,7 +183,7 @@ class PoiEvent {
                         instance_id: instanceId
                 ],
                 data_source_type: [ "sensors" ],
-                rating: (rating) ? rating :  0.8,
+                rating: rating,
                 extra: [
                         name: location.name,
                         address: location.address

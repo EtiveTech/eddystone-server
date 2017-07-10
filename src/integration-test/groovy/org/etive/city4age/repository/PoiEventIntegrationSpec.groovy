@@ -82,24 +82,28 @@ class PoiEventIntegrationSpec extends Specification {
             poiList[0].beaconPair == beaconPairs[5]
             poiList[0].sourceEvents[0] == proximityList[2]
             poiList[0].sourceEvents[1] == proximityList[3]
+            poiList[0].rating.toString() == "0.8"
 
             poiList[1].action == "POI_ENTER"
             poiList[1].location.locationId == "MereGreenLibrary"
             poiList[1].beaconPair == beaconPairs[4]
             poiList[1].sourceEvents[0] == proximityList[4]
             poiList[1].sourceEvents[1] == proximityList[5]
+            poiList[0].rating.toString() == "0.8"
 
             poiList[2].action == "POI_EXIT"
             poiList[2].location.locationId == "MereGreenLibrary"
             poiList[2].beaconPair == beaconPairs[3]
             poiList[2].sourceEvents[0] == proximityList[6]
             poiList[2].sourceEvents[1] == proximityList[8]
+            poiList[0].rating.toString() == "0.8"
 
             poiList[3].action == "POI_EXIT"
             poiList[3].location.locationId == "MereGreenCommunityCentre"
             poiList[3].beaconPair == beaconPairs[2]
             poiList[3].sourceEvents[0] == proximityList[7]
             poiList[3].sourceEvents[1] == proximityList[9]
+            poiList[0].rating.toString() == "0.8"
     }
 
     void "Right events from visit"() {
@@ -113,10 +117,12 @@ class PoiEventIntegrationSpec extends Specification {
             poiList[0].location.locationId == "MereGreenCommunityCentre"
             poiList[0].beaconPair == beaconPairs[5]
             poiList[0].sourceEvents[0] == proximityList[2]
+            poiList[0].rating.toString() == "0.9"
 
             poiList[1].action == "POI_EXIT"
             poiList[1].location.locationId == "MereGreenCommunityCentre"
             poiList[1].beaconPair == beaconPairs[5]
             poiList[1].sourceEvents[0] == proximityList[3]
+            poiList[1].rating.toString() == "0.9"
     }
 }
