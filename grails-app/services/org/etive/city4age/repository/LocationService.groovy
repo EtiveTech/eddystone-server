@@ -25,8 +25,15 @@ class LocationService {
                 radius: json.radius as Integer,
                 regionId: json.regionId as String
         )
-        location = location.save()
-        Region.addLocation(location)
+        try {
+            location = location.save()
+            Region.addLocation(location)
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            location = null
+        }
+
         return location
     }
 }

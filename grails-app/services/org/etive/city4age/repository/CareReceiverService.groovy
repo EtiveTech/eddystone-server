@@ -34,11 +34,26 @@ class CareReceiverService {
                 forTest: (json.forTest) ? json.forTest : false
         )
         if (json.city4ageId) careReceiver.city4AgeId = json.city4ageId
-        return careReceiver.save()
+        try {
+            careReceiver = careReceiver.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            careReceiver = null
+        }
+
+        return careReceiver
     }
 
     def persistChanges(careReceiver) {
-        return careReceiver.save()
+        try {
+            careReceiver = careReceiver.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            careReceiver = null
+        }
+        return careReceiver
     }
 
 }

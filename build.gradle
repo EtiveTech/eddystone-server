@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-version "0.9"
+version "0.10"
 group "localrepository"
 
 apply plugin:"eclipse"

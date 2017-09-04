@@ -7,7 +7,15 @@ class ActivityRecordService {
 
     def createActivityRecord(item) {
         def activityRecord = new ActivityRecord(item.toMap())
-        return activityRecord.save()
+        try {
+            activityRecord = activityRecord.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            activityRecord = null
+        }
+
+        return activityRecord
     }
 
     def bulkCreate(items) {
@@ -39,7 +47,15 @@ class ActivityRecordService {
     }
 
     def persistChanges(activityRecord) {
-        return activityRecord.save()
+        try {
+            activityRecord = activityRecord.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            activityRecord = null
+        }
+
+        return activityRecord
     }
 
     @Transactional(readOnly = true)

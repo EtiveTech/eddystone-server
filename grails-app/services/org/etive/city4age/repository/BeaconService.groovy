@@ -19,6 +19,14 @@ class BeaconService {
                 description: json.description as String,
                 location: location
         )
-        return beacon.save()
+        try {
+            beacon = beacon.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            beacon = null
+        }
+
+        return beacon
     }
 }

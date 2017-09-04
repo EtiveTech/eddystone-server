@@ -18,7 +18,14 @@ class ProximityEventService {
                 careReceiver: careReceiver,
                 device: device
         )
-        return event.save()
+        try {
+            event = event.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            event = null
+        }
+        return event
     }
 
     def createProximityEvent(CareReceiver careReceiver, json) {

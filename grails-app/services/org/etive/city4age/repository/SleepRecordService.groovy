@@ -7,7 +7,15 @@ class SleepRecordService {
 
     def createSleepRecord(item) {
         def sleepRecord = new SleepRecord(item.toMap())
-        return sleepRecord.save()
+        try {
+            sleepRecord = sleepRecord.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            sleepRecord = null
+        }
+
+        return sleepRecord
     }
 
     def bulkCreate(items) {
@@ -33,7 +41,15 @@ class SleepRecordService {
     }
 
     def persistChanges(sleepRecord) {
-        return sleepRecord.save()
+        try {
+            sleepRecord = sleepRecord.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            sleepRecord = null
+        }
+
+        return sleepRecord
     }
 
     @Transactional(readOnly = true)

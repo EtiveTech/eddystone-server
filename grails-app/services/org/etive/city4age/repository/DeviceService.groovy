@@ -24,7 +24,15 @@ class DeviceService {
                     lastContact: new Date(Long.valueOf(json.timestamp.toString())),
             )
         }
-        return device.save()
+        try {
+            device = device.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            device = null
+        }
+
+        return device
     }
 
     def updateLastContact(json, uuid = null) {
@@ -35,7 +43,13 @@ class DeviceService {
         def device = Device.findByUniqueId(uniqueId)
         if (device) {
             device.lastContact = new Date(json.timestamp as Long)
-            device = device.save()
+            try {
+                device = device.save()
+            }
+            catch (Exception e) {
+                log.error(e.message)
+                device = null
+            }
         }
         return device
     }

@@ -11,6 +11,7 @@ json {
 	timestamp poiEvent.timestamp
 	instanceId poiEvent.instanceId
 	location poiEvent.location.name
+	rating poiEvent.rating
 	careReceiver poiEvent.careReceiver.id
 	uploaded poiEvent.uploaded
 }

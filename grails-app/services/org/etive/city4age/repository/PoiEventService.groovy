@@ -18,11 +18,27 @@ class PoiEventService {
             }
             log.info("CareReceiver #" + poiEvent.careReceiver.id + ": Created " + poiEvent.action + " event for " + poiEvent.location.name)
         }
+        try {
+            poiEvent = poiEvent.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            poiEvent = null
+        }
+
         return poiEvent
     }
 
     def persistChanges(poiEvent) {
-        return poiEvent.save()
+        try {
+            poiEvent = poiEvent.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            poiEvent = null
+        }
+
+        return poiEvent
     }
 
     @Transactional(readOnly = true)

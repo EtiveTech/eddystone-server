@@ -15,7 +15,7 @@ class ProximityEventController {
         if (careReceiver) {
             def beacon = Beacon.findByBeaconId(json.beaconId.toString())
             if (beacon) {
-                def event = proximityEventService.createProximityEvent(careReceiver, beacon, request.JSON)
+                def event = proximityEventService.createProximityEvent(careReceiver, beacon, json)
                 respond(event, status: 201)
             }
             else {

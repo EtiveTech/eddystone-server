@@ -1,3 +1,4 @@
+import ch.qos.logback.core.util.FileSize
 import grails.util.BuildSettings
 import grails.util.Environment
 import org.springframework.boot.logging.logback.ColorConverter
@@ -7,6 +8,8 @@ import java.nio.charset.Charset
 
 conversionRule 'clr', ColorConverter
 conversionRule 'wex', WhitespaceThrowableProxyConverter
+
+def LOG_DIR = "../logs"
 
 // See http://logback.qos.ch/manual/groovy.html for details on configuration
 appender('STDOUT', ConsoleAppender) {
@@ -22,6 +25,17 @@ appender('STDOUT', ConsoleAppender) {
     }
 }
 
+appender('ROLLING', RollingFileAppender) {
+    encoder(PatternLayoutEncoder) {
+        pattern = "%level %logger - %msg%n"
+    }
+    rollingPolicy(TimeBasedRollingPolicy) {
+        fileNamePattern = "${LOG_DIR}/city4age.%d{yyyy-MM-dd}.log"
+        maxHistory = 30
+        totalSizeCap = FileSize.valueOf("2GB")
+    }
+}
+
 def targetDir = BuildSettings.TARGET_DIR
 if (Environment.isDevelopmentMode() && targetDir != null) {
     appender("FULL_STACKTRACE", FileAppender) {
@@ -32,5 +46,9 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
         }
     }
     logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
+    root(ERROR, ['STDOUT', 'FULL_STACKTRACE'])
 }
-root(ERROR, ['STDOUT'])
+else {
+    root(ERROR, ['ROLLING'])
+}
+
