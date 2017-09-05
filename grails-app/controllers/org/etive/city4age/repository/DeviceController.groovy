@@ -16,10 +16,18 @@ class DeviceController {
     }
 
     def update() {
-        def device = deviceService.updateLastContact(request.JSON, params.uuid)
-        if (device)
-            respond(device, status: 201)
+        def json = request.JSON
+        def careReceiver = CareReceiver.findByToken(json.token as String)
+        if (careReceiver) {
+            def device = Device.findByUniqueId(json.uuid as String)
+            if (device && device.careReceiver == careReceiver) {
+                deviceService.updateLastContact(careReceiver, device, json)
+                respond(device, status: 201)
+            }
+            else
+                response.sendError(404, "")
+        }
         else
-            response.sendError(404, "")
+            response.sendError(403, "")
     }
 }

@@ -6,9 +6,8 @@ import grails.transaction.Transactional
 class ProximityEventService {
     def deviceService
 
-    def createProximityEvent(CareReceiver careReceiver, Beacon beacon, json) {
-        // Note that we have heard from the device
-        def device = deviceService.updateLastContact(json)
+    def createProximityEvent(CareReceiver careReceiver, Beacon beacon, Device device, json) {
+
         def event = new ProximityEvent(
                 eventType: json.eventType,
                 timestamp: new Date(json.timestamp as Long),
@@ -30,7 +29,8 @@ class ProximityEventService {
 
     def createProximityEvent(CareReceiver careReceiver, json) {
         def beacon = Beacon.findByBeaconId(json.beaconId.toString())
-        return createProximityEvent(careReceiver, beacon, json)
+        def device = Device.findByUniqueId(json.uuid.toString())
+        return createProximityEvent(careReceiver, beacon, device, json)
     }
 
     def persistChanges(proximityEvent) {

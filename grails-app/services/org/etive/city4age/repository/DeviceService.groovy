@@ -35,21 +35,14 @@ class DeviceService {
         return device
     }
 
-    def updateLastContact(json, uuid = null) {
-        def careReceiver = CareReceiver.findByToken(json.token as String)
-        if (!careReceiver) return null //throw 403
-
-        def uniqueId = ((uuid) ? uuid : json.uuid) as String
-        def device = Device.findByUniqueId(uniqueId)
-        if (device) {
-            device.lastContact = new Date(json.timestamp as Long)
-            try {
-                device = device.save()
-            }
-            catch (Exception e) {
-                log.error(e.message)
-                device = null
-            }
+    def updateLastContact(CareReceiver careReceiver, Device device, json) {
+        device.lastContact = new Date(json.timestamp as Long)
+        try {
+            device = device.save()
+        }
+        catch (Exception e) {
+            log.error(e.message)
+            device = null
         }
         return device
     }
