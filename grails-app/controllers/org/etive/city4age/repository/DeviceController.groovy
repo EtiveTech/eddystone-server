@@ -8,11 +8,17 @@ class DeviceController {
     }
 
     def save() {
-        def device = deviceService.createDevice(request.JSON)
-        if (device)
-            respond(device, status: 201)
+        def json = request.JSON
+        def careReceiver = CareReceiver.findByToken(json.token as String)
+        if (careReceiver) {
+            def device = deviceService.createDevice(careReceiver, json)
+            if (device)
+                respond(device, status: 201)
+            else
+                response.sendError(409, "")
+        }
         else
-            response.sendError(409, "")
+            response.sendError(403, "")
     }
 
     def update() {

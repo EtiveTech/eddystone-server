@@ -5,15 +5,12 @@ import grails.transaction.Transactional
 @Transactional
 class DeviceService {
 
-    def createDevice(json) {
-        def careReceiver = CareReceiver.findByToken(json.token.toString())
-        if (!careReceiver) return null //throw 403
-
-        def device = Device.findByUniqueId(json.uuid.toString())
+    def createDevice(careReceiver, json) {
+        def device = Device.findByUniqueId(json.uuid as String)
         if (device) {
             device.careReceiver = careReceiver
-            device.osVersion = json.osVersion.toString()
-            device.lastContact = new Date(Long.valueOf(json.timestamp.toString()))
+            device.osVersion = json.osVersion as String
+            device.lastContact = new Date(json.timestamp as Long)
         } else {
             device = new Device(
                     operatingSystem: json.os,
@@ -21,7 +18,7 @@ class DeviceService {
                     model: json.model,
                     uniqueId: json.uuid,
                     careReceiver: careReceiver,
-                    lastContact: new Date(Long.valueOf(json.timestamp.toString())),
+                    lastContact: new Date(json.timestamp as String)
             )
         }
         try {
