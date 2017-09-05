@@ -25,7 +25,7 @@ class DeviceController {
         def json = request.JSON
         def careReceiver = CareReceiver.findByToken(json.token as String)
         if (careReceiver) {
-            def device = Device.findByUniqueId(json.uuid as String)
+            def device = Device.findByUniqueId(params.uuid as String)
             if (device && device.careReceiver == careReceiver) {
                 device = deviceService.updateLastContact(device, json.timestamp)
                 respond(device, status: 201)
