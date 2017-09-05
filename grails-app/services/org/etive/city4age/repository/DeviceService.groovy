@@ -35,8 +35,8 @@ class DeviceService {
         return device
     }
 
-    def updateLastContact(CareReceiver careReceiver, Device device, json) {
-        device.lastContact = new Date(json.timestamp as Long)
+    def updateLastContact(device, timestamp) {
+        device.lastContact = new Date(timestamp as Long)
         try {
             device = device.save()
         }

@@ -21,7 +21,7 @@ class DeviceController {
         if (careReceiver) {
             def device = Device.findByUniqueId(json.uuid as String)
             if (device && device.careReceiver == careReceiver) {
-                deviceService.updateLastContact(careReceiver, device, json)
+                device = deviceService.updateLastContact(device, json.timestamp)
                 respond(device, status: 201)
             }
             else
