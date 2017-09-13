@@ -25,14 +25,22 @@ class UploadJob {
     def execute() {
         // execute job
 
-        if (!centralRepository) return
+        if (!centralRepository){
+            log.error("The address of the the Central Repository has not been set")
+            return
+        }
 
         def session = new CentralRepositorySession()
 
         // LOGIN
         def loggedIn = session.login()
 
-        if (!loggedIn) return
+        if (!loggedIn){
+            log.error("Failed to login to the Central Repository")
+            return
+        }
+
+        log.info("Logged into the Central Repository")
 
         // Check that all Care Receivers have a City4AgeId
         def careReceivers = careReceiverService.listCareReceivers()
@@ -44,42 +52,73 @@ class UploadJob {
                     careReceiver.city4AgeId = city4AgeId
                     careReceiverService.persistChanges(careReceiver)
                 }
+                else {
+                    log.error("Failed to get City4AgeId for Care Receiver with id " + careReceiver.id)
+                }
             }
         }
 
         // for all CareReceivers copy Activity/Sleep measures and POI events up to the Central Repository.
 
         def activities = activityRecordService.readyForUpload()
-        for (def activity in activities) {
-            if ((activity.careReceiver.hasCity4AgeId()) && uploadable(activity.careReceiver)) {
-                if (session.sendMeasure(activity.formatForUpload())) {
-                    activity.uploaded = true
-                    activityRecordService.persistChanges(activity)
+        if (activities) {
+            for (def activity in activities) {
+                if ((activity.careReceiver.hasCity4AgeId()) && uploadable(activity.careReceiver)) {
+                    if (session.sendMeasure(activity.formatForUpload())) {
+                        activity.uploaded = true
+                        activityRecordService.persistChanges(activity)
+                    }
+                    else {
+                        log.error("Unable to upload activity record with id " + activity.id)
+                    }
                 }
             }
         }
+        else {
+            log.info("There are no activity records to upload")
+        }
+
 
         def sleeps = sleepRecordService.readyForUpload()
-        for (def sleep in sleeps) {
-            if ((sleep.careReceiver.hasCity4AgeId()) && uploadable(sleep.careReceiver)) {
-                if (session.sendMeasure(sleep.formatForUpload())) {
-                    sleep.uploaded = true
-                    sleepRecordService.persistChanges(sleep)
+        if (sleeps) {
+            for (def sleep in sleeps) {
+                if ((sleep.careReceiver.hasCity4AgeId()) && uploadable(sleep.careReceiver)) {
+                    if (session.sendMeasure(sleep.formatForUpload())) {
+                        sleep.uploaded = true
+                        sleepRecordService.persistChanges(sleep)
+                    }
+                    else {
+                        log.error("Unable to upload sleep record with id " + sleep.id)
+                    }
                 }
             }
+        }
+        else {
+            log.info("There are no sleep records to upload")
         }
 
+
         def events = poiEventService.readyForUpload()
-        for (def event in events) {
-            if ((event.careReceiver.hasCity4AgeId()) && uploadable(event.careReceiver)) {
-                if (session.sendAction(event.formatForUpload())) {
-                    event.uploaded = true
-                    poiEventService.persistChanges(event)
+        if (events) {
+            for (def event in events) {
+                if ((event.careReceiver.hasCity4AgeId()) && uploadable(event.careReceiver)) {
+                    if (session.sendAction(event.formatForUpload())) {
+                        event.uploaded = true
+                        poiEventService.persistChanges(event)
+                    }
+                    else {
+                        log.error("Unable to upload POI event with id " + event.id)
+                    }
                 }
             }
         }
+        else {
+            log.info("There are no POI events to upload")
+        }
+
 
         // LOGOUT
         session.logout()
+        log.info("Logged out of the Central Repository")
     }
 }
