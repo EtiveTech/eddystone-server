@@ -18,7 +18,7 @@ class DeviceService {
                     model: json.model,
                     uniqueId: json.uuid,
                     careReceiver: careReceiver,
-                    lastContact: new Date(json.timestamp as String)
+                    lastContact: new Date(json.timestamp as Long)
             )
         }
         try {
