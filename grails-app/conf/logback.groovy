@@ -27,7 +27,7 @@ appender('STDOUT', ConsoleAppender) {
 
 appender('ROLLING', RollingFileAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = "%level %logger - %msg%n"
+        pattern = "%d{HH:mm:ss.SSS} %level %logger - %msg%n"
     }
     rollingPolicy(TimeBasedRollingPolicy) {
         fileNamePattern = "${LOG_DIR}/city4age.%d{yyyy-MM-dd}.log"
@@ -49,6 +49,6 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     root(ERROR, ['STDOUT', 'FULL_STACKTRACE'])
 }
 else {
-    root(ERROR, ['ROLLING'])
+    root(INFO, ['ROLLING'])
 }
 
