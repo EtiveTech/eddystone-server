@@ -4,6 +4,8 @@ import grails.transaction.Transactional
 
 @Transactional
 class CareReceiverService {
+    def proximityEventService
+    def poiEventService
 
     @Transactional(readOnly = true)
     def listCareReceivers() {
@@ -56,4 +58,20 @@ class CareReceiverService {
         return careReceiver
     }
 
+    def generatePoiEvents(careReceiver, endDate) {
+        def startDate = careReceiver.eventsGenerated
+        if (startDate) {
+            startDate += 1  // Day after the last event was processed
+        }
+        else {
+            def first = proximityEventService.firstProximityEvent(careReceiver)
+            startDate = (first) ? first.timestamp : endDate
+        }
+        startDate.clearTime()   // The very start of the day
+        def timestamp = poiEventService.generatePoiEvents(careReceiver, startDate, endDate)
+        if (timestamp) {
+            careReceiver.eventsGenerated = timestamp
+            persistChanges(careReceiver)
+        }
+    }
 }

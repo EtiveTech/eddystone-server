@@ -59,4 +59,26 @@ class PoiEventService {
         def first = query.list(max: 1)
         return (first) ? first[0] : null
     }
+
+    def generatePoiEvents(CareReceiver receiver, Date start, Date end) {
+        log.info("Generating POI Events for careReceiver #" + receiver.id + " from " + start.getDateString() + " to " + end.getDateString())
+        def date = new Date(start.getTime())
+        def timestamp = null
+        for (; date <= end; date += 1) {
+            def list = proximityEventService.forProcessing(receiver, date)
+            if (!list) continue
+            ProximityEventList eventList = new ProximityEventList(list)
+            log.info("Proximity events found: " + eventList.size())
+            def events = PoiEvent.findEvents(receiver, eventList)
+            if (events) {
+                log.info(events.size() + " POI events found for " + date.getDateString())
+                for (event in events) {
+                    def poiEvent = createPoiEvent(event)
+                    if (!poiEvent) break
+                    timestamp = poiEvent.timestamp
+                }
+            }
+        }
+        return timestamp
+    }
 }
