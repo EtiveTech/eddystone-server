@@ -19,7 +19,7 @@ class ProximityEventController {
             if (beacon && device && device.careReceiver == careReceiver) {
                 def event = proximityEventService.createProximityEvent(careReceiver, beacon, device, json)
                 // Note that we have heard from the device
-                deviceService.updateLastContact(device, json.timestamp as Long)
+                deviceService.updateLastContact(json.uuid as String, json.timestamp as Long)
                 respond(event, status: 201)
             }
             else {

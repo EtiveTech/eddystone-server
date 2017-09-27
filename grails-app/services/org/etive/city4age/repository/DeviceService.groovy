@@ -32,7 +32,8 @@ class DeviceService {
         return device
     }
 
-    def updateLastContact(Device device, Long timestamp) {
+    def updateLastContact(uniqueId, timestamp) {
+        def device = Device.findByUniqueId(uniqueId)
         device.lastContact = new Date(timestamp)
         try {
             device = device.save()
