@@ -23,7 +23,7 @@ class PoiEventServiceIntegrationSpec extends Specification {
             def date = new Date().parse("yyyy-MM-dd", "2017-06-20")
             poiEventService.generatePoiEvents(receiver, date, date)
         when:
-            def poiList = poiEventService.listPoiEvents()
+            def poiList = poiEventService.listPoiEvents(receiver)
         then:
             poiList.size() == 4
 

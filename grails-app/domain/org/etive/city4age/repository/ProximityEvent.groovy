@@ -37,4 +37,9 @@ class ProximityEvent {
         }
         return timestamp
     }
+
+    // For test
+    def datetime() {
+        return timestamp.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+    }
 }
