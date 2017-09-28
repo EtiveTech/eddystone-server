@@ -2,7 +2,6 @@ package org.etive.city4age.scheduler
 
 import grails.util.Environment
 import org.etive.city4age.repository.CentralRepositorySession
-import org.etive.city4age.repository.PoiEventGenerator
 
 class UploadJob {
 

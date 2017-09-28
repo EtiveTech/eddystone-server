@@ -101,7 +101,7 @@ class BootStrap {
                         token: careReceiver.token,
                         timestamp: new Date().getTime()
                 ]
-                deviceService.createDevice(json)
+                deviceService.createDevice(careReceiver, json)
                 def device = Device.findByUniqueId(uuid)
 
                 json = [

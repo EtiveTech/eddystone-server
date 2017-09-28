@@ -1,5 +1,6 @@
 package org.etive.city4age.repository
 
+
 import grails.test.mixin.integration.Integration
 import grails.transaction.*
 import spock.lang.*
@@ -7,7 +8,7 @@ import spock.lang.*
 @Integration
 @Stepwise
 @Transactional
-class PoiEventGeneratorIntegrationSpec extends Specification {
+class PoiEventServiceIntegrationSpec extends Specification {
     def poiEventService
 
     def setup() {
@@ -18,7 +19,9 @@ class PoiEventGeneratorIntegrationSpec extends Specification {
 
     void "Create Poi Events in database"() {
         given:
-            new PoiEventGenerator().generateEvents()
+            def receiver = CareReceiver.findByEmailAddress("eventlist1@test.org")
+            def date = new Date().parse("yyyy-MM-dd", "2017-06-20")
+            poiEventService.generatePoiEvents(receiver, date, date)
         when:
             def poiList = poiEventService.listPoiEvents()
         then:
@@ -35,16 +38,6 @@ class PoiEventGeneratorIntegrationSpec extends Specification {
 
             poiList[0].action == "POI_EXIT"
             poiList[0].location.locationId == "MereGreenCommunityCentre"
-
-    }
-
-    void "Try to Create same Poi Events in database"() {
-        given:
-            new PoiEventGenerator().generateEvents()
-        when:
-            def poiList = poiEventService.listPoiEvents()
-        then:
-            poiList.size() == 4
 
     }
 }

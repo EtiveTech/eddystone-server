@@ -61,7 +61,7 @@ class PoiEventService {
     }
 
     def generatePoiEvents(CareReceiver receiver, Date start, Date end) {
-        log.info("Generating POI Events for careReceiver #" + receiver.id + " from " + start.getDateString() + " to " + end.getDateString())
+        log.info("Generating POI Events for careReceiver #" + receiver.id + " from " + start.getDateString())
         def date = new Date(start.getTime())
         def timestamp = null
         for (; date <= end; date += 1) {
