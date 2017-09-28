@@ -113,7 +113,8 @@ class PoiEvent {
                 // This pair matches with a pair on the stack
                 // There may be a number of unmatched entries before the location that's needed
                 while (!stack.locationMatch(pair)) {
-                    if (stack.pairPeek().isVisit()) addVisit(stack.pairPop(), receiver, poiEvents)
+                    def popped = stack.pairPop()
+                    if (popped.isVisit()) addVisit(popped, receiver, poiEvents)
                 }
             }
             // If there is already an event pair on the stack then the new pair will always be treated as a POI_ENTER

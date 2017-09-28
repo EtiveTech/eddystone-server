@@ -21,7 +21,7 @@ class CareReceiverServiceIntegrationSpec extends Specification {
         given:
             def receiver = CareReceiver.findByEmailAddress("eventlist2@test.org")
             def date = new Date().parse("yyyy-MM-dd", "2017-06-25") // Data for 21-06-2017
-            //careReceiverService.generatePoiEvents(receiver, date)
+            careReceiverService.generatePoiEvents(receiver, date)
         when:
             def poiList = poiEventService.listPoiEvents(receiver)
         then:
@@ -34,10 +34,10 @@ class CareReceiverServiceIntegrationSpec extends Specification {
             poiList[6].location.locationId == "MereGreenCommunityCentre"
 
             poiList[5].action == "POI_ENTER"
-            poiList[5].location.locationId == "Sainsburys, Mere Green"
+            poiList[5].location.locationId == "SainsburysMereGreen"
 
             poiList[4].action == "POI_EXIT"
-            poiList[4].location.locationId == "Sainsburys, Mere Green"
+            poiList[4].location.locationId == "SainsburysMereGreen"
 
             poiList[3].action == "POI_ENTER"
             poiList[3].location.locationId == "MereGreenCommunityCentre"

@@ -68,10 +68,12 @@ class CareReceiverService {
             startDate = (first) ? first.timestamp : endDate
         }
         startDate.clearTime()   // The very start of the day
-        def timestamp = poiEventService.generatePoiEvents(careReceiver, startDate, endDate)
-        if (timestamp) {
-            careReceiver.eventsGenerated = timestamp
-            persistChanges(careReceiver)
+        if (startDate <= endDate) {
+            def timestamp = poiEventService.generatePoiEvents(careReceiver, startDate, endDate)
+            if (timestamp) {
+                careReceiver.eventsGenerated = timestamp
+                persistChanges(careReceiver)
+            }
         }
     }
 }
