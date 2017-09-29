@@ -15,8 +15,8 @@ class GenerateEventsJob {
         def careReceivers = careReceiverService.listCareReceivers()
         def today = (new Date()).clearTime()
         def yesterday = today - 1
+        log.info("Generating POI events for " + careReceivers.size() + " Care Receivers")
         for (receiver in careReceivers) {
-            log.info("Generating POI events for " + careReceivers.size() + " Care Receivers")
             careReceiverService.generatePoiEvents(receiver, yesterday)
         }
     }

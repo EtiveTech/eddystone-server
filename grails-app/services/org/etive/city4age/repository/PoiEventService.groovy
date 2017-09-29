@@ -16,7 +16,7 @@ class PoiEventService {
                 sourceEvent.poiEvent = poiEvent
                 proximityEventService.persistChanges(sourceEvent)
             }
-            log.info("CareReceiver #" + poiEvent.careReceiver.id + ": Created " + poiEvent.action + " event for " + poiEvent.location.name)
+            log.info("Created " + poiEvent.action + " event for " + poiEvent.location.name)
         }
         try {
             poiEvent = poiEvent.save()
@@ -61,22 +61,20 @@ class PoiEventService {
     }
 
     def generatePoiEvents(CareReceiver receiver, Date start, Date end) {
-        log.info("Generating POI Events for careReceiver #" + receiver.id + " from " + start.getDateString())
+        log.info("Generating POI Events for careReceiver #" + receiver.id)
         def date = new Date(start.getTime())
         def timestamp = null
         for (; date <= end; date += 1) {
             def list = proximityEventService.forProcessing(receiver, date)
             if (!list) continue
             ProximityEventList eventList = new ProximityEventList(list)
-            log.info("Proximity events found: " + eventList.size())
+            log.info("Proximity events found for " + date.getDateString() + ": " + eventList.size())
             def events = PoiEvent.findEvents(receiver, eventList)
-            if (events) {
-                log.info(events.size() + " POI events found for " + date.getDateString())
-                for (event in events) {
-                    def poiEvent = createPoiEvent(event)
-                    if (!poiEvent) break
-                    timestamp = poiEvent.timestamp
-                }
+            log.info("POI events found for " + date.getDateString() + ": " + events.size())
+            for (event in events) {
+                def poiEvent = createPoiEvent(event)
+                if (!poiEvent) break
+                timestamp = poiEvent.timestamp
             }
         }
         return timestamp
