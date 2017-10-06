@@ -7,6 +7,7 @@ class UrlMappings {
             get "/beacon" (controller: 'beacon', action: 'index')
             post "/beacon" (controller: 'beacon', action: 'save')
             get "/device" (controller: 'device', action: 'index')
+            get "/device/$uuid" (controller: 'device', action: 'show')
             post "/device" (controller: 'device', action: 'save')
             put "/device/$uuid" (controller: 'device', action: 'update')
             get "/proximity" (controller: 'proximityEvent', action: 'index')

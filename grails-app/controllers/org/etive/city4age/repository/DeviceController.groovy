@@ -7,6 +7,11 @@ class DeviceController {
         respond deviceService.listDevices()
     }
 
+    def show() {
+        def device = Device.findByUniqueId(params.uuid as String)
+        if (device) respond (device, [ status: 200 ])
+    }
+
     def save() {
         def json = request.JSON
         def careReceiver = CareReceiver.findByToken(json.token as String)
