@@ -9,7 +9,7 @@ class ProximityEventService {
     def createProximityEvent(CareReceiver careReceiver, Beacon beacon, Device device, json) {
 
         def event = new ProximityEvent(
-                eventType: json.eventType,
+                eventType: json.eventType as String,
                 timestamp: new Date(json.timestamp as Long),
                 rssi: json.rssi as Integer,
                 parameter: ((json.eventType == "found") ? json.txPower : json.rssiMax) as Integer,
@@ -28,8 +28,8 @@ class ProximityEventService {
     }
 
     def createProximityEvent(CareReceiver careReceiver, json) {
-        def beacon = Beacon.findByBeaconId(json.beaconId.toString())
-        def device = Device.findByUniqueId(json.uuid.toString())
+        def beacon = Beacon.findByBeaconId(json.beaconId as String)
+        def device = Device.findByUniqueId(json.uuid as String)
         return createProximityEvent(careReceiver, beacon, device, json)
     }
 
