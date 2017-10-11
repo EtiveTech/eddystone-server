@@ -43,11 +43,13 @@ class UploadJob {
 
         // Check that all Care Receivers have a City4AgeId
         def careReceivers = careReceiverService.listCareReceivers()
+        log.info("Uploading data for " + careReceivers.size() + " Care Receivers")
         for (def careReceiver in careReceivers) {
             if (!careReceiver.hasCity4AgeId()) {
                 // Create a City4AgeId for this user
                 def city4AgeId = session.getCity4AgeId(careReceiver.logbookId, careReceiver.getDataDate() as Date)
                 if (city4AgeId) {
+                    log.info("Obtained City4AgeId " + city4AgeId + " for Care Receiver with id " + careReceiver.id)
                     careReceiver.city4AgeId = city4AgeId
                     careReceiverService.persistChanges(careReceiver)
                 }
@@ -61,58 +63,70 @@ class UploadJob {
 
         def activities = activityRecordService.readyForUpload()
         if (activities) {
+            log.info("Attempting to upload " + activities.size() + " Activity Measures")
+            def count = 0
             for (def activity in activities) {
                 if ((activity.careReceiver.hasCity4AgeId()) && uploadable(activity.careReceiver)) {
                     if (session.sendMeasure(activity.formatForUpload())) {
                         activity.uploaded = true
                         activityRecordService.persistChanges(activity)
+                        count += 1
                     }
                     else {
                         log.error("Unable to upload activity record with id " + activity.id)
                     }
                 }
             }
+            log.info("Uploaded " + count + " Activity Measures")
         }
         else {
-            log.info("There are no activity records to upload")
+            log.info("There are no Activity Measures to upload")
         }
 
 
         def sleeps = sleepRecordService.readyForUpload()
         if (sleeps) {
+            log.info("Attempting to upload " + sleeps.size() + " Sleep Measures")
+            def count = 0
             for (def sleep in sleeps) {
                 if ((sleep.careReceiver.hasCity4AgeId()) && uploadable(sleep.careReceiver)) {
                     if (session.sendMeasure(sleep.formatForUpload())) {
                         sleep.uploaded = true
                         sleepRecordService.persistChanges(sleep)
+                        count += 1
                     }
                     else {
                         log.error("Unable to upload sleep record with id " + sleep.id)
                     }
                 }
             }
+            log.info("Uploaded " + count + " Sleep Measures")
         }
         else {
-            log.info("There are no sleep records to upload")
+            log.info("There are no Sleep Measures to upload")
         }
 
 
         def events = poiEventService.readyForUpload()
         if (events) {
+            log.info("Attempting to upload " + events.size() + " POI Events")
+            def count = 0
             for (def event in events) {
                 if ((event.careReceiver.hasCity4AgeId()) && uploadable(event.careReceiver)) {
                     if (session.sendAction(event.formatForUpload())) {
                         event.uploaded = true
                         poiEventService.persistChanges(event)
+                        count += 1
                     }
                     else {
                         log.error("Unable to upload POI event with id " + event.id)
                     }
                 }
             }
+            log.info("Uploaded " + count + " POI Events")
         }
         else {
-            log.info("There are no POI events to upload")
+            log.info("There are no POI Events to upload")
         }
 
 
