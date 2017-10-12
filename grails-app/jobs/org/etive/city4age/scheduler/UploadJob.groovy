@@ -17,10 +17,6 @@ class UploadJob {
 //        cron name: 'uploadTrigger', cronExpression: "0 21 * * * ?"
     }
 
-    def uploadable(careReceiver) {
-        return (Environment.current != Environment.PRODUCTION) ? true : !careReceiver.forTest
-    }
-
     def execute() {
         // execute job
 
@@ -45,7 +41,7 @@ class UploadJob {
         def careReceivers = careReceiverService.listCareReceivers()
         log.info("Uploading data for " + careReceivers.size() + " Care Receivers")
         for (def careReceiver in careReceivers) {
-            if (!careReceiver.hasCity4AgeId()) {
+            if (careReceiver.uploadable() && !careReceiver.hasCity4AgeId()) {
                 // Create a City4AgeId for this user
                 def city4AgeId = session.getCity4AgeId(careReceiver.logbookId, careReceiver.getDataDate() as Date)
                 if (city4AgeId) {
@@ -66,7 +62,7 @@ class UploadJob {
             log.info("Attempting to upload " + activities.size() + " Activity Measures")
             def count = 0
             for (def activity in activities) {
-                if ((activity.careReceiver.hasCity4AgeId()) && uploadable(activity.careReceiver)) {
+                if (activity.careReceiver.uploadable() && activity.careReceiver.hasCity4AgeId()) {
                     if (session.sendMeasure(activity.formatForUpload())) {
                         activity.uploaded = true
                         activityRecordService.persistChanges(activity)
@@ -89,7 +85,7 @@ class UploadJob {
             log.info("Attempting to upload " + sleeps.size() + " Sleep Measures")
             def count = 0
             for (def sleep in sleeps) {
-                if ((sleep.careReceiver.hasCity4AgeId()) && uploadable(sleep.careReceiver)) {
+                if (sleep.careReceiver.uploadable() && sleep.careReceiver.hasCity4AgeId()) {
                     if (session.sendMeasure(sleep.formatForUpload())) {
                         sleep.uploaded = true
                         sleepRecordService.persistChanges(sleep)
@@ -112,7 +108,7 @@ class UploadJob {
             log.info("Attempting to upload " + events.size() + " POI Events")
             def count = 0
             for (def event in events) {
-                if ((event.careReceiver.hasCity4AgeId()) && uploadable(event.careReceiver)) {
+                if (event.careReceiver.uploadable() && event.careReceiver.hasCity4AgeId()) {
                     if (session.sendAction(event.formatForUpload())) {
                         event.uploaded = true
                         poiEventService.persistChanges(event)

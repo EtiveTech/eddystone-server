@@ -1,5 +1,6 @@
 package org.etive.city4age.repository
 
+import grails.util.Environment
 import org.etive.city4age.withings.WithingsService
 
 class CareReceiver {
@@ -85,6 +86,9 @@ class CareReceiver {
         return (city4AgeId) ? (city4AgeId != nullCity4AgeId) : false
     }
 
+    def uploadable() {
+        return (Environment.current != Environment.PRODUCTION) ? true : !this.forTest
+    }
 
     static getStartDate() {
         return Date.parse("yyyy-MM-dd", dayBeforeProjectStart) + 1
