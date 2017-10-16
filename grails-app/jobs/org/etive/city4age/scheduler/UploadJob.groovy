@@ -28,10 +28,9 @@ class UploadJob {
         def session = new CentralRepositorySession()
 
         // LOGIN
-        def loggedIn = session.login()
-
-        if (!loggedIn){
-            log.error("Failed to login to the Central Repository")
+        def response = session.login()
+        if (response != 200){
+            log.error("Failed to login to the Central Repository (status = " + response + ")")
             return
         }
 

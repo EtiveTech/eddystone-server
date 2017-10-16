@@ -68,17 +68,21 @@ class CentralRepositorySession {
         connection.setRequestMethod("GET")
         connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
         def content = connection.getInputStream()
+        def status = -1;
         try{
-            def status = connection.getResponseCode()
+            status = connection.getResponseCode()
             if (status == 200) {
                 def json = readJson(content)
                 mToken = json.token
             }
         }
+        catch (Exception e) {
+            mToken = null;
+        }
         finally {
             content.close()
         }
-        return mToken != null
+        return status
     }
 
     def logout() {
