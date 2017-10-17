@@ -7,8 +7,7 @@ model {
 json {
 	id careReceiver.id
 	logbookId careReceiver.logbookId
-	token careReceiver.token
-	emailAddress careReceiver.emailAddress
+	city4ageId careReceiver.city4AgeId
     activityRecordsTo careReceiver.activityRecordsDownloaded
 	sleepRecordsTo careReceiver.sleepRecordsDownloaded
 	eventsGeneratedTo careReceiver.eventsGenerated

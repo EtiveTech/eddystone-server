@@ -14,5 +14,6 @@ json {
     careReceiver device.careReceiver.id
     created device.dateCreated
     lastContact device.lastContact
+    lastUpdated device.lastUpdated
 }
 

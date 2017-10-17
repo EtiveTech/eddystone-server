@@ -120,6 +120,9 @@ class CentralRepositorySession {
                 city4AgeId = json[username] as String
             }
         }
+        catch (Exception e) {
+            city4AgeId = ""
+        }
         finally {
             if (input) input.close()
         }

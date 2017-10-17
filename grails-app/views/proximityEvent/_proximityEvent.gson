@@ -8,7 +8,6 @@ model {
 json {
 	id proximityEvent.id
 	eventType proximityEvent.eventType
-	timestamp proximityEvent.timestamp
 	rssi proximityEvent.rssi
 	parameter proximityEvent.parameter
 	beacon proximityEvent.beacon.beaconId
@@ -16,4 +15,6 @@ json {
 	device proximityEvent.device.id
 	poiEvent PoiEvent.getId(proximityEvent.poiEvent)
 	careReceiver proximityEvent.careReceiver.id
+	timestamp proximityEvent.timestamp
+	dateCreated proximityEvent.dateCreated
 }
