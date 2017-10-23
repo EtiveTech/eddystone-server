@@ -8,6 +8,7 @@ json {
 	id careReceiver.id
 	logbookId careReceiver.logbookId
 	city4ageId careReceiver.city4AgeId
+	token careReceiver.token
     activityRecordsTo careReceiver.activityRecordsDownloaded
 	sleepRecordsTo careReceiver.sleepRecordsDownloaded
 	eventsGeneratedTo careReceiver.eventsGenerated
