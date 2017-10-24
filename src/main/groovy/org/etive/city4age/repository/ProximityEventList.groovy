@@ -8,13 +8,13 @@ class ProximityEventList {
 
     // If a lost event is quickly followed by a found event then the lost and found events can safely be removed since
     // there must be a preceding "found" event and a following "lost" event. A total drop out of 15 seconds wouldn't
-    // seem unreasonable so any interval less than 15 - 8.4 = 6.6 seconds should be removed prior to processing
+    // seem unreasonable.
 
     // On 22nd October 2017, a Care Receiver generated a large number of POI events whilst inside St. Giles Hospice.
     // In most cases, a POI_EXIT event was followed by a POI_ENTER event for the same location no more than 30 seconds
-    // later. As a result, the 15 second threshold should be increased to 30 seconds. That makes MAX_DROP_OUT = 21600.
+    // later. As a result, the 15 second threshold should be increased to 30 seconds.
 
-    private static final Integer MAX_DROP_OUT = 21600 // 21.6 seconds
+    private static final Integer MAX_DROP_OUT = 30000
     private mList = null
     private Integer mIndex = -1
     private Integer mLength = 0

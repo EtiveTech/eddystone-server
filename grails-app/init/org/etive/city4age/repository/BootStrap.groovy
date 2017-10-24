@@ -80,6 +80,8 @@ class BootStrap {
             if (Environment.current == Environment.TEST) {
                 def email1 = "eventlist1@test.org"
                 def email2 = "eventlist2@test.org"
+                def email3 = "eventlist3@test.org"
+                def email4 = "eventlist4@test.org"
 
                 def json = [
                         logbookId: 1234567890,
@@ -592,6 +594,476 @@ class BootStrap {
                         uuid: device2.uniqueId
                 ]
                 proximityEventService.createProximityEvent(careReceiver2, json)
+
+                // ************************************************************
+
+                json = [
+                        logbookId: 4567890123,
+                        withingsId: 5678901234,
+                        emailAddress: email3,
+                        accessKey: "key:cdefghijklm",
+                        accessSecret: "secret:cdefghijklm",
+                        city4ageId: "eu:c4a:user:68",
+                        forTest: true
+                ]
+                careReceiverService.createCareReceiver(json)
+                def careReceiver3 = CareReceiver.findByEmailAddress(email3)
+
+                uuid = "52795c9383e88e3"
+                json = [
+                        os: "Android",
+                        osVersion: "7.0",
+                        model: "XT1650",
+                        uuid: uuid,
+                        token: careReceiver3.token,
+                        timestamp: new Date().getTime()
+                ]
+                deviceService.createDevice(careReceiver3, json)
+                def device3 = Device.findByUniqueId(uuid)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:17:45Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:20:57Z").getTime(),
+                        rssi: -46,
+                        rssiMax: -37,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:21:14Z").getTime(),
+                        rssi: -45,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:21:42Z").getTime(),
+                        rssi: -45,
+                        rssiMax: -41,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:22:01Z").getTime(),
+                        rssi: -45,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:22:12Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -45,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:22:34Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:25:07Z").getTime(),
+                        rssi: -41,
+                        rssiMax: -37,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:25:24Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:25:46Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -41,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:26:56Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:28:50Z").getTime(),
+                        rssi: -41,
+                        rssiMax: -41,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:29:06Z").getTime(),
+                        rssi: -47,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:31:12Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -33,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:32:19Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:35:55Z").getTime(),
+                        rssi: -46,
+                        rssiMax: -31,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:40:35Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:42:32Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -35,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:44:38Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:45:22Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -45,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:48:18Z").getTime(),
+                        rssi: -47,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:48:27Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -45,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:54:19Z").getTime(),
+                        rssi: -41,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:54:34Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -41,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:54:52Z").getTime(),
+                        rssi: -47,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:56:00Z").getTime(),
+                        rssi: -45,
+                        rssiMax: -45,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:56:10Z").getTime(),
+                        rssi: -47,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:56:50Z").getTime(),
+                        rssi: -46,
+                        rssiMax: -41,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:57:18Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:58:32Z").getTime(),
+                        rssi: -47,
+                        rssiMax: -41,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T13:58:35Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T14:00:43Z").getTime(),
+                        rssi: -46,
+                        rssiMax: -32,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T14:00:56Z").getTime(),
+                        rssi: -46,
+                        txPower: -47,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T14:01:51Z").getTime(),
+                        rssi: -45,
+                        rssiMax: -41,
+                        beaconId: "c4a000002740",
+                        token: careReceiver3.token,
+                        uuid: device3.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver3, json)
+
+                // ************************************************************
+
+                json = [
+                        logbookId: 5678901234,
+                        withingsId: 6789012345,
+                        emailAddress: email4,
+                        accessKey: "key:defghijklmn",
+                        accessSecret: "secret:defghijklmn",
+                        city4ageId: "eu:c4a:user:69",
+                        forTest: true
+                ]
+                careReceiverService.createCareReceiver(json)
+                def careReceiver4 = CareReceiver.findByEmailAddress(email4)
+
+                uuid = "74f6cf171ab01315"
+                json = [
+                        os: "Android",
+                        osVersion: "7.1.1",
+                        model: "E6653",
+                        uuid: uuid,
+                        token: careReceiver4.token,
+                        timestamp: new Date().getTime()
+                ]
+                deviceService.createDevice(careReceiver4, json)
+                def device4 = Device.findByUniqueId(uuid)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T14:06:38Z").getTime(),
+                        rssi: -80,
+                        txPower: -47,
+                        beaconId: "c4a000002771",
+                        token: careReceiver4.token,
+                        uuid: device4.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver4, json)
+
+                json = [
+                        eventType: "found",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T14:07:06Z").getTime(),
+                        rssi: -92,
+                        txPower: -47,
+                        beaconId: "c4a000002718",
+                        token: careReceiver4.token,
+                        uuid: device4.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver4, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T14:08:01Z").getTime(),
+                        rssi: -89,
+                        rssiMax: -70,
+                        beaconId: "c4a000002771",
+                        token: careReceiver4.token,
+                        uuid: device4.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver4, json)
+
+                json = [
+                        eventType: "lost",
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-10-22T14:08:01Z").getTime(),
+                        rssi: -93,
+                        rssiMax: -80,
+                        beaconId: "c4a000002718",
+                        token: careReceiver4.token,
+                        uuid: device4.uniqueId
+                ]
+                proximityEventService.createProximityEvent(careReceiver4, json)
             }
         }
         Region.addLocations(Location.list())

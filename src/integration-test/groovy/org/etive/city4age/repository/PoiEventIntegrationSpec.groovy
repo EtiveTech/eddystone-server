@@ -165,7 +165,7 @@ class PoiEventIntegrationSpec extends Specification {
         when:
             beaconPairs = BeaconPair.findBeaconPairs(eventList)
         then:
-            beaconPairs.size() == 9
+            beaconPairs.size() == 8 //9
 
             // Mere Green Community Centre
             beaconPairs[0].getFoundEvent() == proximityList[21]
@@ -198,27 +198,28 @@ class PoiEventIntegrationSpec extends Specification {
             beaconPairs[4].getLocation().locationId == "MereGreenCommunityCentre"
 
             // Sainsburys Mere Green
-            beaconPairs[5].getFoundEvent() == proximityList[7]
+            beaconPairs[5].getFoundEvent() == proximityList[4] // 7
             beaconPairs[5].getLostEvent() == proximityList[13]
             beaconPairs[5].isVisit()
             beaconPairs[5].getLocation().locationId == "SainsburysMereGreen"
 
             // Sainsburys Mere Green
-            beaconPairs[6].getFoundEvent() == proximityList[4]
-            beaconPairs[6].getLostEvent() == proximityList[6]
-            !beaconPairs[6].isVisit()
-            beaconPairs[6].getLocation().locationId == "SainsburysMereGreen"
+//            beaconPairs[6].getFoundEvent() == proximityList[4] // 4
+//            beaconPairs[6].getLostEvent() == proximityList[6]  // 6
+//            !beaconPairs[6].isVisit()
+//            beaconPairs[6].getLocation().locationId == "SainsburysMereGreen"
 
             // Mere Green Community Centre
-            beaconPairs[7].getFoundEvent() == proximityList[2]
-            beaconPairs[7].getLostEvent() == proximityList[3]
+            beaconPairs[6].getFoundEvent() == proximityList[2]
+            beaconPairs[6].getLostEvent() == proximityList[3]
+            !beaconPairs[6].isVisit()
+            beaconPairs[6].getLocation().locationId == "MereGreenCommunityCentre"
+
+            // Mere Green Community Centre
+            beaconPairs[7].getFoundEvent() == proximityList[0]
+            beaconPairs[7].getLostEvent() == proximityList[1]
             !beaconPairs[7].isVisit()
             beaconPairs[7].getLocation().locationId == "MereGreenCommunityCentre"
-
-            // Mere Green Community Centre
-            beaconPairs[8].getFoundEvent() == proximityList[0]
-            beaconPairs[8].getLostEvent() == proximityList[1]
-            !beaconPairs[8].isVisit()
-            beaconPairs[8].getLocation().locationId == "MereGreenCommunityCentre"
     }
+
 }

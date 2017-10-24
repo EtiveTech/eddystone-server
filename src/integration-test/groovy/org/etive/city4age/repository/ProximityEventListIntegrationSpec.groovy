@@ -93,4 +93,28 @@ class ProximityEventListIntegrationSpec extends Specification {
             event.beacon.beaconId == "c4a000002746"
             eventList.getIndex() == 4
     }
+
+    void "Handles drop-outs"() {
+        given:
+            def proximityList = proximityEventService.forProcessing("eventlist3@test.org", "2017-10-22")
+        when:
+            eventList = new ProximityEventList(proximityList)
+        then:
+            eventList.size() == 14
+
+            eventList.getEntry(0).datetime() == "2017-10-22T14:01:51Z"
+            eventList.getEntry(1).datetime() == "2017-10-22T13:54:19Z"
+            eventList.getEntry(2).datetime() == "2017-10-22T13:48:27Z"
+            eventList.getEntry(3).datetime() == "2017-10-22T13:48:18Z"
+            eventList.getEntry(4).datetime() == "2017-10-22T13:45:22Z"
+            eventList.getEntry(5).datetime() == "2017-10-22T13:44:38Z"
+            eventList.getEntry(6).datetime() == "2017-10-22T13:42:32Z"
+            eventList.getEntry(7).datetime() == "2017-10-22T13:40:35Z"
+            eventList.getEntry(8).datetime() == "2017-10-22T13:35:55Z"
+            eventList.getEntry(9).datetime() == "2017-10-22T13:32:19Z"
+            eventList.getEntry(10).datetime() == "2017-10-22T13:31:12Z"
+            eventList.getEntry(11).datetime() == "2017-10-22T13:26:56Z"
+            eventList.getEntry(12).datetime() == "2017-10-22T13:25:46Z"
+            eventList.getEntry(13).datetime() == "2017-10-22T13:17:45Z"
+    }
 }

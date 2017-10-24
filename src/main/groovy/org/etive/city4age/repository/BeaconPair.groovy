@@ -58,6 +58,14 @@ class BeaconPair {
         return (mDurationOfProximity > walkByThreshold * 1000)
     }
 
+    Boolean shorterStayThan(BeaconPair another) {
+        return mDurationOfProximity < another.mDurationOfProximity;
+    }
+
+    Boolean longerStayThan(BeaconPair another) {
+        return mDurationOfProximity > another.mDurationOfProximity;
+    }
+
     Location getLocation() {
         return (mFound) ? mFound.beacon.location : null
     }
@@ -90,8 +98,15 @@ class BeaconPair {
                     def eventPair = new BeaconPair(foundEvent, lostEvent)
                     if (!eventPair.isNoise()) {
                         def previous = (eventPairs) ? eventPairs.last() : null
-                        if (!(previous && previous.sameLocation(eventPair) && previous.overlaps(eventPair)) || keepOverlaps) {
-                            eventPairs << eventPair
+                        if (previous && previous.sameLocation(eventPair) && previous.overlaps(eventPair) && !keepOverlaps) {
+                            // Don't want to keep overlaps so keep the pair that have the longest duration
+                            if (previous.shorterStayThan(eventPair)) {
+                                eventPairs.pop() // Lose the previous pair
+                                eventPairs.push(eventPair)
+                            }
+                        }
+                        else {
+                            eventPairs.push(eventPair)
                         }
                     }
                 }

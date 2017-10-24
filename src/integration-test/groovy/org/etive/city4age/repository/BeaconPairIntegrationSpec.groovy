@@ -165,4 +165,20 @@ class BeaconPairIntegrationSpec extends Specification {
             beaconPairList[4].getLostEvent() == eventList[12]
             beaconPairList[5].getLostEvent() == eventList[14]
     }
+
+    void "Handles overlapping beacon pairs"() {
+        given:
+            def proximityList = proximityEventService.forProcessing("eventlist4@test.org", "2017-10-22")
+            def eventList = new ProximityEventList(proximityList)
+        when:
+            beaconPairList = BeaconPair.findBeaconPairs(eventList)
+        then:
+            beaconPairList.size() == 1
+
+            beaconPairList[0].getFoundEvent().beacon.beaconId == "c4a000002771"
+            beaconPairList[0].getFoundEvent().datetime() == "2017-10-22T14:06:38Z"
+            beaconPairList[0].getFoundEvent() == proximityList[0]
+            beaconPairList[0].getLostEvent() == proximityList[2]
+    }
+
 }
