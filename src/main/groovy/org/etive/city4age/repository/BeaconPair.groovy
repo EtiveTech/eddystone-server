@@ -2,8 +2,12 @@ package org.etive.city4age.repository
 
 class BeaconPair {
 
-    static private walkByThreshold = System.getenv("WALKBY_THRESHOLD")
-    static private noiseThreshold = System.getenv("NOISE_THRESHOLD")
+    static private walkByThreshold = System.getenv("WALKBY_THRESHOLD") ?: 60 // seconds
+    // It takes 1.4 seconds from first seeing a beacon until it is reported
+    // It takes 6 * 1.4 (8.4) seconds for a lost beacon to be reported as lost
+    // Thus a beacon that only appears for 8.4 seconds has only been visible for 1.4 seconds
+    // If the noise floor is 2.5 seconds, that equates to a beacon that is reported for 8.4 + (2.5 - 1.4) == 9.5
+    static private noiseThreshold = System.getenv("NOISE_THRESHOLD") ?: 9.5 // seconds
 
     private ProximityEvent mFound = null
     private ProximityEvent mLost = null
@@ -15,8 +19,6 @@ class BeaconPair {
     private mBeaconId = -1
 
     BeaconPair(ProximityEvent found, ProximityEvent lost) {
-        walkByThreshold = (walkByThreshold) ?: 60 // seconds
-        noiseThreshold = (noiseThreshold) ?: 2.5 // seconds
 
         if (found && lost && found.beacon.id == lost.beacon.id) {
             mFound = found
@@ -85,9 +87,6 @@ class BeaconPair {
     static List<BeaconPair> findBeaconPairs(ProximityEventList list, Boolean keepOverlaps = false) {
         ProximityEvent foundEvent, lostEvent
         List<BeaconPair> eventPairs = []
-
-        walkByThreshold = (walkByThreshold) ?: 60 // seconds
-        noiseThreshold = (noiseThreshold) ?: 2.5 // seconds
 
         while (!list.isEmpty()) {
             lostEvent = list.nextLost()
