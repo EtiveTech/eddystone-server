@@ -285,7 +285,7 @@ class BootStrap {
 
                 json = [
                         eventType: "lost",
-                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-06-20T09:31:34Z").getTime(),
+                        timestamp: new Date().parse("yyyy-MM-dd'T'HH:mm:ssXXX", "2017-06-20T09:31:35Z").getTime(),
                         rssi: -87,
                         rssiMax: -84,
                         beaconId: "c4a000002759",

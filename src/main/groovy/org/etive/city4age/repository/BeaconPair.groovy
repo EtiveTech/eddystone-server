@@ -2,12 +2,14 @@ package org.etive.city4age.repository
 
 class BeaconPair {
 
-    static private walkByThreshold = System.getenv("WALKBY_THRESHOLD") ?: 60 // seconds
     // It takes 1.4 seconds from first seeing a beacon until it is reported
     // It takes 6 * 1.4 (8.4) seconds for a lost beacon to be reported as lost
     // Thus a beacon that only appears for 8.4 seconds has only been visible for 1.4 seconds
     // If the noise floor is 2.5 seconds, that equates to a beacon that is reported for 8.4 + (2.5 - 1.4) == 9.5
-    static private noiseThreshold = System.getenv("NOISE_THRESHOLD") ?: 9.5 // seconds
+    // Changes to beacon status is reported every 0.7 seconds so there will probably be a delay/error
+    // in the reported times. Add 0.7 to the threshold to be sure (9.5 + 0.7 = 10.2)
+    static private noiseThreshold = System.getenv("NOISE_THRESHOLD") ?: 10.2 // seconds
+    static private walkByThreshold = System.getenv("WALKBY_THRESHOLD") ?: 60 // seconds
 
     private ProximityEvent mFound = null
     private ProximityEvent mLost = null
