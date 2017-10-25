@@ -9,7 +9,7 @@ import java.nio.charset.Charset
 conversionRule 'clr', ColorConverter
 conversionRule 'wex', WhitespaceThrowableProxyConverter
 
-def LOG_DIR = "/var/log/city4age"
+def LOG_DIR = System.getenv("LOG_DIR") ?: "/var/log/city4age"
 
 // See http://logback.qos.ch/manual/groovy.html for details on configuration
 appender('STDOUT', ConsoleAppender) {
