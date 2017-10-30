@@ -165,7 +165,7 @@ class PoiEventIntegrationSpec extends Specification {
         when:
             beaconPairs = BeaconPair.findBeaconPairs(eventList)
         then:
-            beaconPairs.size() == 8 //9
+            beaconPairs.size() == 8
 
             // Mere Green Community Centre
             beaconPairs[0].getFoundEvent() == proximityList[21]
@@ -202,12 +202,6 @@ class PoiEventIntegrationSpec extends Specification {
             beaconPairs[5].getLostEvent() == proximityList[13]
             beaconPairs[5].isVisit()
             beaconPairs[5].getLocation().locationId == "SainsburysMereGreen"
-
-            // Sainsburys Mere Green
-//            beaconPairs[6].getFoundEvent() == proximityList[4] // 4
-//            beaconPairs[6].getLostEvent() == proximityList[6]  // 6
-//            !beaconPairs[6].isVisit()
-//            beaconPairs[6].getLocation().locationId == "SainsburysMereGreen"
 
             // Mere Green Community Centre
             beaconPairs[6].getFoundEvent() == proximityList[2]

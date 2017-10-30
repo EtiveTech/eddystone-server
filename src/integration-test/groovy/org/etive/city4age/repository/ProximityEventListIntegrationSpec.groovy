@@ -94,7 +94,7 @@ class ProximityEventListIntegrationSpec extends Specification {
             eventList.getIndex() == 4
     }
 
-    void "Handles drop-outs"() {
+    void "Handles drop-outs (1)"() {
         given:
             def proximityList = proximityEventService.forProcessing("eventlist3@test.org", "2017-10-22")
         when:
@@ -116,5 +116,25 @@ class ProximityEventListIntegrationSpec extends Specification {
             eventList.getEntry(11).datetime() == "2017-10-22T13:26:56Z"
             eventList.getEntry(12).datetime() == "2017-10-22T13:25:46Z"
             eventList.getEntry(13).datetime() == "2017-10-22T13:17:45Z"
+    }
+
+    void "Handles drop-outs (2)"() {
+        given:
+            def proximityList = proximityEventService.forProcessing("eventlist5@test.org", "2017-10-28")
+        when:
+            eventList = new ProximityEventList(proximityList)
+        then:
+            eventList.size() == 10
+
+            eventList.getEntry(0).datetime() == "2017-10-28T14:43:15Z"
+            eventList.getEntry(1).datetime() == "2017-10-28T14:42:56Z"
+            eventList.getEntry(2).datetime() == "2017-10-28T14:42:24Z"
+            eventList.getEntry(3).datetime() == "2017-10-28T14:39:39Z"
+            eventList.getEntry(4).datetime() == "2017-10-28T14:39:10Z"
+            eventList.getEntry(5).datetime() == "2017-10-28T14:36:31Z"
+            eventList.getEntry(6).datetime() == "2017-10-28T14:16:19Z"
+            eventList.getEntry(7).datetime() == "2017-10-28T14:13:09Z"
+            eventList.getEntry(8).datetime() == "2017-10-28T14:12:38Z"
+            eventList.getEntry(9).datetime() == "2017-10-28T14:10:54Z"
     }
 }
