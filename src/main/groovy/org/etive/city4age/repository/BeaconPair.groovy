@@ -13,6 +13,7 @@ class BeaconPair {
 
     private ProximityEvent mFound = null
     private ProximityEvent mLost = null
+    private BeaconTag mTag = null
     private mFoundTimestamp = 0
     private mLostTimestamp = 0
     private mDurationOfProximity = 0
@@ -99,16 +100,20 @@ class BeaconPair {
                     def eventPair = new BeaconPair(foundEvent, lostEvent)
                     if (!eventPair.isNoise()) {
                         def previous = (eventPairs) ? eventPairs.last() : null
-                        if (previous && previous.sameLocation(eventPair) && previous.overlaps(eventPair) && !keepOverlaps) {
-                            // Don't want to keep overlaps so keep the pair that have the longest duration
-                            if (previous.shorterStayThan(eventPair)) {
-                                eventPairs.pop() // Lose the previous pair
-                                eventPairs.push(eventPair)
+                        if (previous && previous.sameLocation(eventPair)) {
+                            // Tag adjacent pairs within the same location
+//                            if (!previous.mTag) previous.mTag = new BeaconTag()
+//                            eventPair.mTag = previous.mTag
+
+                            if (previous.overlaps(eventPair) && !keepOverlaps) {
+                                // Don't want to keep overlaps so keep the pair that have the longest duration
+                                if (previous.shorterStayThan(eventPair))
+                                    eventPairs.pop() // Lose the previous pair
+                                else
+                                    eventPair = eventPairs.pop() // Lose the current pair
                             }
                         }
-                        else {
-                            eventPairs.push(eventPair)
-                        }
+                        eventPairs.push(eventPair)
                     }
                 }
             }

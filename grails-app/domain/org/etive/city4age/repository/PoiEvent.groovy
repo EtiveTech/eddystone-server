@@ -152,7 +152,9 @@ class PoiEvent {
             if (pair.isVisit()) addVisit(pair, receiver, poiEvents)
         }
 
-        return poiEvents.sort{ a, b -> a.timestamp.getTime() <=> b.timestamp.getTime() }
+        poiEvents.sort{ a, b -> a.timestamp.getTime() <=> b.timestamp.getTime() }
+
+        return poiEvents
     }
 
     static List<PoiEvent> findEvents(CareReceiver receiver, ProximityEventList list) {
