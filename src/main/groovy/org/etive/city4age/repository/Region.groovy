@@ -2,7 +2,8 @@ package org.etive.city4age.repository
 
 class Region {
     private static List<Region> allRegions = []
-    private static final DEFAULT_MARGIN = 25
+    private static final MARGIN = 25
+    private static final DEFAULT_RADIUS = 25
     private String mName
     private List<Location> mLocations
     private mCentre
@@ -21,7 +22,7 @@ class Region {
             if (mSingleton) {
                 mName = "_" + location.locationId
                 mCentre = toLatLng(location.latitude, location.longitude)
-                mRadius = (location.radius) ? location.radius : DEFAULT_MARGIN
+                mRadius = (location.radius) ? location.radius : DEFAULT_RADIUS + MARGIN
             }
             else {
                 mName = location.regionId
@@ -100,7 +101,7 @@ class Region {
     }
 
     private calculateRadius() {
-        def radius = 0
+        def radius = DEFAULT_RADIUS
         for (def location in mLocations) {
             // Haversine formula:
             // a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -121,7 +122,7 @@ class Region {
             def distance = 6371e3 * c // in metres
             if (distance > radius) radius = distance
         }
-        radius += DEFAULT_MARGIN
+        radius += MARGIN
         return radius.round(0)
     }
 
