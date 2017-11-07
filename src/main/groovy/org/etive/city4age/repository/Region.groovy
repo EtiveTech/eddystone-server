@@ -22,7 +22,8 @@ class Region {
             if (mSingleton) {
                 mName = "_" + location.locationId
                 mCentre = toLatLng(location.latitude, location.longitude)
-                mRadius = (location.radius) ? location.radius : DEFAULT_RADIUS + MARGIN
+                mRadius = (location.radius) ? location.radius : DEFAULT_RADIUS
+                mRadius += MARGIN
             }
             else {
                 mName = location.regionId
