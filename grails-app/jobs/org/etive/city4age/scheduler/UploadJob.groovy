@@ -56,6 +56,8 @@ class UploadJob {
 
         // for all CareReceivers copy Activity/Sleep measures and POI events up to the Central Repository.
 
+        def uploadCount = 0
+
         def activities = activityRecordService.readyForUpload()
         if (activities) {
             log.info("Attempting to upload " + activities.size() + " Activity Measures")
@@ -73,11 +75,11 @@ class UploadJob {
                 }
             }
             log.info("Uploaded " + count + " Activity Measures")
+            uploadCount += count
         }
         else {
             log.info("There are no Activity Measures to upload")
         }
-
 
         def sleeps = sleepRecordService.readyForUpload()
         if (sleeps) {
@@ -96,6 +98,7 @@ class UploadJob {
                 }
             }
             log.info("Uploaded " + count + " Sleep Measures")
+            uploadCount += count
         }
         else {
             log.info("There are no Sleep Measures to upload")
@@ -119,11 +122,19 @@ class UploadJob {
                 }
             }
             log.info("Uploaded " + count + " POI Events")
+            uploadCount += count
         }
         else {
             log.info("There are no POI Events to upload")
         }
 
+        // COMMIT the uploaded data if any
+        if (uploadCount > 0) {
+            if (session.commit())
+                log.info("Commit of uploaded data completed")
+            else
+                log.error("Commit of uploaded data failed")
+        }
 
         // LOGOUT
         session.logout()
