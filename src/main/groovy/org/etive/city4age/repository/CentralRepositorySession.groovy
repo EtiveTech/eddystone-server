@@ -16,6 +16,7 @@ class CentralRepositorySession {
     private final String careReceiverRoute = apiVersion + "add_care_receiver"
     private final String measureRoute = apiVersion + "add_measure"
     private final String actionRoute = apiVersion + "add_action"
+    private final String commitRoute = apiVersion + "commit_measure"
 
     private mToken = null
 
@@ -83,6 +84,15 @@ class CentralRepositorySession {
             content.close()
         }
         return status
+    }
+
+    def commit() {
+        def url = new URL(protocol + centralRepository + commitRoute)
+        def connection = getConnection(url)
+        connection.setRequestMethod("GET")
+        connection.setRequestProperty("Authorization", "Basic " + getEncodedCredentials())
+        def status = connection.getResponseCode()
+        return (status == 200)
     }
 
     def logout() {
