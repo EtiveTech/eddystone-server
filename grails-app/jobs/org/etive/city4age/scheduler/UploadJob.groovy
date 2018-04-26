@@ -56,7 +56,7 @@ class UploadJob {
 
         // for all CareReceivers copy Activity/Sleep measures and POI events up to the Central Repository.
 
-        def uploadCount = 0
+        def errorCount = 0
 
         def activities = activityRecordService.readyForUpload()
         if (activities) {
@@ -71,11 +71,11 @@ class UploadJob {
                     }
                     else {
                         log.error("Unable to upload activity record with id " + activity.id)
+                        errorCount += 1
                     }
                 }
             }
             log.info("Uploaded " + count + " Activity Measures")
-            uploadCount += count
         }
         else {
             log.info("There are no Activity Measures to upload")
@@ -94,11 +94,11 @@ class UploadJob {
                     }
                     else {
                         log.error("Unable to upload sleep record with id " + sleep.id)
+                        errorCount += 1
                     }
                 }
             }
             log.info("Uploaded " + count + " Sleep Measures")
-            uploadCount += count
         }
         else {
             log.info("There are no Sleep Measures to upload")
@@ -118,18 +118,23 @@ class UploadJob {
                     }
                     else {
                         log.error("Unable to upload POI event with id " + event.id)
+                        errorCount += 1
                     }
                 }
             }
             log.info("Uploaded " + count + " POI Events")
-            uploadCount += count
         }
         else {
             log.info("There are no POI Events to upload")
         }
 
-        // COMMIT the uploaded data if any
-        if (uploadCount > 0) {
+        // COMMIT the uploaded data if
+        // first day of month
+
+        //@todo do we commit if any errors in uploads, ie errorCount > 0
+
+        def today = Calendar.getInstance();
+        if (today.get(Calendar.DATE) == today.getActualMinimum(Calendar.DATE)) {
             if (session.commit())
                 log.info("Commit of uploaded data completed")
             else
