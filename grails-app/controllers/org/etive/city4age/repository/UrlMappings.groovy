@@ -23,6 +23,7 @@ class UrlMappings {
             get "/receiver/$receiverId/sleep" (controller: 'sleepRecord', action: 'index')
             get "/region" (controller: 'region', action: 'index')
             get "/sleep" (controller: 'sleepRecord', action: 'index')
+            get "/weekly/$receiverId" (controller: 'receiver', action: 'index')
 
             "500"(view: '/error')
             "404"(view: '/notFound')

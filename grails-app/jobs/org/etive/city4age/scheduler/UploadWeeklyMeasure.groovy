@@ -10,7 +10,7 @@ class UploadWeeklyMeasure {
     private final String centralRepository = System.getenv("CENTRAL_ADDRESS")
 
     static triggers = {
-        cron name: 'uploadWeeklyTrigger', cronExpression: "0 30 1 * * MON"
+        cron name: 'uploadWeeklyTrigger', cronExpression: "0 45 2 * * MON"
     }
 
 

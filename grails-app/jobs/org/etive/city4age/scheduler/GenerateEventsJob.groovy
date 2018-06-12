@@ -6,8 +6,8 @@ class GenerateEventsJob {
     def careReceiverService
 
     static triggers = {
-        cron name: 'poiTrigger', cronExpression: "0 30 2 * * ?"
-//        cron name: 'poiTrigger', cronExpression: "0 11 * * * ?"
+//        cron name: 'poiTrigger', cronExpression: "0 30 2 * * ?"
+        cron name: 'poiTrigger', cronExpression: "0 12 * * * ?"
     }
 
     def execute() {
