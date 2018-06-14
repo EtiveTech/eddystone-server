@@ -9,6 +9,8 @@ class UploadJob {
     def sleepRecordService
     def poiEventService
     def careReceiverService
+    def weeklyMeasureService
+    def monthlyMeasureService
 
     private final String centralRepository = System.getenv("CENTRAL_ADDRESS")
 
@@ -81,6 +83,45 @@ class UploadJob {
             log.info("There are no Activity Measures to upload")
         }
 
+        // Upload weekly measures - Pharmacy, Supermarket, Shops, Restaurants
+
+        def careReceiversWeekly = careReceiverService.listCareReceivers()
+            log.info("Attempting to upload Weekly Measures")
+            for (def careReceiver in careReceiversWeekly) {
+                    def count = 0
+                    def weeklyMeasure = weeklyMeasureService.createWeeklyMeasure(careReceiver)
+                    if (session.sendMeasure(weeklyMeasure.formatForUpload())) {
+                        weeklyMeasure.uploaded = true
+                        weeklyMeasureService.persistChanges(weeklyMeasure)
+                        count += 1
+                    } else {
+                        log.error("Unable to upload weekly measure with id " + weeklyMeasure.id)
+                        errorCount += 1
+                    }
+                log.info("Uploaded " + count + " Weekly Measures")
+            }
+
+        // Upload monthly measures - GP visits, seniorcenter
+
+        def careReceiversMonthly = careReceiverService.listCareReceivers()
+        log.info("Attempting to upload Monthly Measures")
+        for (def careReceiver in careReceiversMonthly) {
+            def count = 0
+            def monthlyMeasure = monthlyMeasureService.createMonthlyMeasure(careReceiver)
+            if (session.sendMeasure(monthlyMeasure.formatForUpload())) {
+                monthlyMeasure.uploaded = true
+                monthlyMeasureService.persistChanges(monthlyMeasure)
+                count += 1
+            } else {
+                log.error("Unable to upload monthly measure with id " + monthlyMeasure.id)
+                errorCount += 1
+            }
+            log.info("Uploaded " + count + " Monthly Measures")
+        }
+
+
+
+        // Upload sleep measures
         def sleeps = sleepRecordService.readyForUpload()
         if (sleeps) {
             log.info("Attempting to upload " + sleeps.size() + " Sleep Measures")
@@ -105,6 +146,7 @@ class UploadJob {
         }
 
 
+        // Upload events
         def events = poiEventService.readyForUpload()
         if (events) {
             log.info("Attempting to upload " + events.size() + " POI Events")

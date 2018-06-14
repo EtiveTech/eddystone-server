@@ -1,0 +1,33 @@
+import org.etive.city4age.repository.WeeklyMeasure
+
+model {
+	WeeklyMeasure weeklyMeasure
+}
+
+//json g.render(proximityEvent)
+json {
+	user weeklyMeasure.careReceiver.city4AgeId
+	pilot "BHX"
+	interval_start weeklyMeasure.startDate
+	duration "1WK"
+		payload	{
+			PHARMACY_VISITS_WEEK {
+				pharmacyVisits weeklyMeasure.pharmacyVisitsWeek
+				data_source_type "sensors"
+			}
+			SUPERMARKET_VISITS_WEEK {
+				supermarketVisits weeklyMeasure.supermarketVisitsWeek
+				data_source_type "sensors"
+			}
+			SHOPS_VISITS_WEEK {
+				shopVisits weeklyMeasure.shopVisitsWeek
+				data_source_type "sensors"
+				}
+
+			RESTAURANTS_VISITS_WEEK {
+				restaurantVisits weeklyMeasure.restaurantVisitsWeek
+				data_source_type "sensors"
+					}
+
+			}
+}

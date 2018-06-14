@@ -7,7 +7,7 @@ class GenerateEventsJob {
 
     static triggers = {
 //        cron name: 'poiTrigger', cronExpression: "0 30 2 * * ?"
-        cron name: 'poiTrigger', cronExpression: "0 12 * * * ?"
+        cron name: 'poiTrigger', cronExpression: "0 40 * * * ?"
     }
 
     def execute() {

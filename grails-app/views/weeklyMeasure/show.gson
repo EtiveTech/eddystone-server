@@ -1,0 +1,7 @@
+import org.etive.city4age.repository.WeeklyMeasure
+
+model {
+	WeeklyMeasure weeklyMeasure
+}
+
+json tmpl.weeklyMeasure(weeklyMeasure)

@@ -1,6 +1,7 @@
 package org.etive.city4age.repository
 
 import grails.transaction.Transactional
+import groovy.time.TimeCategory
 
 @Transactional
 class PoiEventService {
@@ -46,6 +47,58 @@ class PoiEventService {
         def query = (receiver) ? PoiEvent.where{ careReceiver.id == receiver.id } : PoiEvent
         return query.list(offset: 0, max: 500, sort: "id", order: "desc")
     }
+
+//    function to filter list of poi events by action and location
+    @Transactional(readOnly = true)
+    def filterPoiEvents(CareReceiver receiver, String locationType, start, finish) {
+
+        // Filters query by relevant details
+        log.info("attempting to return query size")
+       def query = PoiEvent.where{ careReceiver.id == receiver.id &&
+                                    action == "POI_ENTER" &&
+                                    location.type == locationType &&
+                                    timestamp > start &&
+                                    timestamp < finish }
+        log.info("attempting to return query size")
+        return query.list().size()
+        }
+
+    // Gets the date for the Monday of the current week
+    def getThisWeeksMondayDate(){
+        def cal = Calendar.instance
+        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            cal.add(Calendar.DAY_OF_WEEK, -1)
+        }
+        return cal.time
+    }
+
+    //Gets the date for the Monday of the previous week
+    def getDateLastWeekMonday(thisWeekMonday){
+        Date lastWeekMonday = thisWeekMonday - 7
+        lastWeekMonday.set(second:0, minute:0, hourOfDay:0)
+        return lastWeekMonday
+    }
+
+    // Gets the Date of the first of the current month
+    def getTheDateOfTheFirstOfTheMonth(){
+        def cal = Calendar.instance
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        cal.set(second:0, minute:0, hourOfDay:0)
+        return cal.time
+    }
+
+    // Gets the date of the first of the previous month
+    def getTheDateOfTheFirstOfLastMonth(firstThisMonth){
+        def firstLastMonth = firstThisMonth.set(Calendar.MONTH, -1)
+        return firstLastMonth
+    }
+
+
+
+
+
+
+
 
     @Transactional(readOnly = true)
     def readyForUpload() {
