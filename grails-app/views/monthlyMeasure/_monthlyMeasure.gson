@@ -1,0 +1,22 @@
+import org.etive.city4age.repository.MonthlyMeasure
+
+model {
+	MonthlyMeasure monthlyMeasure
+}
+
+json {
+	user monthlyMeasure.careReceiver.city4AgeId
+	pilot "BHX"
+	interval_start monthlyMeasure.startDate
+	duration "1M"
+	payload	{
+		GP_VISITS_MONTH {
+			gpVisits monthlyMeasure.gpVisitsMonth
+			data_source_type "sensors"
+		}
+		SENIORCENTER_VISITS_MONTH {
+			seniorCenterVisits monthlyMeasure.seniorCenterVisitsMonth
+			data_source_type "sensors"
+		}
+	}
+}

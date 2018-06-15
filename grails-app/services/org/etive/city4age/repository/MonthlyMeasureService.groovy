@@ -9,19 +9,28 @@ class MonthlyMeasureService {
 //     Creates a Measure object for one care receiver with the full history
     def createMonthlyMeasure(CareReceiver careReceiver) {
         Date finish = poiEventService.getTheDateOfTheFirstOfTheMonth()
-        Date start = poiEventService.getTheDateOfTheFirstOfLastMonth(finish)
+        Date start = poiEventService.getTheDateOfTheFirstOfLastMonth()
+        Integer gpVisits = poiEventService.filterPoiEvents(careReceiver, "GP", start, finish)
+        Integer seniorCenterVisits = poiEventService.filterPoiEvents(careReceiver, "SeniorCenter", start, finish)
 
-        def monthlyMeasure = new WeeklyMeasure(
+
+
+        def monthlyMeasure = new MonthlyMeasure(
                 startDate: start,
                 uploaded: false,
                 careReceiver: careReceiver,
-                gpVisitsWeek: poiEventService.filterPoiEvents(careReceiver, "GP", start, finish),
-                seniorcenterVisitsWeek: poiEventService.filterPoiEvents(careReceiver, "SeniorCenter", start, finish),
+                gpVisitsMonth: gpVisits,
+                seniorCenterVisitsMonth: seniorCenterVisits
 
         )
         return monthlyMeasure
     }
 
+    @Transactional(readOnly = true)
+    def listMonthlyMeasures(CareReceiver receiver) {
+        def list = createMonthlyMeasure(receiver)
+        return list
+    }
 
 
     def persistChanges(monthlyMeasure) {

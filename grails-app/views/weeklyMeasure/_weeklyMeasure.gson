@@ -4,7 +4,7 @@ model {
 	WeeklyMeasure weeklyMeasure
 }
 
-//json g.render(proximityEvent)
+
 json {
 	user weeklyMeasure.careReceiver.city4AgeId
 	pilot "BHX"

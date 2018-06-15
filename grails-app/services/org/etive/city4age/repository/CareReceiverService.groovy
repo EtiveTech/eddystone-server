@@ -61,7 +61,7 @@ class CareReceiverService {
     def generatePoiEvents(careReceiver, endDate) {
         def startDate
         if (careReceiver.eventsGenerated) {
-            startDate = new Date(careReceiver.eventsGenerated.getTime()) //+ 1  // Day after the last event was processed
+            startDate = new Date(careReceiver.eventsGenerated.getTime()) + 1  // Day after the last event was processed
         }
         else {
             def first = proximityEventService.firstProximityEvent(careReceiver)

@@ -101,7 +101,7 @@ class UploadJob {
                 log.info("Uploaded " + count + " Weekly Measures")
             }
 
-        // Upload monthly measures - GP visits, seniorcenter
+        // Upload monthly measures - GP visits, seniorCenter
 
         def careReceiversMonthly = careReceiverService.listCareReceivers()
         log.info("Attempting to upload Monthly Measures")

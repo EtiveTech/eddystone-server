@@ -1,0 +1,8 @@
+import org.etive.city4age.repository.MonthlyMeasure
+
+model {
+	Iterable<MonthlyMeasure> monthlyMeasureList
+}
+
+json tmpl.monthlyMeasure(monthlyMeasureList ?: [])
+
