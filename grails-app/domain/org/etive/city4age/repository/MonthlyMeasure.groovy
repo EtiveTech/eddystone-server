@@ -26,9 +26,9 @@ class MonthlyMeasure {
                 duration: "1M",
                 payload: [
                         GP_VISITS_MONTH: [
-                            value: gpVisitsMonth,
-                            data_source_type: [ "sensors" ]
-                ],
+                                value: gpVisitsMonth,
+                                data_source_type: [ "sensors" ]
+                        ],
                         SENIORCENTER_VISITS_MONTH: [
                                 value: seniorCenterVisitsMonth,
                                 data_source_type: [ "sensors" ]

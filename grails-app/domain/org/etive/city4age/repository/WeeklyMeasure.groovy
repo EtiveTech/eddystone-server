@@ -10,6 +10,7 @@ class WeeklyMeasure {
     Integer restaurantVisitsWeek
     CareReceiver careReceiver
 
+
     static constraints = {
 
         careReceiver nullable: false
