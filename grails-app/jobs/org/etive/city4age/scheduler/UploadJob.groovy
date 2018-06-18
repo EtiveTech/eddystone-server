@@ -1,5 +1,6 @@
 package org.etive.city4age.scheduler
 
+import grails.converters.JSON
 import grails.util.Environment
 import org.etive.city4age.repository.CentralRepositorySession
 
@@ -67,8 +68,6 @@ class UploadJob {
             for (def activity in activities) {
                 if (activity.careReceiver.uploadable() && activity.careReceiver.hasCity4AgeId()) {
                     if (session.sendMeasure(activity.formatForUpload())) {
-                        activity.uploaded = true
-                        activityRecordService.persistChanges(activity)
                         count += 1
                     }
                     else {
@@ -88,17 +87,23 @@ class UploadJob {
         def careReceiversWeekly = careReceiverService.listCareReceivers()
             log.info("Attempting to upload Weekly Measures")
             for (def careReceiver in careReceiversWeekly) {
+                log.info("******************************************")
+                if (careReceiver.uploadable() && careReceiver.hasCity4AgeId()) {
                     def count = 0
                     def weeklyMeasure = weeklyMeasureService.createWeeklyMeasure(careReceiver)
+                    log.info(weeklyMeasure.startDate)
+                    log.info("Attempting to upload Weekly Measures for " + weeklyMeasure.careReceiver.city4AgeId)
                     if (session.sendMeasure(weeklyMeasure.formatForUpload())) {
-                        weeklyMeasure.uploaded = true
-                        weeklyMeasureService.persistChanges(weeklyMeasure)
+                        log.info(weeklyMeasure.formatForUpload().toString())
+
                         count += 1
                     } else {
-                        log.error("Unable to upload weekly measure with id " + weeklyMeasure.id)
+                        log.error("Unable to upload weekly measure for " + weeklyMeasure.careReceiver.city4AgeId)
                         errorCount += 1
                     }
-                log.info("Uploaded " + count + " Weekly Measures")
+                    log.info("Uploaded " + count + " Weekly Measures")
+                    log.info("******************************************")
+                }
             }
 
         // Upload monthly measures - GP visits, seniorCenter
@@ -106,17 +111,20 @@ class UploadJob {
         def careReceiversMonthly = careReceiverService.listCareReceivers()
         log.info("Attempting to upload Monthly Measures")
         for (def careReceiver in careReceiversMonthly) {
+            log.info("******************************************")
             def count = 0
             def monthlyMeasure = monthlyMeasureService.createMonthlyMeasure(careReceiver)
+            log.info("Attempting to upload Monthly Measures for " + monthlyMeasure.careReceiver.city4AgeId)
+            log.info()
             if (session.sendMeasure(monthlyMeasure.formatForUpload())) {
-                monthlyMeasure.uploaded = true
-                monthlyMeasureService.persistChanges(monthlyMeasure)
+                log.info(monthlyMeasure.formatForUpload().toString())
                 count += 1
             } else {
-                log.error("Unable to upload monthly measure with id " + monthlyMeasure.id)
+                log.error("Unable to upload monthly measure with id " + monthlyMeasure.careReceiver.city4AgeId)
                 errorCount += 1
             }
             log.info("Uploaded " + count + " Monthly Measures")
+            log.info("******************************************")
         }
 
 

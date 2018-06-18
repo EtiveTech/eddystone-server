@@ -1,27 +1,12 @@
 package org.etive.city4age.repository
 
 class WeeklyMeasure {
-    Date timestamp
-    Boolean uploaded = false
     Date startDate
     Integer pharmacyVisitsWeek
     Integer supermarketVisitsWeek
     Integer shopVisitsWeek
     Integer restaurantVisitsWeek
     CareReceiver careReceiver
-
-
-    static constraints = {
-
-        careReceiver nullable: false
-        startDate nullable: false
-        uploaded nullable: false
-        pharmacyVisitsWeek nullable: false
-        supermarketVisitsWeek nullable: false
-        shopVisitsWeek nullable: false
-        restaurantVisitsWeek nullable: false
-    }
-
 
     def formatForUpload() {
         return [

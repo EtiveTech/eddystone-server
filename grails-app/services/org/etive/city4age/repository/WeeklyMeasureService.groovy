@@ -7,7 +7,7 @@ class WeeklyMeasureService {
     def poiEventService
 
 //     Creates a Measure object for one care receiver with the full history
-    def createWeeklyMeasure(CareReceiver careReceiver) {
+    WeeklyMeasure createWeeklyMeasure(CareReceiver careReceiver) {
         Date finish = poiEventService.getThisWeeksMondayDate()
         Date start = poiEventService.getDateLastWeekMonday(finish)
         Integer pharmacyVisits = poiEventService.filterPoiEvents(careReceiver, "Pharmacy", start, finish)
@@ -19,7 +19,6 @@ class WeeklyMeasureService {
         def weeklyMeasure = new WeeklyMeasure(
 
                 startDate: start,
-                uploaded: false,
                 careReceiver: careReceiver,
                 pharmacyVisitsWeek: pharmacyVisits,
                 supermarketVisitsWeek: supermarketVisits,
@@ -38,16 +37,6 @@ class WeeklyMeasureService {
     }
 
 
-    def persistChanges(weeklyMeasure) {
-        try {
-            weeklyMeasure = weeklyMeasure.save()
-        }
-        catch (Exception e) {
-            log.error(e.message)
-            weeklyMeasure = null
-        }
 
-        return weeklyMeasure
-    }
 
 }

@@ -8,7 +8,7 @@ model {
 json {
 	user weeklyMeasure.careReceiver.city4AgeId
 	pilot "BHX"
-	interval_start weeklyMeasure.startDate
+	interval_start weeklyMeasure.startDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXXz")
 	duration "1WK"
 		payload	{
 			PHARMACY_VISITS_WEEK {

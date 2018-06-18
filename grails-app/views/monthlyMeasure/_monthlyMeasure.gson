@@ -7,7 +7,7 @@ model {
 json {
 	user monthlyMeasure.careReceiver.city4AgeId
 	pilot "BHX"
-	interval_start monthlyMeasure.startDate
+	interval_start monthlyMeasure.startDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXXz")
 	duration "1M"
 	payload	{
 		GP_VISITS_MONTH {

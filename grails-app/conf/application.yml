@@ -85,7 +85,7 @@ dataSource:
 environments:
     development:
         dataSource:
-            dbCreate: create
+            dbCreate: validate
             url: jdbc:mysql://localhost/city4age?useUnicode=yes&characterEncoding=UTF-8
             username: city4age
             password: ${DB_PASSWORD}
@@ -97,7 +97,7 @@ environments:
             password: ${DB_PASSWORD}
     production:
         dataSource:
-            dbCreate: validate
+            dbCreate: none
             url: jdbc:mysql://localhost/city4age?useUnicode=yes&characterEncoding=UTF-8
             username: city4age
             password: ${DB_PASSWORD}

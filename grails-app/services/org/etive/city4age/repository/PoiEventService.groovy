@@ -86,7 +86,7 @@ class PoiEventService {
         return cal.time
     }
 
-    // Gets the Date of the first of the current month
+    // Gets the Date of the first of the previous month
     def getTheDateOfTheFirstOfLastMonth(){
         def cal = Calendar.instance
         cal.set(Calendar.DAY_OF_MONTH, 1)
@@ -94,19 +94,6 @@ class PoiEventService {
         cal.set(second:0, minute:0, hourOfDay:0)
         return cal.time
     }
-
-//    // Gets the date of the first of the previous month
-//    def getTheDateOfTheFirstOfLastMonth(firstThisMonth){
-//        Date firstLastMonth = firstThisMonth
-////        firstLastMonth.set(Calendar.MONTH, -1)
-//        firstLastMonth.add()
-//        return firstLastMonth
-//
-//    }
-
-
-
-
 
 
 
