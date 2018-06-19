@@ -59,8 +59,12 @@ class PoiEventService {
                                     location.type == locationType &&
                                     timestamp > start &&
                                     timestamp < finish }
-        return query.list().size()
-        }
+        Integer size = query.list().size()
+        log.info("The total visits for " + locationType + " is " + size )
+        log.info("The start time is " + start.toString())
+//        return query.list().size()
+        return size
+    }
 
     // Gets the date for the Monday of the current week
     def getThisWeeksMondayDate(){
@@ -87,13 +91,21 @@ class PoiEventService {
     }
 
     // Gets the Date of the first of the previous month
-    def getTheDateOfTheFirstOfLastMonth(){
-        def cal = Calendar.instance
-        cal.set(Calendar.DAY_OF_MONTH, 1)
-        cal.add(Calendar.MONTH, -1)
-        cal.set(second:0, minute:0, hourOfDay:0)
-        return cal.time
+    def getTheDateOfTheFirstOfLastMonth(thisMonthFirst){
+        Date lastMonthFirst = thisMonthFirst
+        Integer month = lastMonthFirst.month - 1
+        lastMonthFirst.set(second:0, minute:0, hourOfDay:0, month:month)
+        return lastMonthFirst
     }
+
+//    // Gets the Date of the first of the previous month
+//    def getTheDateOfTheFirstOfLastMonth(){
+//        def cal = Calendar.instance
+//        cal.set(Calendar.DAY_OF_MONTH, 1)
+//        cal.add(Calendar.MONTH, -1)
+//        cal.set(second:0, minute:0, hourOfDay:0)
+//        return cal.time
+//    }
 
 
 

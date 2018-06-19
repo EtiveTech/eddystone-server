@@ -10,6 +10,7 @@ class WeeklyMeasureService {
     WeeklyMeasure createWeeklyMeasure(CareReceiver careReceiver) {
         Date finish = poiEventService.getThisWeeksMondayDate()
         Date start = poiEventService.getDateLastWeekMonday(finish)
+        String startDateString = start.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London")).toString()
         Integer pharmacyVisits = poiEventService.filterPoiEvents(careReceiver, "Pharmacy", start, finish)
         Integer supermarketVisits = poiEventService.filterPoiEvents(careReceiver, "Supermarket", start, finish)
         Integer shopVisits = poiEventService.filterPoiEvents(careReceiver, "Shop", start, finish)
@@ -18,7 +19,7 @@ class WeeklyMeasureService {
 
         def weeklyMeasure = new WeeklyMeasure(
 
-                startDate: start,
+                startDate: startDateString,
                 careReceiver: careReceiver,
                 pharmacyVisitsWeek: pharmacyVisits,
                 supermarketVisitsWeek: supermarketVisits,

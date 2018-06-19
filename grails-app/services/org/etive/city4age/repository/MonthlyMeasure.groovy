@@ -2,7 +2,7 @@ package org.etive.city4age.repository
 
 class MonthlyMeasure {
 
-    Date startDate
+    String startDate
     Integer gpVisitsMonth
     Integer seniorCenterVisitsMonth
     CareReceiver careReceiver
@@ -11,7 +11,7 @@ class MonthlyMeasure {
         return [
                 user: careReceiver.city4AgeId,
                 pilot: "BHX",
-                interval_start: startDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London")),
+                interval_start: startDate,
                 duration: "1M",
                 payload: [
                         GP_VISITS_MONTH: [
@@ -21,7 +21,7 @@ class MonthlyMeasure {
                         SENIORCENTER_VISITS_MONTH: [
                                 value: seniorCenterVisitsMonth,
                                 data_source_type: [ "sensors" ]
-                        ],
+                        ]
                 ]
         ]
     }

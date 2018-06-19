@@ -1,7 +1,7 @@
 package org.etive.city4age.repository
 
 class WeeklyMeasure {
-    Date startDate
+    String startDate
     Integer pharmacyVisitsWeek
     Integer supermarketVisitsWeek
     Integer shopVisitsWeek
@@ -12,13 +12,13 @@ class WeeklyMeasure {
         return [
                 user: careReceiver.city4AgeId,
                 pilot: "BHX",
-                interval_start: startDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", TimeZone.getTimeZone("Europe/London")),
+                interval_start: startDate,
                 duration: "1WK",
                 payload: [
                         PHARMACY_VISITS_WEEK: [
                             value: pharmacyVisitsWeek,
                             data_source_type: [ "sensors" ]
-                ],
+                        ],
                         SUPERMARKET_VISITS_WEEK: [
                                 value: supermarketVisitsWeek,
                                 data_source_type: [ "sensors" ]
@@ -30,7 +30,7 @@ class WeeklyMeasure {
                         RESTAURANTS_VISITS_WEEK: [
                                 value: restaurantVisitsWeek,
                                 data_source_type: [ "sensors" ]
-                        ],
+                        ]
                 ]
         ]
     }
