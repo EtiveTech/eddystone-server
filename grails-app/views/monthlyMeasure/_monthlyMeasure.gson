@@ -8,7 +8,7 @@ json {
 	user monthlyMeasure.careReceiver.city4AgeId
 	pilot "BHX"
 	interval_start monthlyMeasure.startDate
-	duration "1M"
+	duration "MON"
 	payload	{
 		GP_VISITS_MONTH {
 			gpVisits monthlyMeasure.gpVisitsMonth

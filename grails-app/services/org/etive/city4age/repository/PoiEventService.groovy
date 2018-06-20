@@ -97,18 +97,6 @@ class PoiEventService {
         return lastMonthFirst
     }
 
-//    // Gets the Date of the first of the previous month
-//    def getTheDateOfTheFirstOfLastMonth(){
-//        def cal = Calendar.instance
-//        cal.set(Calendar.DAY_OF_MONTH, 1)
-//        cal.add(Calendar.MONTH, -1)
-//        cal.set(second:0, minute:0, hourOfDay:0)
-//        return cal.time
-//    }
-
-
-
-
     @Transactional(readOnly = true)
     def readyForUpload() {
         def query = PoiEvent.where{ uploaded == false }

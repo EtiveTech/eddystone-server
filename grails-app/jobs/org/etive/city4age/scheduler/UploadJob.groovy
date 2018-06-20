@@ -13,6 +13,7 @@ class UploadJob {
     def weeklyMeasureService
     def monthlyMeasureService
 
+
     private final String centralRepository = System.getenv("CENTRAL_ADDRESS")
 
     static triggers = {
@@ -23,7 +24,7 @@ class UploadJob {
     def execute() {
         // execute job
 
-        if (!centralRepository){
+        if (!centralRepository) {
             log.error("The address of the the Central Repository has not been set")
             return
         }
@@ -32,7 +33,7 @@ class UploadJob {
 
         // LOGIN
         def response = session.login()
-        if (response != 200){
+        if (response != 200) {
             log.error("Failed to login to the Central Repository (status = " + response + ")")
             return
         }
@@ -50,8 +51,7 @@ class UploadJob {
                     log.info("Obtained City4AgeId " + city4AgeId + " for Care Receiver with id " + careReceiver.id)
                     careReceiver.city4AgeId = city4AgeId
                     careReceiverService.persistChanges(careReceiver)
-                }
-                else {
+                } else {
                     log.error("Failed to get City4AgeId for Care Receiver with id " + careReceiver.id)
                 }
             }
@@ -69,22 +69,25 @@ class UploadJob {
                 if (activity.careReceiver.uploadable() && activity.careReceiver.hasCity4AgeId()) {
                     if (session.sendMeasure(activity.formatForUpload())) {
                         count += 1
-                    }
-                    else {
+                    } else {
                         log.error("Unable to upload activity record with id " + activity.id)
                         errorCount += 1
                     }
                 }
             }
             log.info("Uploaded " + count + " Activity Measures")
-        }
-        else {
+        } else {
             log.info("There are no Activity Measures to upload")
         }
 
+        // Set today's date
+
+        def today = Calendar.getInstance()
+
         // Upload weekly measures - Pharmacy, Supermarket, Shops, Restaurants
 
-        def careReceiversWeekly = careReceiverService.listCareReceivers()
+        if (today.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            def careReceiversWeekly = careReceiverService.listCareReceivers()
             log.info("Attempting to upload Weekly Measures")
             def weeklyUploadCount = 0
             for (def careReceiver in careReceiversWeekly) {
@@ -106,96 +109,99 @@ class UploadJob {
                 log.info("Uploaded " + weeklyUploadCount + " Weekly Measures")
                 log.info("************ finished weekly measure upload **************")
             }
+        } else {
+            log.info("weekly data doesn't get uploaded today - " + today.toString())
+        }
 
 
-        // Upload monthly measures - GP visits, seniorCenter
 
-        def careReceiversMonthly = careReceiverService.listCareReceivers()
-        log.info("Attempting to upload Monthly Measures")
-        def monthlyUploadCount = 0
-        for (def careReceiver in careReceiversMonthly) {
-            log.info("******** Upload monthly measure for care receiver " + careReceiver.city4AgeId + " ***********")
-            if (careReceiver.uploadable() && careReceiver.hasCity4AgeId()) {
+            // Upload monthly measures - GP visits, seniorCenter
+            if (today.get(Calendar.DATE) == today.getActualMinimum(Calendar.DATE)) {
+                def careReceiversMonthly = careReceiverService.listCareReceivers()
+                log.info("Attempting to upload Monthly Measures")
+                def monthlyUploadCount = 0
+                for (def careReceiver in careReceiversMonthly) {
+                    log.info("******** Upload monthly measure for care receiver " + careReceiver.city4AgeId + " ***********")
+                    if (careReceiver.uploadable() && careReceiver.hasCity4AgeId()) {
 
-                def monthlyMeasure = monthlyMeasureService.createMonthlyMeasure(careReceiver)
+                        def monthlyMeasure = monthlyMeasureService.createMonthlyMeasure(careReceiver)
 
-                log.info("Attempting to upload monthly Measures for " + careReceiver.city4AgeId)
+                        log.info("Attempting to upload monthly Measures for " + careReceiver.city4AgeId)
 
-                if (session.sendMeasure(monthlyMeasure.formatForUpload())) {
-                    monthlyUploadCount += 1
-                } else {
-                    log.error("Unable to upload monthly measure for " + careReceiver.city4AgeId)
-                    errorCount += 1
+                        if (session.sendMeasure(monthlyMeasure.formatForUpload())) {
+                            monthlyUploadCount += 1
+                        } else {
+                            log.error("Unable to upload monthly measure for " + careReceiver.city4AgeId)
+                            errorCount += 1
+                        }
+                    }
+                    log.info("Uploaded " + monthlyUploadCount + " Monthly Measures")
+                    log.info("************ finished monthly measure upload **************")
                 }
+            } else {
+                log.info("Monthly data doesn't get uploaded today - " + today.toString())
             }
-            log.info("Uploaded " + monthlyUploadCount + " Monthly Measures")
-            log.info("************ finished monthly measure upload **************")
-        }
 
-        // Upload sleep measures
-        def sleeps = sleepRecordService.readyForUpload()
-        if (sleeps) {
-            log.info("Attempting to upload " + sleeps.size() + " Sleep Measures")
-            def count = 0
-            for (def sleep in sleeps) {
-                if (sleep.careReceiver.uploadable() && sleep.careReceiver.hasCity4AgeId()) {
-                    if (session.sendMeasure(sleep.formatForUpload())) {
-                        sleep.uploaded = true
-                        sleepRecordService.persistChanges(sleep)
-                        count += 1
-                    }
-                    else {
-                        log.error("Unable to upload sleep record with id " + sleep.id)
-                        errorCount += 1
-                    }
-                }
-            }
-            log.info("Uploaded " + count + " Sleep Measures")
-        }
-        else {
-            log.info("There are no Sleep Measures to upload")
-        }
-
-
-        // Upload events
-        def events = poiEventService.readyForUpload()
-        if (events) {
-            log.info("Attempting to upload " + events.size() + " POI Events")
-            def count = 0
-            for (def event in events) {
-                if (event.careReceiver.uploadable() && event.careReceiver.hasCity4AgeId()) {
-                    if (session.sendAction(event.formatForUpload())) {
-                        event.uploaded = true
-                        poiEventService.persistChanges(event)
-                        count += 1
-                    }
-                    else {
-                        log.error("Unable to upload POI event with id " + event.id)
-                        errorCount += 1
+            // Upload sleep measures
+            def sleeps = sleepRecordService.readyForUpload()
+            if (sleeps) {
+                log.info("Attempting to upload " + sleeps.size() + " Sleep Measures")
+                def count = 0
+                for (def sleep in sleeps) {
+                    if (sleep.careReceiver.uploadable() && sleep.careReceiver.hasCity4AgeId()) {
+                        if (session.sendMeasure(sleep.formatForUpload())) {
+                            sleep.uploaded = true
+                            sleepRecordService.persistChanges(sleep)
+                            count += 1
+                        } else {
+                            log.error("Unable to upload sleep record with id " + sleep.id)
+                            errorCount += 1
+                        }
                     }
                 }
+                log.info("Uploaded " + count + " Sleep Measures")
+            } else {
+                log.info("There are no Sleep Measures to upload")
             }
-            log.info("Uploaded " + count + " POI Events")
+
+            // Upload events
+            def events = poiEventService.readyForUpload()
+            if (events) {
+                log.info("Attempting to upload " + events.size() + " POI Events")
+                def count = 0
+                for (def event in events) {
+                    if (event.careReceiver.uploadable() && event.careReceiver.hasCity4AgeId()) {
+                        if (session.sendAction(event.formatForUpload())) {
+                            event.uploaded = true
+                            poiEventService.persistChanges(event)
+                            count += 1
+                        } else {
+                            log.error("Unable to upload POI event with id " + event.id)
+                            errorCount += 1
+                        }
+                    }
+                }
+                log.info("Uploaded " + count + " POI Events")
+            } else {
+                log.info("There are no POI Events to upload")
+            }
+
+            // COMMIT the uploaded data if
+            // first day of month
+
+            //@todo do we commit if any errors in uploads, ie errorCount > 0
+
+
+            if (today.get(Calendar.DATE) == today.getActualMinimum(Calendar.DATE)) {
+                if (session.commit())
+                    log.info("Commit of uploaded data completed")
+                else
+                    log.error("Commit of uploaded data failed")
+            }
+
+            // LOGOUT
+            session.logout()
+            log.info("Logged out of the Central Repository")
         }
-        else {
-            log.info("There are no POI Events to upload")
-        }
-
-        // COMMIT the uploaded data if
-        // first day of month
-
-        //@todo do we commit if any errors in uploads, ie errorCount > 0
-
-        def today = Calendar.getInstance();
-        if (today.get(Calendar.DATE) == today.getActualMinimum(Calendar.DATE)) {
-            if (session.commit())
-                log.info("Commit of uploaded data completed")
-            else
-                log.error("Commit of uploaded data failed")
-        }
-
-        // LOGOUT
-        session.logout()
-        log.info("Logged out of the Central Repository")
     }
-}
+
