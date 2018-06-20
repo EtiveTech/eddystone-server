@@ -62,7 +62,6 @@ class PoiEventService {
         Integer size = query.list().size()
         log.info("The total visits for " + locationType + " is " + size )
         log.info("The start time is " + start.toString())
-//        return query.list().size()
         return size
     }
 

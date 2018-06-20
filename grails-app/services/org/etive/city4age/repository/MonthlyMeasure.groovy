@@ -12,7 +12,7 @@ class MonthlyMeasure {
                 user: careReceiver.city4AgeId,
                 pilot: "BHX",
                 interval_start: startDate,
-                duration: "1M",
+                duration: "MON",
                 payload: [
                         GP_VISITS_MONTH: [
                                 value: gpVisitsMonth,
@@ -26,3 +26,5 @@ class MonthlyMeasure {
         ]
     }
 }
+
+

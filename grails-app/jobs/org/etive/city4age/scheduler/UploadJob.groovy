@@ -17,7 +17,7 @@ class UploadJob {
 
     static triggers = {
         cron name: 'uploadTrigger', cronExpression: "0 30 3 * * ?"
-//        cron name: 'uploadTrigger', cronExpression: "0 21 18 * * ?"
+//        cron name: 'uploadTrigger', cronExpression: "0 55 10 * * ?"
     }
 
     def execute() {
@@ -86,23 +86,25 @@ class UploadJob {
 
         def careReceiversWeekly = careReceiverService.listCareReceivers()
             log.info("Attempting to upload Weekly Measures")
+            def weeklyUploadCount = 0
             for (def careReceiver in careReceiversWeekly) {
                 log.info("******** Upload weekly measure for care receiver " + careReceiver.city4AgeId + " ***********")
                 if (careReceiver.uploadable() && careReceiver.hasCity4AgeId()) {
-                    def count = 0
+
                     def weeklyMeasure = weeklyMeasureService.createWeeklyMeasure(careReceiver)
 
                     log.info("Attempting to upload Weekly Measures for " + careReceiver.city4AgeId)
 
                     if (session.sendMeasure(weeklyMeasure.formatForUpload())) {
-                        count += 1
+                        weeklyUploadCount += 1
                     } else {
                         log.error("Unable to upload weekly measure for " + careReceiver.city4AgeId)
                         errorCount += 1
                     }
-                    log.info("Uploaded " + count + " Weekly Measures")
-                    log.info("************ finished weekly measure upload **************")
+
                 }
+                log.info("Uploaded " + weeklyUploadCount + " Weekly Measures")
+                log.info("************ finished weekly measure upload **************")
             }
 
 
@@ -110,23 +112,24 @@ class UploadJob {
 
         def careReceiversMonthly = careReceiverService.listCareReceivers()
         log.info("Attempting to upload Monthly Measures")
+        def monthlyUploadCount = 0
         for (def careReceiver in careReceiversMonthly) {
             log.info("******** Upload monthly measure for care receiver " + careReceiver.city4AgeId + " ***********")
             if (careReceiver.uploadable() && careReceiver.hasCity4AgeId()) {
-                def count = 0
+
                 def monthlyMeasure = monthlyMeasureService.createMonthlyMeasure(careReceiver)
 
                 log.info("Attempting to upload monthly Measures for " + careReceiver.city4AgeId)
 
                 if (session.sendMeasure(monthlyMeasure.formatForUpload())) {
-                    count += 1
+                    monthlyUploadCount += 1
                 } else {
                     log.error("Unable to upload monthly measure for " + careReceiver.city4AgeId)
                     errorCount += 1
                 }
-                log.info("Uploaded " + count + " Monthly Measures")
-                log.info("************ finished monthly measure upload **************")
             }
+            log.info("Uploaded " + monthlyUploadCount + " Monthly Measures")
+            log.info("************ finished monthly measure upload **************")
         }
 
         // Upload sleep measures
