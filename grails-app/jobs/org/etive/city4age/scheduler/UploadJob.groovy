@@ -110,7 +110,7 @@ class UploadJob {
                 log.info("************ finished weekly measure upload **************")
             }
         } else {
-            log.info("weekly data doesn't get uploaded today - " + today.toString())
+            log.info("Weekly measures only get uploaded on the Monday of each week")
         }
 
 
@@ -139,7 +139,7 @@ class UploadJob {
                     log.info("************ finished monthly measure upload **************")
                 }
             } else {
-                log.info("Monthly data doesn't get uploaded today - " + today.toString())
+                log.info("Monthly measures only get uploaded on the first of each month " )
             }
 
             // Upload sleep measures
