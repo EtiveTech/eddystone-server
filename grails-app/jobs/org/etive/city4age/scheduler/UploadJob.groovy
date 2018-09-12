@@ -68,6 +68,8 @@ class UploadJob {
             for (def activity in activities) {
                 if (activity.careReceiver.uploadable() && activity.careReceiver.hasCity4AgeId()) {
                     if (session.sendMeasure(activity.formatForUpload())) {
+                        activity.uploaded = true
+                        activityRecordService.persistChanges(activity)
                         count += 1
                     } else {
                         log.error("Unable to upload activity record with id " + activity.id)
@@ -191,8 +193,8 @@ class UploadJob {
 
             //@todo do we commit if any errors in uploads, ie errorCount > 0
 
-
-            if (today.get(Calendar.DATE) == today.getActualMinimum(Calendar.DATE)) {
+            // The commit gets processed on the 7th day of each month
+            if (today.get(Calendar.DATE) == 7) {
                 if (session.commit())
                     log.info("Commit of uploaded data completed")
                 else
