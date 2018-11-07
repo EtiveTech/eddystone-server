@@ -33,7 +33,8 @@ class CareReceiverService {
                 accessKey: json.accessKey as String,
                 accessSecret: json.accessSecret as String,
                 token: token,
-                forTest: (json.forTest) ? json.forTest : false
+                forTest: (json.forTest) ? json.forTest : false,
+                dob: dob as String
         )
         if (json.city4ageId) careReceiver.city4AgeId = json.city4ageId
         try {

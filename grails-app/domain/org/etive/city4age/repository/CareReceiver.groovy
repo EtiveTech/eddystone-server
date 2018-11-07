@@ -21,6 +21,7 @@ class CareReceiver {
     Boolean forTest = false // This Care Receiver's data is for test only and should not be uploaded
     Date dateCreated
     Date lastUpdated
+    String dob
 
     static hasMany = [device: Device, proximityEvents: ProximityEvent, poiEvents: PoiEvent,
                       activityRecords: ActivityRecord, sleepRecords: SleepRecord ]
@@ -39,6 +40,7 @@ class CareReceiver {
         sleepRecordsDownloaded nullable: true, blank: false
         eventsGenerated nullable: true
         forTest nullable: false
+        dob nullable: true
     }
 
     private fetchActivityData(Date startDate, Date endDate = null) {
