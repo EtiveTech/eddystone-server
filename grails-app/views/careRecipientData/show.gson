@@ -1,0 +1,7 @@
+import org.etive.city4age.repository.CareRecipientData
+
+model {
+	CareRecipientData careRecipientData
+}
+
+json tmpl.CareRecipientData(careRecipientData)
