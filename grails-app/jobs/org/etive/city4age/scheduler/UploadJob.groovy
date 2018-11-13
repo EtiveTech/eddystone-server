@@ -72,7 +72,8 @@ class UploadJob {
                         activityRecordService.persistChanges(activity)
                         count += 1
                     } else {
-                        log.error("Unable to upload activity record with id " + activity.id)
+                        log.error()
+                        log.error("Unable to upload activity record with id " + activity.id + " and c4a id " + activity.careReceiver.id)
                         errorCount += 1
                     }
                 }
@@ -95,18 +96,14 @@ class UploadJob {
             for (def careReceiver in careReceiversWeekly) {
                 log.info("******** Upload weekly measure for care receiver " + careReceiver.city4AgeId + " ***********")
                 if (careReceiver.uploadable() && careReceiver.hasCity4AgeId()) {
-
                     def weeklyMeasure = weeklyMeasureService.createWeeklyMeasure(careReceiver)
-
                     log.info("Attempting to upload Weekly Measures for " + careReceiver.city4AgeId)
-
                     if (session.sendMeasure(weeklyMeasure.formatForUpload())) {
                         weeklyUploadCount += 1
                     } else {
                         log.error("Unable to upload weekly measure for " + careReceiver.city4AgeId)
                         errorCount += 1
                     }
-
                 }
                 log.info("Uploaded " + weeklyUploadCount + " Weekly Measures")
                 log.info("************ finished weekly measure upload **************")
@@ -114,8 +111,6 @@ class UploadJob {
         } else {
             log.info("Weekly measures only get uploaded on the Monday of each week")
         }
-
-
 
             // Upload monthly measures - GP visits, seniorCenter
             if (today.get(Calendar.DATE) == today.getActualMinimum(Calendar.DATE)) {

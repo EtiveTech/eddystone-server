@@ -142,7 +142,6 @@ class CentralRepositorySession {
 
     def sendMeasure(measure) {
         if (!mToken) return false
-
         def connection = makePostConnection(measureRoute, measure)
         def status = connection.getResponseCode()
         return (status == 200)

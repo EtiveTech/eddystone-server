@@ -71,6 +71,7 @@ class PoiEventService {
         while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
             cal.add(Calendar.DAY_OF_WEEK, -1)
         }
+        cal.set(Calendar.MILLISECOND, 0)
         return cal.time
     }
 
@@ -85,6 +86,7 @@ class PoiEventService {
     def getTheDateOfTheFirstOfTheMonth(){
         def cal = Calendar.instance
         cal.set(Calendar.DAY_OF_MONTH, 1)
+        cal.set(Calendar.MILLISECOND, 0)
         cal.set(second:0, minute:0, hourOfDay:0)
         return cal.time
     }
