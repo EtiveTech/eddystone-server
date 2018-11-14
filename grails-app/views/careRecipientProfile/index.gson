@@ -1,7 +1,8 @@
 import org.etive.city4age.repository.CareRecipientProfile
 
 model {
-    Iterable<CareRecipientProfile> careRecipientProfile
+	Iterable<CareRecipientProfile> careRecipientProfileList
 }
 
-json tmpl.careRecipientProfile(careRecipientProfile ?: [])
+json tmpl.careRecipientProfile(careRecipientProfileList ?: [])
+

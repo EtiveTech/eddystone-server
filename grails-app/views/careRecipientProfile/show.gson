@@ -1,7 +1,7 @@
 import org.etive.city4age.repository.CareRecipientProfile
 
 model {
-    CareRecipientProfile careRecipientProfile
+	CareRecipientProfile careRecipientProfile
 }
 
-json tmpl.CareRecipientProfile(careRecipientProfile)
+json tmpl.careRecipientProfile(careRecipientProfile)

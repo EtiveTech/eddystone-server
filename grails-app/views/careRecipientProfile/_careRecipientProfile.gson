@@ -1,18 +1,23 @@
 import org.etive.city4age.repository.CareRecipientProfile
 
 model {
-    CareRecipientProfile careRecipientProfile
-
+	CareRecipientProfile careRecipientProfile
 }
-    json {
-        careReceiver careRecipientProfile.careReceiver
-        yearBorn careRecipientProfile.dob
-        sex careRecipientProfile.sex
-        livingStatus careRecipientProfile.livingStatus
-        occupation careRecipientProfile.occupation
-        previousOccupation careRecipientProfile.previousOccupation
-        bloodPressure careRecipientProfile.bloodPressure
-        height careRecipientProfile.height
-        weight careRecipientProfile.weight
-    }
+
+json {
+	message "success"
+	responseCode 100
+	personal_data {
+		"Care Receiver Id" careRecipientProfile.careReceiver
+		"Year Born" careRecipientProfile.dob
+		"Sex" careRecipientProfile.sex
+		"Living Status" careRecipientProfile.livingStatus
+		"Occupation" careRecipientProfile.occupation
+		"Previous Occupation" careRecipientProfile.previousOccupation
+		"Blood Pressure" careRecipientProfile.bloodPressure
+		"Height" careRecipientProfile.height
+		"Weight" careRecipientProfile.weight
+	}
+}
+
 
