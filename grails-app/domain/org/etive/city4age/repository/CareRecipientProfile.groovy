@@ -1,6 +1,6 @@
 package org.etive.city4age.repository
 
-class CareRecipientData {
+class CareRecipientProfile {
     String careReceiver
     String dob
     String sex
@@ -10,8 +10,6 @@ class CareRecipientData {
     String bloodPressure
     String height
     String weight
-
-
 
     static constraints = {
         careReceiver nullable: true
@@ -29,6 +27,4 @@ class CareRecipientData {
         if (!careRecipientData) return null
         return careRecipientData.id
     }
-
-
 }
